@@ -1,0 +1,46 @@
+<div class="list-container">
+  <div class="list-header">
+    <h2 class="list-title">Título da Lista</h2>
+    <input
+      pInputText
+      placeholder="Pesquisar..."
+      [(ngModel)]="searchTerm"
+      class="search-input"
+      (input)="table.filterGlobal(searchTerm, 'contains')"
+    />
+  </div>
+
+  <p-table #table [value]="items" [paginator]="true" [rows]="10" [globalFilterFields]="['nome', 'descricao']">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th style="width: 1%;"></th> <!-- Coluna de ações vazia, para alinhar o botão à direita -->
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td>{{ item.nome }}</td>
+        <td>{{ item.descricao }}</td>
+        <td class="actions-column">
+          <p-overlayPanel #op>
+            <div class="action-option" (click)="editItem(item)">
+              <i class="pi pi-pencil"></i> Editar
+            </div>
+            <div class="action-option" (click)="removeItem(item)">
+              <i class="pi pi-trash"></i> Remover
+            </div>
+          </p-overlayPanel>
+          <button
+            pButton
+            icon="pi pi-ellipsis-h"
+            class="action-button"
+            (click)="op.toggle($event)"
+            type="button"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
