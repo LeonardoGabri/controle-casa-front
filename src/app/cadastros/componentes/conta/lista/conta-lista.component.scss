@@ -1,3 +1,4 @@
+/* Estilos existentes */
 .list-container {
   padding: 1rem;
 }
@@ -52,5 +53,64 @@
 }
 
 .action-option:hover {
-  background-color: #000000; /* Cor de fundo ao passar o mouse */
+  background-color: #000000;
 }
+
+.new-account-button {
+  margin-right: 1rem;
+  background-color: #74af4c; /* Verde para destacar */
+  color: white;
+  font-weight: bold;
+}
+
+/* Estilos para o cabeçalho da tabela */
+.header-row {
+  background-color: #333333; /* Fundo mais escuro */
+  color: #ffffff7e; /* Cor do texto clara */
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 2px solid #74af4c; /* Borda inferior destacada */
+}
+
+.header-row th:last-child {
+  border-right: none; /* Remove borda da última coluna */
+}
+
+.advanced-search-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  align-items: center; /* Centraliza os itens horizontalmente */
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%; /* Garante que o grupo ocupe toda a largura disponível */
+  max-width: 400px; /* Define uma largura máxima para limitar o tamanho */
+}
+
+.form-group label {
+  font-weight: bold;
+  width: 150px;
+  text-align: right;
+}
+
+.form-group input {
+  flex: 1;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: center; /* Centraliza os botões */
+  gap: 0.5rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+

@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MegaMenuItem } from 'primeng/api';
@@ -9,7 +10,7 @@ import { MegaMenuModule } from 'primeng/megamenu';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, MegaMenuModule, ButtonModule, AvatarModule],
+  imports: [CommonModule, RouterOutlet, MegaMenuModule, ButtonModule, AvatarModule, HttpClientModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

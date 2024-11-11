@@ -1,3 +1,4 @@
+import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { Router, RouterModule, Routes } from "@angular/router";
 
@@ -15,7 +16,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(routes), HttpClientModule],
   exports: [RouterModule]
 })
 export class CadastroRoutingModule{}
