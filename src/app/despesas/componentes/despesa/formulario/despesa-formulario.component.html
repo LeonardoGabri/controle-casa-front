@@ -1,0 +1,103 @@
+<div class="form-container" [formGroup]="formulario">
+  <div class="header">
+    <h2 class="form-title">{{ nomePagina }}</h2>
+    <div class="button-group">
+      <button pButton label="Salvar" icon="pi pi-check" (click)="salvar()" class="p-button-primary"></button>
+      <button pButton label="Cancelar" icon="pi pi-times" (click)="cancelar()" class="p-button-secondary"></button>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="conta">Conta:</label>
+      <p-dropdown
+        id="conta"
+        [options]="opcoesConta"
+        formControlName="contaId"
+        placeholder="Selecione uma conta"
+      ></p-dropdown>
+    </div>
+
+    <div class="form-group">
+      <label for="fornecedor">Fornecedor:</label>
+      <p-dropdown
+        id="fornecedor"
+        [options]="opcoesFornecedor"
+        formControlName="fornecedorId"
+        placeholder="Selecione um fornecedor"
+      ></p-dropdown>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="grupo">Grupo:</label>
+      <p-dropdown
+        id="grupo"
+        [options]="opcoesGrupo"
+        formControlName="grupoId"
+        placeholder="Selecione um grupo"
+      ></p-dropdown>
+    </div>
+
+    <div class="form-group">
+      <label for="dataLancamento">Data de Lançamento:</label>
+      <input
+        id="dataLancamento"
+        type="date"
+        pInputText
+        formControlName="dataLancamento"
+      />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="mesInicioCobranca">Mês de Início da Cobrança:</label>
+      <input
+        id="mesInicioCobranca"
+        type="number"
+        pInputText
+        formControlName="mesInicioCobranca"
+        placeholder="Digite o mês"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="anoInicioCobranca">Ano de Início da Cobrança:</label>
+      <input
+        id="anoInicioCobranca"
+        type="number"
+        pInputText
+        formControlName="anoInicioCobranca"
+        placeholder="Digite o ano"
+      />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="numeroParcelas">Número de Parcelas:</label>
+      <input
+        id="numeroParcelas"
+        type="number"
+        pInputText
+        formControlName="numeroParcelas"
+        placeholder="Digite o número de parcelas"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="valorTotal">Valor Total:</label>
+      <input
+        id="valorTotal"
+        type="number"
+        pInputText
+        formControlName="valorTotal"
+        placeholder="Digite o valor total"
+      />
+    </div>
+  </div>
+</div>
+
+<p-messages [(value)]="notificacao" [enableService]="false"></p-messages>

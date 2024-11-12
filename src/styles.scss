@@ -120,7 +120,7 @@
 .form-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Alinha os campos à esquerda */
+  align-items: flex-start;
   max-width: 90%;
   max-height: 90vh;
   margin: 2% auto;
@@ -153,10 +153,10 @@
 
 .form-group {
   display: flex;
-  flex-wrap: wrap; /* Permite que os itens rolem para a linha seguinte, se necessário */
+  flex-wrap: wrap;
   align-items: center;
   margin-bottom: 1rem;
-  gap: 1rem; /* Espaçamento entre os campos */
+  gap: 1rem;
   width: 100%;
 }
 
@@ -169,7 +169,7 @@
 .form-group input,
 .form-group p-dropdown {
   flex: 1;
-  min-width: 200px; /* Define um tamanho mínimo para os campos */
+  min-width: 200px;
   background-color: #3a3a3a;
   color: #f0f0f0;
   border: 1px solid #555;
@@ -181,6 +181,13 @@
 .form-group p-dropdown:focus {
   border-color: #888;
   outline: none;
+}
+
+.form-row {
+  display: flex;
+  width: 100%;
+  gap: 1rem; /* Espaçamento entre os grupos */
+  margin-bottom: 1rem;
 }
 
 

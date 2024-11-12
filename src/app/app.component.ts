@@ -7,6 +7,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { navegacaoConta, navegacaoFornecedor, navegacaoGrupo, navegacaoResponsavel } from './cadastros/servico/navegacao-cadastro.service';
+import { navegacaoDespesa } from './despesas/servico/navegacao-despesa.service';
 
 @Component({
   selector: 'app-root',
@@ -39,7 +40,7 @@ export class AppComponent implements OnInit {
             [
                 {
                     items: [
-                        { label: 'Compra', icon: 'pi pi-list', subtext: 'Subtext of item' },
+                        { label: 'Compra', icon: 'pi pi-list', subtext: 'Subtext of item', routerLink: navegacaoDespesa.link },
                         { label: 'Fatura', icon: 'pi pi-users', subtext: 'Subtext of item' }
                     ]
                 }

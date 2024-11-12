@@ -5,7 +5,7 @@ const navegacaoCadastros = {
 
 const navegacaoDespesas = {
   label: 'Despesas',
-  link: '/despesa'
+  link: '/despesas'
 }
 
 const navegacaoProventos = {
