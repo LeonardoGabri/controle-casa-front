@@ -1,6 +1,6 @@
 <div class="form-container" [formGroup]="formulario">
   <div class="header">
-    <h2 class="form-title">Novo Responsável</h2>
+    <h2 class="form-title">{{ nomePagina }}</h2>
     <div class="button-group">
       <button pButton label="Salvar" icon="pi pi-check" (click)="salvar()" class="p-button-primary"></button>
       <button pButton label="Cancelar" icon="pi pi-times" (click)="cancelar()" class="p-button-secondary"></button>

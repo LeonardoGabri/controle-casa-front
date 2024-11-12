@@ -15,12 +15,12 @@
         placeholder="Pesquisar..."
         [(ngModel)]="pesquisar"
         class="search-input"
-        (input)="buscarDadosResponsaveis()"
+        (input)="buscarDadosGrupo()"
       />
     </div>
   </div>
 
-  <p-table #table [value]="itensResponsaveis" [paginator]="true" [rows]="10">
+  <p-table #table [value]="itensGrupo" [paginator]="true" [rows]="10">
     <ng-template pTemplate="header">
       <tr class="header-row">
         <th>Nome</th>

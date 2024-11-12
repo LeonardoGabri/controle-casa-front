@@ -6,13 +6,13 @@ const navegacaoConta = {
 }
 
 const navegacaoContaNovoCadastro = {
-  label: 'Novo Responsável',
+  label: 'Nova Conta',
   link: `${navegacaoConta.link}/formulario`
 }
 
 const navegacaoContaEditarCadastro = (id: string) => {
   return{
-    label: 'Novo Responsável',
+    label: 'Editar conta',
     link: `${navegacaoContaNovoCadastro.link}/${id}`
   }
 }
@@ -29,7 +29,7 @@ const navegacaoResponsavelNovoCadastro = {
 
 const navegacaoResponsavelEditarCadastro = (id: string) => {
   return{
-    label: 'Novo Responsável',
+    label: 'Editar responsável',
     link: `${navegacaoResponsavelNovoCadastro.link}/${id}`
   }
 }
@@ -44,6 +44,18 @@ const navegacaoGrupo = {
   link: `${navegacaoCadastros.link}/grupo`
 }
 
+const navegacaoGrupoNovoCadastro = {
+  label: 'Novo grupo',
+  link: `${navegacaoGrupo.link}/formulario`
+}
+
+const navegacaoGrupoEditarCadastro = (id: string) => {
+  return{
+    label: 'Editar grupo',
+    link: `${navegacaoGrupoNovoCadastro.link}/${id}`
+  }
+}
+
 export {
   navegacaoConta,
   navegacaoContaNovoCadastro,
@@ -52,5 +64,7 @@ export {
   navegacaoResponsavelNovoCadastro,
   navegacaoResponsavelEditarCadastro,
   navegacaoFornecedor,
-  navegacaoGrupo
+  navegacaoGrupo,
+  navegacaoGrupoNovoCadastro,
+  navegacaoGrupoEditarCadastro
 }

@@ -7,6 +7,7 @@ import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg
 import { ActivatedRoute, Router } from '@angular/router';
 import { BancoApiService } from '../../banco/servico/banco-api.service';
 import { ResponsavelApiService } from '../../responsavel/servico/responsavel-api.service';
+import { navegacaoContaNovoCadastro } from '../../../servico/navegacao-cadastro.service';
 
 @Component({
   selector: 'app-conta-formulario',
@@ -16,7 +17,7 @@ import { ResponsavelApiService } from '../../responsavel/servico/responsavel-api
 export class ContaFormularioComponent implements OnInit{
   formulario!: FormGroup
   notificacao: Message[] = [];
-
+  nomePagina = navegacaoContaNovoCadastro.label
   opcoesBanco: any[] = [];
   opcoesResponsavel: any[] = [];
   id: string | null = null;

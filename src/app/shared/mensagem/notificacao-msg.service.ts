@@ -7,6 +7,10 @@ export const MensagemNotificacao = (msg?: string) => ({
     severity: 'error',
     detail: `Erro ao salvar registro - ${msg}`
   },
+  erroAoBuscarRegistro: {
+    severity: 'error',
+    detail: `Erro ao buscar registro - ${msg}`
+  },
   msgWarning: {
     severity: 'warning',
     detail: msg
@@ -14,5 +18,14 @@ export const MensagemNotificacao = (msg?: string) => ({
   erroAoListar: {
     severity: 'error',
     detail: `Erro ao listar registros - ${msg}`
-  }
+  },
+  erroAoDeletar: {
+    severity: 'error',
+    detail: `Erro ao deletar registro - ${msg}`
+  },
+  deletarRegistro: {
+    severity: 'success',
+    summary: 'Deletado com sucesso'
+  },
+
 });

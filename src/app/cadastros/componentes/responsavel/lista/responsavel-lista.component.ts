@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { FiltroParametrosResponsavel, ItemListaResponsavel } from "../modelo/responsavel.model";
 import { ResponsavelApiService } from "../servico/responsavel-api.service";
-import { navegacaoResponsavelEditarCadastro, navegacaoResponsavelNovoCadastro } from "../../../servico/navegacao-cadastro.service";
+import { navegacaoResponsavel, navegacaoResponsavelEditarCadastro, navegacaoResponsavelNovoCadastro } from "../../../servico/navegacao-cadastro.service";
 import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg.service";
 import { Message } from "primeng/api";
 
@@ -13,6 +13,7 @@ import { Message } from "primeng/api";
 })
 export class ResponsavelListaComponent implements OnInit{
   itensResponsaveis: ItemListaResponsavel[]  = [];
+  nomePagina = navegacaoResponsavel.label
   notificacao: Message[] =[]
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosResponsavel = {};

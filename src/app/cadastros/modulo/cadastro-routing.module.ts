@@ -14,6 +14,10 @@ const routes: Routes = [
         path: 'responsavel',
         loadChildren: () => import("../componentes/responsavel/modulo/responsavel.module").then((m) => m.ResponsavelModule)
       },
+      {
+        path: 'grupo',
+        loadChildren: () => import("../componentes/grupo/modulo/grupo.module").then((m) => m.GrupoModule)
+      },
       {path: '', redirectTo: 'conta', pathMatch: 'full'}
     ]
   }

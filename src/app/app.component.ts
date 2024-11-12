@@ -6,7 +6,7 @@ import { MegaMenuItem } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { MegaMenuModule } from 'primeng/megamenu';
-import { navegacaoConta, navegacaoResponsavel } from './cadastros/servico/navegacao-cadastro.service';
+import { navegacaoConta, navegacaoFornecedor, navegacaoGrupo, navegacaoResponsavel } from './cadastros/servico/navegacao-cadastro.service';
 
 @Component({
   selector: 'app-root',
@@ -26,8 +26,8 @@ export class AppComponent implements OnInit {
                       items: [
                           { label: 'Conta', icon: 'pi pi-list', subtext: 'Subtext of item', routerLink: navegacaoConta.link },
                           { label: 'Responsável', icon: 'pi pi-users', subtext: 'Subtext of item', routerLink: navegacaoResponsavel.link },
-                          { label: 'Fornecedor', icon: 'pi pi-file', subtext: 'Subtext of item' },
-                          { label: 'Grupo', icon: 'pi pi-file', subtext: 'Subtext of item' }
+                          { label: 'Fornecedor', icon: 'pi pi-file', subtext: 'Subtext of item', routerLink: navegacaoFornecedor.link },
+                          { label: 'Grupo', icon: 'pi pi-file', subtext: 'Subtext of item', routerLink: navegacaoGrupo.link }
                       ]
                   }
               ],

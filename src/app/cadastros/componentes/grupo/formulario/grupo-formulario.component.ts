@@ -1,26 +1,26 @@
 import { Component, OnInit } from "@angular/core";
+import { GrupoModel } from "../modelo/grupo.model";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
 import { Message } from "primeng/api";
-import { ResponsavelModel } from "../modelo/responsavel.model";
+import { GrupoApiService } from "../servico/grupo-api.service";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg.service";
-import { ResponsavelApiService } from "../servico/responsavel-api.service";
-import { navegacaoResponsavel, navegacaoResponsavelNovoCadastro } from "../../../servico/navegacao-cadastro.service";
+import { navegacaoGrupo, navegacaoGrupoNovoCadastro } from "../../../servico/navegacao-cadastro.service";
 
 @Component({
-  selector: 'app-responsavel-formulario',
-  templateUrl: './responsavel-formulario.component.html',
-  styleUrls: ['./responsavel-formulario.component.scss']
+  selector: 'app-grupo-formulario',
+  templateUrl: './grupo-formulario.component.html',
+  styleUrls: ['./grupo-formulario.component.scss']
 })
-export class ResponsavelFormularioComponent implements OnInit{
+export class GrupoFormularioComponent implements OnInit{
   formulario!: FormGroup
-  nomePagina = navegacaoResponsavelNovoCadastro.label
+  nomePagina = navegacaoGrupoNovoCadastro.label
   notificacao: Message[] = [];
   id: string | null = null;
 
   constructor(
     private formBuilder:FormBuilder,
-    private responsavelApiService: ResponsavelApiService,
+    private grupoApiService: GrupoApiService,
     private router: Router,
     private route: ActivatedRoute
   ){}
@@ -30,24 +30,24 @@ export class ResponsavelFormularioComponent implements OnInit{
 
     this.id = this.route.snapshot.paramMap.get('id');
     if (this.id) {
-      this.carregarResponsavel(this.id);
+      this.carregarGrupo(this.id);
     }
   }
 
-  criarFormulario(novoFormulario?: ResponsavelModel){
+  criarFormulario(novoFormulario?: GrupoModel){
     this.formulario = this.formBuilder.group({
       id: [novoFormulario?.id],
       nome: [novoFormulario?.nome]
     })
   }
 
-  carregarResponsavel(id: string) {
-    this.responsavelApiService.buscarResponsavelPorId(id).subscribe({
+  carregarGrupo(id: string) {
+    this.grupoApiService.buscarGrupoPorId(id).subscribe({
       next: (responsavel: any) => {
         this.formulario.patchValue(responsavel);
       },
       error: ({error}) => {
-        this.notificacao = [MensagemNotificacao(error).erroSalvarRegistro];
+        this.notificacao = [MensagemNotificacao(error).erroAoBuscarRegistro];
       }
     });
   }
@@ -57,7 +57,7 @@ export class ResponsavelFormularioComponent implements OnInit{
     let id = request.id;
     delete request.id;
 
-    let metodo = id ? this.responsavelApiService.editarResponsavel(id, request) : this.responsavelApiService.salvarResponsavel(request);
+    let metodo = id ? this.grupoApiService.editarGrupo(id, request) : this.grupoApiService.salvarGrupo(request);
 
     metodo.subscribe({
       next: (retorno: any) => {
@@ -75,6 +75,6 @@ export class ResponsavelFormularioComponent implements OnInit{
 }
 
   cancelar(){
-    this.router.navigate([navegacaoResponsavel.link]);
+    this.router.navigate([navegacaoGrupo.link]);
   }
 }

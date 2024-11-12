@@ -1,10 +1,10 @@
 <div class="list-container">
   <div class="list-header">
-    <h2 class="list-title">Conta</h2>
+    <h2 class="list-title">{{ nomePagina }}</h2>
     <div class="header-actions">
       <button
         pButton
-        label="Nova Conta"
+        [label]="'Nova ' + nomePagina"
         icon="pi pi-plus"
         class="new-account-button"
         (click)="navegarNovoFormulario()"
@@ -57,7 +57,7 @@
   <p-table #table [value]="itensConta" [paginator]="true" [rows]="10" [globalFilterFields]="['nome', 'responsavel']">
     <ng-template pTemplate="header">
       <tr class="header-row">
-        <th>Nome</th>
+        <th>Conta</th>
         <th>Responsável</th>
         <th style="width: 1%;"></th>
       </tr>

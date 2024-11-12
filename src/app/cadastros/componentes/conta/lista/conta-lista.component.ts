@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { Route, Router } from "@angular/router";
 import { FiltroParametrosConta, ItemListaConta } from "../modelo/conta.model";
 import { BancoApiService } from '../../banco/servico/banco-api.service';
-import { navegacaoContaEditarCadastro, navegacaoContaNovoCadastro } from '../../../servico/navegacao-cadastro.service';
+import { navegacaoConta, navegacaoContaEditarCadastro, navegacaoContaNovoCadastro } from '../../../servico/navegacao-cadastro.service';
 import { ResponsavelApiService } from '../../responsavel/servico/responsavel-api.service';
 import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg.service';
 import { Message } from 'primeng/api';
@@ -15,6 +15,7 @@ import { Message } from 'primeng/api';
 })
 export class ContaListaComponent implements OnInit{
   itensConta: ItemListaConta[]  = [];
+  nomePagina = navegacaoConta.label
   notificacao: Message[] =[]
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosConta = {};
@@ -77,7 +78,16 @@ export class ContaListaComponent implements OnInit{
   }
 
   removeItem(item: ItemListaConta) {
-    console.log('Removendo', item);
+    this.contaApiService.deletarConta(item.id).subscribe({
+      next: (dados: any) => {
+        this.buscarDadosConta()
+        this.notificacao = new Array(MensagemNotificacao().deletarRegistro);
+
+      },
+      error: (err) => {
+        this.notificacao = new Array(MensagemNotificacao(err).erroAoDeletar);
+      }
+    });
   }
 
   carregarOpcoesBanco() {
