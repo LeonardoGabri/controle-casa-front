@@ -10,6 +10,10 @@ const routes: Routes = [
         path: 'conta',
         loadChildren: () => import("../componentes/conta/modulo/conta.module").then((m) => m.ContaModule)
       },
+      {
+        path: 'responsavel',
+        loadChildren: () => import("../componentes/responsavel/modulo/responsavel.module").then((m) => m.ResponsavelModule)
+      },
       {path: '', redirectTo: 'conta', pathMatch: 'full'}
     ]
   }

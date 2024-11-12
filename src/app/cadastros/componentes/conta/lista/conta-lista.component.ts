@@ -3,6 +3,10 @@ import { Component, OnInit } from "@angular/core";
 import { Route, Router } from "@angular/router";
 import { FiltroParametrosConta, ItemListaConta } from "../modelo/conta.model";
 import { BancoApiService } from '../../banco/servico/banco-api.service';
+import { navegacaoContaEditarCadastro, navegacaoContaNovoCadastro } from '../../../servico/navegacao-cadastro.service';
+import { ResponsavelApiService } from '../../responsavel/servico/responsavel-api.service';
+import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg.service';
+import { Message } from 'primeng/api';
 
 @Component({
   selector: 'app-conta-lista',
@@ -11,6 +15,7 @@ import { BancoApiService } from '../../banco/servico/banco-api.service';
 })
 export class ContaListaComponent implements OnInit{
   itensConta: ItemListaConta[]  = [];
+  notificacao: Message[] =[]
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosConta = {};
   mostrarBuscaAvancada = false;
@@ -25,20 +30,31 @@ export class ContaListaComponent implements OnInit{
   constructor(
     private router: Router,
     private contaApiService: ContaApiService,
-    private bancoApiService: BancoApiService
+    private bancoApiService: BancoApiService,
+    private responsavelApiService: ResponsavelApiService
   ){}
 
   ngOnInit(): void {
     this.carregarOpcoesBanco();
     this.carregarOpcoesResponsavel();
+
+    this.buscarDadosConta()
   }
 
   navegarNovoFormulario() {
-    this.router.navigate(['/caminho-do-formulario-de-conta']);
+    this.router.navigate([navegacaoContaNovoCadastro.link]);
   }
 
   buscarDadosConta(){
-
+    let params = this.criarParamentrosBusca(this.pesquisar, this.filtroBuscaAvancada)
+    this.contaApiService.buscarContas(params, this.paginacao.page, this.paginacao.size).subscribe({
+      next: (response: any) => {
+          this.itensConta = response
+      },
+      error: ({ error }) => {
+        this.notificacao = new Array(MensagemNotificacao(error).erroAoListar);
+      },
+    })
   }
 
   abrirBuscaAvancada() {
@@ -50,14 +66,14 @@ export class ContaListaComponent implements OnInit{
   }
 
   aplicarBuscaAvancada() {
-    // Adicione aqui a lógica para aplicar os filtros avançados
     console.log("Filtros avançados aplicados:", this.filtroBuscaAvancada);
+    this.buscarDadosConta()
     this.fecharBuscaAvancada();
   }
 
 
   editItem(item: ItemListaConta) {
-    console.log('Editando', item);
+    this.router.navigate([navegacaoContaEditarCadastro(item.id).link])
   }
 
   removeItem(item: ItemListaConta) {
@@ -67,9 +83,8 @@ export class ContaListaComponent implements OnInit{
   carregarOpcoesBanco() {
     this.bancoApiService.buscarBancos().subscribe({
       next: (dados: any) => {
-        debugger
         this.opcoesBanco = dados.map((item: any) => ({
-          label: item.nome, // Ajuste conforme a estrutura do dado
+          label: item.nome,
           value: item.id
         }));
       },
@@ -78,14 +93,25 @@ export class ContaListaComponent implements OnInit{
   }
 
   carregarOpcoesResponsavel() {
-    this.contaApiService.buscarContas().subscribe({
+    this.responsavelApiService.buscarResponsaveis().subscribe({
       next: (dados: any) => {
         this.opcoesResponsavel = dados.map((item: any) => ({
-          label: item.nome, // Ajuste conforme a estrutura do dado
+          label: item.nome,
           value: item.id
         }));
       },
       error: (err) => console.error('Erro ao carregar opções de responsáveis', err)
     });
+  }
+
+  criarParamentrosBusca(filtroSimples: string, filtroBuscaAvancada?: FiltroParametrosConta){
+    if(!filtroSimples && !filtroBuscaAvancada){
+      return
+    }
+
+    return {
+      responsavelId: filtroBuscaAvancada?.responsavelId,
+      bancoId: filtroBuscaAvancada?.bancoId
+    }
   }
 }

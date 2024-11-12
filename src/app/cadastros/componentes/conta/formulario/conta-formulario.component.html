@@ -1,0 +1,21 @@
+<div class="form-container" [formGroup]="formulario">
+  <div class="header">
+    <h2 class="form-title">Nova Conta</h2>
+    <div class="button-group">
+      <button pButton label="Salvar" icon="pi pi-check" (click)="salvar()" class="p-button-primary"></button>
+      <button pButton label="Cancelar" icon="pi pi-times" (click)="cancelar()" class="p-button-secondary"></button>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="banco">Banco:</label>
+    <p-dropdown id="banco" [options]="opcoesBanco" formControlName="bancoId" placeholder="Selecione o banco"></p-dropdown>
+  </div>
+
+  <div class="form-group">
+    <label for="responsavel">Responsável:</label>
+    <p-dropdown id="responsavel" [options]="opcoesResponsavel" formControlName="responsavelId" placeholder="Selecione o responsável"></p-dropdown>
+  </div>
+</div>
+
+<p-messages [(value)]="notificacao" [enableService]="false" />

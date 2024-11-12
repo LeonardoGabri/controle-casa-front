@@ -1,0 +1,16 @@
+<div class="form-container" [formGroup]="formulario">
+  <div class="header">
+    <h2 class="form-title">Novo Responsável</h2>
+    <div class="button-group">
+      <button pButton label="Salvar" icon="pi pi-check" (click)="salvar()" class="p-button-primary"></button>
+      <button pButton label="Cancelar" icon="pi pi-times" (click)="cancelar()" class="p-button-secondary"></button>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="nome">Nome:</label>
+    <input id="nome" type="text" pInputText placeholder="Digite o nome" formControlName="nome" />
+  </div>
+</div>
+
+<p-messages [(value)]="notificacao" [enableService]="false" />

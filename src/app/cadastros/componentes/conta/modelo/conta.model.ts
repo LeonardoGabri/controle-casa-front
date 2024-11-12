@@ -1,7 +1,7 @@
 export interface ContaModel{
-  id?:string;
- nome: string;
- responsavelId?: string
+  id?: string;
+  bancoId?: string;
+  responsavelId?: string
 }
 
 export interface ItemListaConta {
@@ -13,8 +13,4 @@ export interface ItemListaConta {
 export interface FiltroParametrosConta{
   bancoId?: string;
   responsavelId?: string
-}
-
-export interface ContaModel{
-
 }
