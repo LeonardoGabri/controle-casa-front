@@ -18,6 +18,10 @@ const routes: Routes = [
         path: 'grupo',
         loadChildren: () => import("../componentes/grupo/modulo/grupo.module").then((m) => m.GrupoModule)
       },
+      {
+        path: 'fornecedor',
+        loadChildren: () => import("../componentes/fornecedor/modulo/fornecedor.module").then((m) => m.FornecedorModule)
+      },
       {path: '', redirectTo: 'conta', pathMatch: 'full'}
     ]
   }

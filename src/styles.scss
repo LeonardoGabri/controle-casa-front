@@ -1,3 +1,187 @@
 @import "primeng/resources/themes/arya-blue/theme.css";
 @import 'primeng/resources/primeng.min.css';
 @import 'primeicons/primeicons.css';
+
+.list-container {
+  padding: 1rem;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.list-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.search-input {
+  width: 200px;
+}
+
+.actions-column {
+  text-align: right;
+  padding-right: 0.5rem;
+}
+
+.action-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0.2rem;
+  color: #666;
+}
+
+.action-button:hover {
+  color: #000;
+}
+
+::ng-deep .p-overlaypanel {
+  padding: 0.5rem;
+}
+
+.action-option {
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.action-option i {
+  margin-right: 0.5rem;
+}
+
+.action-option:hover {
+  background-color: #000000;
+}
+
+.new-account-button {
+  margin-right: 1rem;
+  background-color: #74af4c;
+  color: white;
+  font-weight: bold;
+}
+
+.header-row {
+  background-color: #333333;
+  color: #ffffff7e;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 2px solid #74af4c;
+}
+
+.header-row th:last-child {
+  border-right: none;
+}
+
+.advanced-search-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  align-items: center;
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-group label {
+  font-weight: bold;
+  width: 150px;
+  text-align: right;
+}
+
+.form-group input {
+  flex: 1;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+// FORMULARIO
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinha os campos à esquerda */
+  max-width: 90%;
+  max-height: 90vh;
+  margin: 2% auto;
+  padding: 1.5rem;
+  background-color: #2c2c2c;
+  border: 1px solid #444;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  color: #f0f0f0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.form-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.button-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-wrap: wrap; /* Permite que os itens rolem para a linha seguinte, se necessário */
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem; /* Espaçamento entre os campos */
+  width: 100%;
+}
+
+.form-group label {
+  flex: 0 0 120px;
+  font-weight: bold;
+  color: #dddddd;
+}
+
+.form-group input,
+.form-group p-dropdown {
+  flex: 1;
+  min-width: 200px; /* Define um tamanho mínimo para os campos */
+  background-color: #3a3a3a;
+  color: #f0f0f0;
+  border: 1px solid #555;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.form-group input:focus,
+.form-group p-dropdown:focus {
+  border-color: #888;
+  outline: none;
+}
+
+
+

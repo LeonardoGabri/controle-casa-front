@@ -39,6 +39,18 @@ const navegacaoFornecedor = {
   link: `${navegacaoCadastros.link}/fornecedor`
 }
 
+const navegacaoFornecedorNovoCadastro = {
+  label: 'Novo fornecedor',
+  link: `${navegacaoFornecedor.link}/formulario`
+}
+
+const navegacaoFornecedorEditarCadastro = (id: string) => {
+  return{
+    label: 'Editar fornecedor',
+    link: `${navegacaoFornecedorNovoCadastro.link}/${id}`
+  }
+}
+
 const navegacaoGrupo = {
   label: 'Grupo',
   link: `${navegacaoCadastros.link}/grupo`
@@ -64,6 +76,8 @@ export {
   navegacaoResponsavelNovoCadastro,
   navegacaoResponsavelEditarCadastro,
   navegacaoFornecedor,
+  navegacaoFornecedorNovoCadastro,
+  navegacaoFornecedorEditarCadastro,
   navegacaoGrupo,
   navegacaoGrupoNovoCadastro,
   navegacaoGrupoEditarCadastro
