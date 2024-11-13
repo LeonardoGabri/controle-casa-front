@@ -22,6 +22,10 @@ const routes: Routes = [
         path: 'fornecedor',
         loadChildren: () => import("../componentes/fornecedor/modulo/fornecedor.module").then((m) => m.FornecedorModule)
       },
+      {
+        path: 'subgrupo',
+        loadChildren: () => import("../componentes/subgrupo/modulo/subgrupo.module").then((m) => m.SubgrupoModule)
+      },
       {path: '', redirectTo: 'conta', pathMatch: 'full'}
     ]
   }

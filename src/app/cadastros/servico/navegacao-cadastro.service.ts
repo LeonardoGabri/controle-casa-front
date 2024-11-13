@@ -68,6 +68,23 @@ const navegacaoGrupoEditarCadastro = (id: string) => {
   }
 }
 
+const navegacaoSubgrupo = {
+  label: 'Subgrupo',
+  link: `${navegacaoCadastros.link}/subgrupo`
+}
+
+const navegacaoSubgrupoNovoCadastro = {
+  label: 'Novo subgrupo',
+  link: `${navegacaoSubgrupo.link}/formulario`
+}
+
+const navegacaoSubgrupoEditarCadastro = (id: string) => {
+  return{
+    label: 'Editar subgrupo',
+    link: `${navegacaoSubgrupoNovoCadastro.link}/${id}`
+  }
+}
+
 export {
   navegacaoConta,
   navegacaoContaNovoCadastro,
@@ -80,5 +97,8 @@ export {
   navegacaoFornecedorEditarCadastro,
   navegacaoGrupo,
   navegacaoGrupoNovoCadastro,
-  navegacaoGrupoEditarCadastro
+  navegacaoGrupoEditarCadastro,
+  navegacaoSubgrupo,
+  navegacaoSubgrupoNovoCadastro,
+  navegacaoSubgrupoEditarCadastro
 }
