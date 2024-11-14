@@ -43,7 +43,7 @@
         <label>Grupo:</label>
         <p-dropdown
           [options]="opcoesGrupo"
-          [(ngModel)]="filtroBuscaAvancada.grupoId"
+          [(ngModel)]="filtroBuscaAvancada.subgrupoId"
           placeholder="Selecione um grupo"
         ></p-dropdown>
       </div>
@@ -67,7 +67,7 @@
     <ng-template pTemplate="body" let-item>
       <tr>
         <td>{{ item.nome }}</td>
-        <td>{{ item.grupo }}</td>
+        <td>{{ item.subgrupo.nome }}</td>
         <td class="actions-column">
           <p-overlayPanel #op>
             <div class="action-option" (click)="editItem(item)">

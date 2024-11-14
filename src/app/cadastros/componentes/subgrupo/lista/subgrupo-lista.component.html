@@ -24,6 +24,7 @@
     <ng-template pTemplate="header">
       <tr class="header-row">
         <th>Nome</th>
+        <th>Grupo</th>
         <th class="actions-column-header"></th>
       </tr>
     </ng-template>
@@ -31,6 +32,7 @@
     <ng-template pTemplate="body" let-item>
       <tr>
         <td>{{ item.nome }}</td>
+        <td>{{ item.grupo.nome }}</td>
         <td class="actions-column">
           <p-overlayPanel #op>
             <div class="action-option" (click)="editItem(item)">

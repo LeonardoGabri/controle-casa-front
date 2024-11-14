@@ -1,16 +1,18 @@
+import { SubgrupoModel } from "../../subgrupo/modelo/subgrupo.model";
+
 export interface FornecedorModel{
   id?: string;
   nome?: string;
-  grupoId?: string
+  subgrupoId?: string
 }
 
 export interface ItemListaFornecedor {
   id: string;
   nome: string;
-  grupo: string
+  subgrupo: SubgrupoModel
 }
 
 export interface FiltroParametrosFornecedor{
   nome?: string
-  grupoId?: string
+  subgrupoId?: string
 }

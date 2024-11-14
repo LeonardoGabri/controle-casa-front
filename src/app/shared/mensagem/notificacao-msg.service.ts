@@ -27,5 +27,9 @@ export const MensagemNotificacao = (msg?: string) => ({
     severity: 'success',
     summary: 'Deletado com sucesso'
   },
+  erroSomaPorcentagem: {
+    severity: 'warning',
+    detail: 'A soma das porcentagens nao atingiu 100%'
+  }
 
 });

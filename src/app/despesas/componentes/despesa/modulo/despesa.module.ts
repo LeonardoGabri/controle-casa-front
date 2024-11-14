@@ -13,9 +13,11 @@ import { MessagesModule } from "primeng/messages";
 import { OverlayPanelModule } from "primeng/overlaypanel";
 import { TableModule } from "primeng/table";
 import { DespesaFormularioComponent } from "../formulario/despesa-formulario.component";
+import { PlanejamentoParcelasComponent } from "../formulario/modal/planejamento-parcelas/planejamento-parcelas.component";
+import { ParcelaComponent } from "../formulario/modal/parcelas/parcela.component";
 
 @NgModule({
-  declarations: [DespesaListaComponent, DespesaFormularioComponent],
+  declarations: [DespesaListaComponent, DespesaFormularioComponent, PlanejamentoParcelasComponent, ParcelaComponent],
   imports: [
     DespesaRoutingModule,
     CommonModule,

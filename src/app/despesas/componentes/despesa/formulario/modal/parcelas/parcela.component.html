@@ -1,0 +1,42 @@
+<div class="form-container">
+  <h3>Lista de Parcelas</h3>
+
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Data de Vencimento</th>
+        <th>Fornecedor</th>
+        <th>Responsável</th>
+        <th>Valor</th>
+        <th>Situação</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let parcela of parcelas">
+        <td>{{ parcela.dataVencimento | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ parcela.despesaFornecedor }}</td>
+        <td>{{ parcela.responsavelNome }}</td>
+        <td>{{ parcela.valor | currency: 'BRL' }}</td>
+        <td>{{ parcela.situacao }}</td>
+        <td class="actions-column">
+          <p-overlayPanel #op>
+            <div class="action-option" (click)="editarParcela(parcela)">
+              <i class="pi pi-pencil"></i> Editar
+            </div>
+            <div class="action-option" (click)="removerParcela(parcela)">
+              <i class="pi pi-trash"></i> Remover
+            </div>
+          </p-overlayPanel>
+          <button
+            pButton
+            icon="pi pi-ellipsis-h"
+            class="action-button"
+            (click)="op.toggle($event)"
+            type="button"
+          ></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

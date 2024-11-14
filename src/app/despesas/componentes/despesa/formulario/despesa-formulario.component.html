@@ -31,12 +31,12 @@
 
   <div class="form-row">
     <div class="form-group">
-      <label for="grupo">Grupo:</label>
+      <label for="subgrupo">Subgrupo:</label>
       <p-dropdown
-        id="grupo"
-        [options]="opcoesGrupo"
-        formControlName="grupoId"
-        placeholder="Selecione um grupo"
+        id="subgrupo"
+        [options]="opcoesSubgrupo"
+        formControlName="subgrupoId"
+        placeholder="Selecione um subgrupo"
       ></p-dropdown>
     </div>
 
@@ -54,13 +54,12 @@
   <div class="form-row">
     <div class="form-group">
       <label for="mesInicioCobranca">Mês de Início da Cobrança:</label>
-      <input
+      <p-dropdown
         id="mesInicioCobranca"
-        type="number"
-        pInputText
+        [options]="meses"
         formControlName="mesInicioCobranca"
-        placeholder="Digite o mês"
-      />
+        placeholder="Selecione o mês"
+      ></p-dropdown>
     </div>
 
     <div class="form-group">
@@ -71,6 +70,7 @@
         pInputText
         formControlName="anoInicioCobranca"
         placeholder="Digite o ano"
+        min="2010"
       />
     </div>
   </div>
@@ -84,20 +84,38 @@
         pInputText
         formControlName="numeroParcelas"
         placeholder="Digite o número de parcelas"
+        min="1"
       />
     </div>
 
     <div class="form-group">
-      <label for="valorTotal">Valor Total:</label>
+      <label for="valorTotal">Valor Total: R$</label>
       <input
         id="valorTotal"
-        type="number"
+        type="text"
         pInputText
         formControlName="valorTotal"
         placeholder="Digite o valor total"
+        mask="separator.2"
+        prefix="R$ "
+        thousandSeparator="."
+        decimalMarker=","
       />
     </div>
   </div>
-</div>
+  </div>
+
+<app-planejamento-parcelas-component
+(parcelasChange)="atualizarPlanejamentoParcelas($event)">
+>
+</app-planejamento-parcelas-component>
+
+<app-parcela-component
+  [parcelas]="parcelas"
+  (editar)="onEditarParcela($event)"
+  (remover)="onRemoverParcela($event)"
+>
+</app-parcela-component>
+
 
 <p-messages [(value)]="notificacao" [enableService]="false"></p-messages>

@@ -110,7 +110,7 @@ export class FornecedorListaComponent implements OnInit{
 
     return {
       nome: filtroBuscaAvancada?.nome,
-      grupoId: filtroBuscaAvancada?.grupoId
+      grupoId: filtroBuscaAvancada?.subgrupoId
     }
   }
 }

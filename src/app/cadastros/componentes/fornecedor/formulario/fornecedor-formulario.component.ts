@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FornecedorApiService } from "../servico/fornecedor-api.service";
 import { FornecedorModel } from "../modelo/fornecedor.model";
 import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg.service";
+import { SubgrupoApiService } from "../../subgrupo/servico/subgrupo-api.service";
 
 @Component({
   selector: 'app-fornecedor-formulario',
@@ -17,12 +18,12 @@ export class FornecedorFormularioComponent implements OnInit{
   formulario!: FormGroup
   notificacao: Message[] = [];
   nomePagina = navegacaoFornecedorNovoCadastro.label
-  opcoesGrupo: any[] = [];
+  opcoesSubgrupo: any[] = [];
   id: string | null = null;
 
   constructor(
     private formBuilder:FormBuilder,
-    private grupoApiService: GrupoApiService,
+    private subgrupoApiService: SubgrupoApiService,
     private fornecedorApiService: FornecedorApiService,
     private router: Router,
     private route: ActivatedRoute
@@ -43,7 +44,7 @@ export class FornecedorFormularioComponent implements OnInit{
     this.formulario = this.formBuilder.group({
       id: [novoFormulario?.id],
       nome: [novoFormulario?.nome],
-      grupoId: [novoFormulario?.grupoId]
+      subgrupoId: [novoFormulario?.subgrupoId]
     })
   }
 
@@ -89,14 +90,14 @@ export class FornecedorFormularioComponent implements OnInit{
   }
 
   carregarOpcoesGrupo() {
-    this.grupoApiService.buscarGrupos().subscribe({
+    this.subgrupoApiService.buscarSubgrupos().subscribe({
       next: (dados: any) => {
-        this.opcoesGrupo = dados.map((item: any) => ({
+        this.opcoesSubgrupo = dados.map((item: any) => ({
           label: item.nome,
           value: item.id
         }));
       },
-      error: (err) => console.error('Erro ao carregar opções de grupos', err)
+      error: (err) => console.error('Erro ao carregar opções de subgrupos', err)
     });
   }
 }

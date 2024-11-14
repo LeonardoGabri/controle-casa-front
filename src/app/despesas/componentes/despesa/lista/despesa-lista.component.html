@@ -86,11 +86,11 @@
 
     <ng-template pTemplate="body" let-item>
       <tr>
-        <td>{{ item.conta.banco.nome + item.conta.responsvel }}</td>
-        <td>{{ item.fornecedorNome }}</td>
-        <td>{{ item.grupoNome }}</td>
+        <td>{{ item.conta.banco.nome + ' - ' + item.conta.responsavel.nome }}</td>
+        <td>{{ item.fornecedor.nome }}</td>
+        <td>{{ item.subgrupo.nome }}</td>
         <td>{{ item.valorTotal }}</td>
-        <td>{{ item.nParcelas }}</td>
+        <td>{{ item.numeroParcelas }}</td>
         <td>{{ item.situacao }}</td>
 
         <td class="actions-column">

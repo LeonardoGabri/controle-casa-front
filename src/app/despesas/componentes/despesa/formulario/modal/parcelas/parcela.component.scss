@@ -1,0 +1,55 @@
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background-color: #333;
+  color: #f0f0f0;
+}
+
+.styled-table th,
+.styled-table td {
+  border: 1px solid #555;
+  padding: 8px;
+  text-align: left;
+}
+
+.styled-table th {
+  background-color: #444;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.styled-table td {
+  background-color: #333;
+}
+
+.styled-table tbody {
+  display: block;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.styled-table thead,
+.styled-table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+
+button[pButton] {
+  margin-top: 10px;
+  background-color: #444; /* Fundo do botão em cor escura */
+  color: #ffffff; /* Texto branco no botão */
+  border: none;
+}
+
+button[pButton]:hover {
+  background-color: #555; /* Alteração de cor ao passar o mouse */
+}
+
+.form-container {
+  width: 100%;
+  max-height: 100%; /* Permite que o contêiner cresça com o conteúdo */
+  overflow-y: auto; /* Adiciona rolagem vertical se o conteúdo ultrapassar a altura da tela */
+}

@@ -32,6 +32,8 @@ export class SubgrupoFormularioComponent implements OnInit{
   ngOnInit(): void {
     this.criarFormulario();
 
+    this.carregarOpcoesGrupo()
+
     this.id = this.route.snapshot.paramMap.get('id');
     if (this.id) {
       this.carregarGrupo(this.id);
