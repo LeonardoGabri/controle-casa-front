@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import { SubgrupoApiService } from '../../../../cadastros/componentes/subgrupo/servico/subgrupo-api.service';
 import { ResponsavelApiService } from '../../../../cadastros/componentes/responsavel/servico/responsavel-api.service';
 import { FaturaModel } from '../../fatura/modelo/fatura.model';
+import { SituacaoEnum } from '../../../../shared/enum/situacao.enum';
 
 @Component({
   selector: 'app-despesa-formulario',
@@ -63,11 +64,8 @@ export class DespesaFormularioComponent implements OnInit {
       fornecedorId: [novoFormulario?.fornecedorId],
       subgrupoId: [novoFormulario?.subgrupoId],
       dataLancamento: [dataAtual],
-      mesInicioCobranca: [novoFormulario?.mesInicioCobranca],
-      anoInicioCobranca: [
-        novoFormulario?.anoInicioCobranca,
-        [Validators.required, Validators.min(2010), Validators.max(new Date().getFullYear())]
-      ],
+      referenciaCobranca: [novoFormulario?.referenciaCobranca],
+      situacao: [novoFormulario?.situacao],
       numeroParcelas: [novoFormulario?.numeroParcelas, [Validators.required, Validators.min(1)]],
       valorTotal: [
         novoFormulario?.valorTotal,
@@ -75,6 +73,8 @@ export class DespesaFormularioComponent implements OnInit {
       ],
       planejamentoParcelas: [novoFormulario?.planejamentoParcelas],
     });
+
+    this.formulario.get('situacao')?.disable()
   }
 
   carregarDespesa(id: string) {
@@ -84,6 +84,9 @@ export class DespesaFormularioComponent implements OnInit {
         this.formulario.get('contaId')?.setValue(despesa.conta.id)
         this.formulario.get('fornecedorId')?.setValue(despesa.fornecedor.id)
         this.formulario.get('subgrupoId')?.setValue(despesa.subgrupo.id)
+        if(!despesa.situacao){
+          this.formulario.get('situacao')?.setValue(SituacaoEnum.ABERTA.toString())
+        }
         this.parcelas = despesa.parcelas
       },
       error: ({ error }) => {
@@ -94,12 +97,10 @@ export class DespesaFormularioComponent implements OnInit {
 
   salvar() {
     let request = this.formulario.getRawValue();
-    console.log('REQUEST', request)
     let metodo = this.id
       ? this.despesaApiService.editarDespesa(this.id, request)
       : this.despesaApiService.salvarDespesa(request);
 
-    console.log('METODO', metodo);
     if(request.planejamentoParcelas){
       this.calcularTotalPorcentagemDivisao(request.planejamentoParcelas)
     }

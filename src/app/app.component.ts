@@ -7,7 +7,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { navegacaoConta, navegacaoFornecedor, navegacaoGrupo, navegacaoResponsavel, navegacaoSubgrupo } from './cadastros/servico/navegacao-cadastro.service';
-import { navegacaoDespesa } from './despesas/servico/navegacao-despesa.service';
+import { navegacaoDespesa, navegacaoParcela } from './despesas/servico/navegacao-despesa.service';
 
 @Component({
   selector: 'app-root',
@@ -25,11 +25,11 @@ export class AppComponent implements OnInit {
               [
                   {
                       items: [
-                          { label: 'Conta', icon: 'pi pi-list', subtext: 'Subtext of item', routerLink: navegacaoConta.link },
+                          { label: 'Conta', icon: 'pi pi-shopping-cart', subtext: 'Subtext of item', routerLink: navegacaoConta.link },
                           { label: 'Responsável', icon: 'pi pi-users', subtext: 'Subtext of item', routerLink: navegacaoResponsavel.link },
-                          { label: 'Fornecedor', icon: 'pi pi-file', subtext: 'Subtext of item', routerLink: navegacaoFornecedor.link },
-                          { label: 'Grupo', icon: 'pi pi-file', subtext: 'Subtext of item', routerLink: navegacaoGrupo.link },
-                          { label: 'Subgrupo', icon: 'pi pi-file', subtext: 'Subtext of item', routerLink: navegacaoSubgrupo.link }
+                          { label: 'Fornecedor', icon: 'pi pi-shop', subtext: 'Subtext of item', routerLink: navegacaoFornecedor.link },
+                          { label: 'Grupo', icon: 'pi pi-sitemap', subtext: 'Subtext of item', routerLink: navegacaoGrupo.link },
+                          { label: 'Subgrupo', icon: 'pi pi-stop', subtext: 'Subtext of item', routerLink: navegacaoSubgrupo.link }
                       ]
                   }
               ],
@@ -41,8 +41,9 @@ export class AppComponent implements OnInit {
             [
                 {
                     items: [
-                        { label: 'Compra', icon: 'pi pi-list', subtext: 'Subtext of item', routerLink: navegacaoDespesa.link },
-                        { label: 'Fatura', icon: 'pi pi-users', subtext: 'Subtext of item' }
+                        { label: 'Compra', icon: 'pi pi-shopping-cart', subtext: 'Subtext of item', routerLink: navegacaoDespesa.link },
+                        { label: 'Fatura', icon: 'pi pi-barcode', subtext: 'Subtext of item', routerLink: navegacaoParcela.link }
+
                     ]
                 }
             ],

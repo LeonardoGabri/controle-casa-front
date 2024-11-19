@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
-import { DespesaRoutingModule } from "./despesa-routing.module";
-import { DespesaListaComponent } from "../lista/despesa-lista.component";
+import { FaturaRoutingModule } from "./fatura-routing.module";
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -12,16 +11,13 @@ import { MenuModule } from "primeng/menu";
 import { MessagesModule } from "primeng/messages";
 import { OverlayPanelModule } from "primeng/overlaypanel";
 import { TableModule } from "primeng/table";
-import { DespesaFormularioComponent } from "../formulario/despesa-formulario.component";
-import { PlanejamentoParcelasComponent } from "../formulario/modal/planejamento-parcelas/planejamento-parcelas.component";
-import { ParcelaComponent } from "../formulario/modal/parcelas/parcela.component";
-import { InputMaskModule } from 'primeng/inputmask';
+import { FaturaFormularioComponent } from "../formulario/fatura-formulario.component";
+import { FaturaListaComponent } from "../lista/fatura-lista.component";
 
 @NgModule({
-  declarations: [DespesaListaComponent, DespesaFormularioComponent, PlanejamentoParcelasComponent, ParcelaComponent],
+  declarations: [FaturaListaComponent, FaturaFormularioComponent],
   imports: [
-    DespesaRoutingModule,
-    InputMaskModule,
+    FaturaRoutingModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -36,4 +32,4 @@ import { InputMaskModule } from 'primeng/inputmask';
     MessagesModule
   ]
 })
-export class DespesaModule{}
+export class FaturaModule{}

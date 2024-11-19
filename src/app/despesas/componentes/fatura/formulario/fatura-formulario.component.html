@@ -1,0 +1,80 @@
+<div class="form-container" [formGroup]="formulario">
+  <div class="header">
+    <h2 class="form-title">{{ nomePagina }}</h2>
+    <div class="button-group">
+      <button pButton label="Salvar" icon="pi pi-check" (click)="salvar()" class="p-button-primary"></button>
+      <button pButton label="Cancelar" icon="pi pi-times" (click)="cancelar()" class="p-button-secondary"></button>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="dataLancamento">Data de Vencimento:</label>
+      <input
+        id="dataVencimento"
+        type="date"
+        pInputText
+        formControlName="dataVencimento"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="responsavelId">Responsável:</label>
+      <p-dropdown
+        id="responsavelId"
+        [options]="opcoesResponsavel"
+        formControlName="responsavelId"
+        placeholder="Selecione um Responsável"
+        [filter]="true"
+        filterBy="label"
+      ></p-dropdown>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="despesaFornecedor">Fornecedor:</label>
+      <input
+          id="despesaFornecedor"
+          formControlName="despesaFornecedor"
+        />
+    </div>
+
+    <div class="form-group">
+      <label for="valor">Valor: R$</label>
+      <input
+        id="valor"
+        type="text"
+        pInputText
+        formControlName="valor"
+        placeholder="Digite o valor total"
+        mask="separator.2"
+        prefix="R$ "
+        thousandSeparator="."
+        decimalMarker=","
+      />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="porcentagemDivisao">Porcentagem da Divisão:</label>
+      <input
+          id="porcentagemDivisao"
+          formControlName="porcentagemDivisao"
+        />
+    </div>
+
+    <div class="form-group">
+      <label for="situacao">Situação:</label>
+      <input
+          id="situacao"
+          formControlName="situacao"
+        />
+    </div>
+
+  </div>
+  </div>
+
+  <p-messages [(value)]="notificacao" [enableService]="false"></p-messages>
+

@@ -7,10 +7,10 @@ export interface DespesaModel{
   fornecedorId?: string;
   subgrupoId?: string;
   dataLancamento?: string;
-  mesInicioCobranca?: string;
-  anoInicioCobranca?: string;
+  referenciaCobranca?: string;
   numeroParcelas?: string;
   valorTotal?: string;
+  situacao?: string
   planejamentoParcelas?: PlanejamentoParcelas[];
 }
 
@@ -29,8 +29,7 @@ export interface ItemListaDespesa {
   nParcelas: string
   valorTotal: string
   valorTotalAtivo: string
-  mesInicioCobranca: string
-  anoInicioCobranca: string
+  referenciaCobranca: string
   situacao: string
   parcelas: any
 }

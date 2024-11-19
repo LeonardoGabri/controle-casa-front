@@ -12,7 +12,13 @@
     <input id="nome" type="text" pInputText placeholder="Digite o nome" formControlName="nome" />
 
     <label for="subgrupo">Subgrupo:</label>
-    <p-dropdown id="subgrupo" [options]="opcoesSubgrupo" formControlName="subgrupoId" placeholder="Selecione o grupo"></p-dropdown>
+    <p-dropdown id="subgrupo"
+    [options]="opcoesSubgrupo"
+    formControlName="subgrupoId"
+    placeholder="Selecione o grupo"
+    [filter]="true"
+    filterBy="label"
+    ></p-dropdown>
   </div>
 </div>
 

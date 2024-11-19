@@ -35,7 +35,9 @@
         <p-dropdown
           [options]="opcoesBanco"
           [(ngModel)]="filtroBuscaAvancada.bancoId"
-          placeholder="Selecione um banco">
+          placeholder="Selecione um banco"
+          [filter]="true"
+          filterBy="label">
         </p-dropdown>
       </div>
       <div class="form-group">
@@ -43,7 +45,9 @@
         <p-dropdown
           [options]="opcoesResponsavel"
           [(ngModel)]="filtroBuscaAvancada.responsavelId"
-          placeholder="Selecione um responsável">
+          placeholder="Selecione um responsável"
+          [filter]="true"
+          filterBy="label">
         </p-dropdown>
       </div>
 

@@ -57,6 +57,9 @@
          [options]="opcoesResponsavel"
          formControlName="responsavelId"
          placeholder="Selecione o responsável"
+         [filter]="true"
+         [appendTo]="'body'"
+          filterBy="label"
          (onChange)="atualizaNomeResponsavel($event)"
          >
         </p-dropdown>

@@ -19,7 +19,7 @@ const navegacaoDespesaEditarCadastro = (id: string) => {
 
 const navegacaoParcela = {
   label: 'Parcelas',
-  link: `${navegacaoDespesas.link}/parcela`
+  link: `${navegacaoDespesas.link}/fatura`
 }
 
 const navegacaoParcelaNovoCadastro = {

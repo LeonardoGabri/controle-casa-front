@@ -9,12 +9,23 @@
 
   <div class="form-group">
     <label for="banco">Banco:</label>
-    <p-dropdown id="banco" [options]="opcoesBanco" formControlName="bancoId" placeholder="Selecione o banco"></p-dropdown>
+    <p-dropdown id="banco"
+    [options]="opcoesBanco"
+    formControlName="bancoId"
+    placeholder="Selecione o banco"
+    [filter]="true"
+    filterBy="label"></p-dropdown>
   </div>
 
   <div class="form-group">
     <label for="responsavel">Responsável:</label>
-    <p-dropdown id="responsavel" [options]="opcoesResponsavel" formControlName="responsavelId" placeholder="Selecione o responsável"></p-dropdown>
+    <p-dropdown id="responsavel"
+    [options]="opcoesResponsavel"
+    formControlName="responsavelId"
+    placeholder="Selecione o responsável"
+    [filter]="true"
+    filterBy="label"
+    ></p-dropdown>
   </div>
 </div>
 
