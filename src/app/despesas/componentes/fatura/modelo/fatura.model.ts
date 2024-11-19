@@ -17,6 +17,7 @@ export interface ItemListaFatura{
   responsavelNome: string
   dataVencimento: string
   valor: number
+  parcelaAtual: string
   despesaFornecedor: string
   situacao: string
 }
