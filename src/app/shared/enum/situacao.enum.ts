@@ -6,7 +6,7 @@ export enum SituacaoEnum{
 
 export const opcoesSituacao = [
   {label: 'Aberta', value: 'ABERTA'},
-  {label: 'Fechada', value: 'FECHADA'},
-  {label: 'EM Atraso', value: 'EM_ATRASO'},
+  {label: 'Pago', value: 'PAGO'},
+  {label: 'Atraso', value: 'ATRASO'},
 
 ]

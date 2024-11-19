@@ -34,7 +34,7 @@
         <label>Banco:</label>
         <p-dropdown
           [options]="opcoesBanco"
-          [(ngModel)]="filtroBuscaAvancada.bancoId"
+          [(ngModel)]="filtroBuscaAvancada.banco"
           placeholder="Selecione um banco"
           [filter]="true"
           filterBy="label">
@@ -44,7 +44,7 @@
         <label>Responsável:</label>
         <p-dropdown
           [options]="opcoesResponsavel"
-          [(ngModel)]="filtroBuscaAvancada.responsavelId"
+          [(ngModel)]="filtroBuscaAvancada.responsavel"
           placeholder="Selecione um responsável"
           [filter]="true"
           filterBy="label">

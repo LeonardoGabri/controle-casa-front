@@ -13,12 +13,14 @@ import { OverlayPanelModule } from "primeng/overlaypanel";
 import { TableModule } from "primeng/table";
 import { FaturaFormularioComponent } from "../formulario/fatura-formulario.component";
 import { FaturaListaComponent } from "../lista/fatura-lista.component";
+import { InputMaskModule } from "primeng/inputmask";
 
 @NgModule({
   declarations: [FaturaListaComponent, FaturaFormularioComponent],
   imports: [
     FaturaRoutingModule,
     CommonModule,
+    InputMaskModule,
     FormsModule,
     ReactiveFormsModule,
     ButtonModule,

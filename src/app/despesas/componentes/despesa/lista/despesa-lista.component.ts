@@ -9,6 +9,8 @@ import { navegacaoDespesa, navegacaoDespesaEditarCadastro, navegacaoDespesaNovoC
 import { BancoApiService } from '../../../../cadastros/componentes/banco/servico/banco-api.service';
 import { GrupoApiService } from '../../../../cadastros/componentes/grupo/servico/grupo-api.service';
 import { ContaApiService } from '../../../../cadastros/componentes/conta/servico/conta-api.service';
+import { SubgrupoApiService } from '../../../../cadastros/componentes/subgrupo/servico/subgrupo-api.service';
+import { opcoesSituacao } from '../../../../shared/enum/situacao.enum';
 
 @Component({
   selector: 'app-despesa-lista',
@@ -21,9 +23,11 @@ export class DespesaListaComponent implements OnInit{
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosDespesa = {};
   mostrarBuscaAvancada = false;
-  opcoesBanco: any[] = [];
+  opcoesConta: any[] = [];
   opcoesFornecedor: any[] = [];
-  opcoesGrupo: any[] = [];
+  opcoesSubgrupo: any[] = [];
+  opcoesSituacao: any[] = opcoesSituacao;
+
   nomePagina = navegacaoDespesa.label
   paginacao = {
     page: 0,
@@ -35,10 +39,14 @@ export class DespesaListaComponent implements OnInit{
     private despesaApiService: DespesaApiService,
     private fornecedorApiService: FornecedorApiService,
     private contaApiService: ContaApiService,
-    private grupoApiService: GrupoApiService
+    private subgrupoApiService: SubgrupoApiService
   ){}
 
   ngOnInit(): void {
+    this.carregarOpcoesConta()
+    this.carregarOpcoesFornecedor()
+    this.carregarOpcoesSubgrupo()
+
     this.buscarDadosDespesa()
   }
 
@@ -96,16 +104,16 @@ export class DespesaListaComponent implements OnInit{
 
     return {
       fornecedor: filtroBuscaAvancada?.fornecedor,
-      banco: filtroBuscaAvancada?.banco,
-      grupo: filtroBuscaAvancada?.grupo,
+      conta: filtroBuscaAvancada?.conta,
+      subgrupo: filtroBuscaAvancada?.subgrupo,
       situacao: filtroBuscaAvancada?.situacao,
     }
   }
 
-  carregarOpcoesGrupo() {
-    this.grupoApiService.buscarGrupos().subscribe({
+  carregarOpcoesSubgrupo() {
+    this.subgrupoApiService.buscarSubgrupos().subscribe({
       next: (dados: any) => {
-        this.opcoesGrupo = dados.map((item: any) => ({
+        this.opcoesSubgrupo = dados.map((item: any) => ({
           label: item.nome,
           value: item.id
         }));
@@ -117,7 +125,7 @@ export class DespesaListaComponent implements OnInit{
   carregarOpcoesFornecedor() {
     this.fornecedorApiService.buscarFornecedores().subscribe({
       next: (dados: any) => {
-        this.opcoesGrupo = dados.map((item: any) => ({
+        this.opcoesFornecedor = dados.map((item: any) => ({
           label: item.nome,
           value: item.id
         }));
@@ -129,8 +137,8 @@ export class DespesaListaComponent implements OnInit{
   carregarOpcoesConta() {
     this.contaApiService.buscarContas().subscribe({
       next: (dados: any) => {
-        this.opcoesGrupo = dados.map((item: any) => ({
-          label: item.nome,
+        this.opcoesConta = dados.map((item: any) => ({
+          label: `${item.nome} - ${item.responsavel}`,
           value: item.id
         }));
       },

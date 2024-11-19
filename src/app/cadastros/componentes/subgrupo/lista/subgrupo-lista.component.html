@@ -15,12 +15,12 @@
         placeholder="Pesquisar..."
         [(ngModel)]="pesquisar"
         class="search-input"
-        (input)="buscarDadosGrupo()"
+        (input)="table.filterGlobal(pesquisar, 'contains')"
       />
     </div>
   </div>
 
-  <p-table #table [value]="itensSubgrupo" [paginator]="true" [rows]="10">
+  <p-table #table [value]="itensSubgrupo" [paginator]="true" [rows]="10" [globalFilterFields]="['nome', 'grupo.nome']">
     <ng-template pTemplate="header">
       <tr class="header-row">
         <th>Nome</th>

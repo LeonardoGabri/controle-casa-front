@@ -11,6 +11,7 @@ import {
 import { GrupoApiService } from '../../grupo/servico/grupo-api.service';
 import { FiltroParametrosFornecedor, ItemListaFornecedor } from '../modelo/fornecedor.model';
 import { FornecedorApiService } from '../servico/fornecedor-api.service';
+import { SubgrupoApiService } from '../../subgrupo/servico/subgrupo-api.service';
 
 @Component({
   selector: 'app-fornecedor-lista',
@@ -24,7 +25,7 @@ export class FornecedorListaComponent implements OnInit{
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosFornecedor = {};
   mostrarBuscaAvancada = false;
-  opcoesGrupo: any[] = [];
+  opcoesSubgrupo: any[] = [];
 
   paginacao = {
     page: 0,
@@ -33,7 +34,7 @@ export class FornecedorListaComponent implements OnInit{
 
   constructor(
     private router: Router,
-    private grupoApiService: GrupoApiService,
+    private subgrupoApiService: SubgrupoApiService,
     private fornecedorApiService: FornecedorApiService
   ){}
 
@@ -92,9 +93,9 @@ export class FornecedorListaComponent implements OnInit{
   }
 
   carregarOpcoesGrupo() {
-    this.grupoApiService.buscarGrupos().subscribe({
+    this.subgrupoApiService.buscarSubgrupos().subscribe({
       next: (dados: any) => {
-        this.opcoesGrupo = dados.map((item: any) => ({
+        this.opcoesSubgrupo = dados.map((item: any) => ({
           label: item.nome,
           value: item.id
         }));
@@ -110,7 +111,7 @@ export class FornecedorListaComponent implements OnInit{
 
     return {
       nome: filtroBuscaAvancada?.nome,
-      grupoId: filtroBuscaAvancada?.subgrupoId
+      grupoId: filtroBuscaAvancada?.subgrupo
     }
   }
 }

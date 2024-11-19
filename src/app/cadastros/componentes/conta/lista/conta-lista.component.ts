@@ -120,8 +120,8 @@ export class ContaListaComponent implements OnInit{
     }
 
     return {
-      responsavelId: filtroBuscaAvancada?.responsavelId,
-      bancoId: filtroBuscaAvancada?.bancoId
+      responsavel: filtroBuscaAvancada?.responsavel,
+      banco: filtroBuscaAvancada?.banco
     }
   }
 }

@@ -11,6 +11,6 @@ export interface ItemListaConta {
 }
 
 export interface FiltroParametrosConta{
-  bancoId?: string;
-  responsavelId?: string
+  banco?: string;
+  responsavel?: string
 }

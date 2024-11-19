@@ -40,11 +40,11 @@
         />
       </div>
       <div class="form-group">
-        <label>Grupo:</label>
+        <label>Subgrupo:</label>
         <p-dropdown
-          [options]="opcoesGrupo"
-          [(ngModel)]="filtroBuscaAvancada.subgrupoId"
-          placeholder="Selecione um grupo"
+          [options]="opcoesSubgrupo"
+          [(ngModel)]="filtroBuscaAvancada.subgrupo"
+          placeholder="Selecione um Subgrupo"
           [filter]="true"
           filterBy="label"
         ></p-dropdown>

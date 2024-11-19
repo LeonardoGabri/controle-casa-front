@@ -36,7 +36,7 @@ export interface ItemListaDespesa {
 
 export interface FiltroParametrosDespesa{
   fornecedor?: string
-  banco?:string;
-  grupo?: string;
+  conta?: string
+  subgrupo?:string;
   situacao?: string
 }

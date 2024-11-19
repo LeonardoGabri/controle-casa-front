@@ -14,5 +14,5 @@ export interface ItemListaFornecedor {
 
 export interface FiltroParametrosFornecedor{
   nome?: string
-  subgrupoId?: string
+  subgrupo?: string
 }

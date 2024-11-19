@@ -98,8 +98,8 @@ export class FaturaListaComponent implements OnInit{
     }
 
     return {
-      fornecedor: filtroBuscaAvancada?.responsavel,
-      banco: filtroBuscaAvancada?.referenciaCobranca,
+      responsavel: filtroBuscaAvancada?.responsavel,
+      referenciaCobranca: filtroBuscaAvancada?.referenciaCobranca,
       situacao: filtroBuscaAvancada?.situacao,
     }
   }
