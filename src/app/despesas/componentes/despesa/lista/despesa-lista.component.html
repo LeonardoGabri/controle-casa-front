@@ -38,6 +38,7 @@
           placeholder="Selecione uma conta"
           [filter]="true"
           filterBy="label"
+          [appendTo]="'body'"
           >
         </p-dropdown>
       </div>
@@ -49,6 +50,7 @@
           placeholder="Selecione um fornecedor"
           [filter]="true"
           filterBy="label"
+          [appendTo]="'body'"
           >
         </p-dropdown>
       </div>
@@ -59,6 +61,7 @@
           [(ngModel)]="filtroBuscaAvancada.subgrupo"
           placeholder="Selecione um grupo"
           [filter]="true"
+          [appendTo]="'body'"
           filterBy="label"
           >
         </p-dropdown>

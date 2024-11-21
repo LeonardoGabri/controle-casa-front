@@ -30,6 +30,7 @@ export class DespesaFormularioComponent implements OnInit {
   opcoesFornecedor: any[] = [];
   opcoesSubgrupo: any[] = [];
   parcelas: FaturaModel[] = []
+  planejamentoAberto = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,6 +53,7 @@ export class DespesaFormularioComponent implements OnInit {
 
     this.id = this.route.snapshot.paramMap.get('id');
     if (this.id) {
+      this.planejamentoAberto = false
       this.carregarDespesa(this.id);
     }
   }

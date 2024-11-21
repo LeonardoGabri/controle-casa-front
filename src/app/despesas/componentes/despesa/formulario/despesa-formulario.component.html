@@ -39,6 +39,7 @@
         placeholder="Selecione uma conta"
         [filter]="true"
         filterBy="label"
+        [appendTo]="'body'"
       ></p-dropdown>
     </div>
   </div>
@@ -53,6 +54,7 @@
         placeholder="Selecione um fornecedor"
         [filter]="true"
         filterBy="label"
+        [appendTo]="'body'"
       ></p-dropdown>
     </div>
 
@@ -65,6 +67,7 @@
         placeholder="Selecione um subgrupo"
         [filter]="true"
         filterBy="label"
+        [appendTo]="'body'"
       ></p-dropdown>
     </div>
   </div>
@@ -72,14 +75,12 @@
   <div class="form-row">
     <div class="form-group">
       <label for="numeroParcelas">Número de Parcelas:</label>
-      <input
-        id="numeroParcelas"
-        type="number"
-        pInputText
-        formControlName="numeroParcelas"
-        placeholder="Digite o número de parcelas"
-        min="1"
-      />
+      <p-inputNumber
+      inputId="integeronly"
+      formControlName="numeroParcelas"
+      placeholder="Digite o número de parcelas"
+      [min]="1"
+       />
     </div>
 
     <div class="form-group">
@@ -102,6 +103,7 @@
         mode="currency"
         currency="BRL"
         locale="pt-BR"
+        [min]="0"
         placeholder="Digite o valor total"
       >
       </p-inputNumber>
@@ -110,6 +112,7 @@
 </div>
 
 <app-planejamento-parcelas-component
+  [planejamentoAberto]="planejamentoAberto"
   (parcelasChange)="atualizarPlanejamentoParcelas($event)"
 >
   >

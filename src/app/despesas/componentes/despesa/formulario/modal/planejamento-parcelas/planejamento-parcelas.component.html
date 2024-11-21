@@ -1,45 +1,52 @@
 <div class="form-container">
-  <h3>Planejamento de Parcelas</h3>
-
-  <table class="styled-table">
-    <thead>
-      <tr>
-        <th>Porcentagem de Divisão</th>
-        <th>Responsável</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let parcela of parcelas">
-        <td>{{ parcela.porcentagemDivisao }}%</td>
-        <td>{{ parcela.responsavelNome }}</td>
-        <td class="actions-column">
-          <p-overlayPanel #op>
-            <div class="action-option" (click)="editarParcela(parcela)">
-              <i class="pi pi-pencil"></i> Editar
-            </div>
-            <div class="action-option" (click)="removerParcela(parcela)">
-              <i class="pi pi-trash"></i> Remover
-            </div>
-          </p-overlayPanel>
-          <button
-            pButton
-            icon="pi pi-ellipsis-h"
-            class="action-button"
-            (click)="op.toggle($event)"
-            type="button"
-          ></button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
   <button
     pButton
-    label="Incluir"
-    icon="pi pi-plus"
-    (click)="abrirModal()"
+    [icon]="planejamentoAberto ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+    class="toggle-button"
+    (click)="togglePlanejamento()"
   ></button>
+
+  <h3>Planejamento de Parcelas</h3>
+
+  <div *ngIf="planejamentoAberto" class="content-container">
+    <table class="styled-table full-width">
+      <thead>
+        <tr>
+          <th>Porcentagem de Divisão</th>
+          <th>Responsável</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let parcela of parcelas">
+          <td>{{ parcela.porcentagemDivisao }}%</td>
+          <td>{{ parcela.responsavelNome }}</td>
+          <td>
+            <button
+              pButton
+              icon="pi pi-pencil"
+              (click)="editarParcela(parcela)"
+            ></button>
+            <button
+              pButton
+              icon="pi pi-trash"
+              (click)="removerParcela(parcela)"
+            ></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Botão de incluir -->
+    <button
+      pButton
+      label="Incluir"
+      icon="pi pi-plus"
+      (click)="abrirModal()"
+    ></button>
+  </div>
+</div>
+
 
   <p-dialog
     header="Adicionar Nova Parcela"
@@ -94,4 +101,4 @@
   </p-dialog>
 
   <p-messages [(value)]="notificacao" [enableService]="false"></p-messages>
-</div>
+

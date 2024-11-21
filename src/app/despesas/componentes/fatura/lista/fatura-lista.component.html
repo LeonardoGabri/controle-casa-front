@@ -23,14 +23,15 @@
   <p-dialog [(visible)]="mostrarBuscaAvancada" header="Busca Avançada" [modal]="true" [closable]="true">
     <div class="advanced-search-content">
       <div class="form-group">
-        <label for="subgrupo">Subgrupo:</label>
+        <label for="subgrupo">Responsável:</label>
         <p-dropdown
           id="subgrupo"
           [options]="opcoesResponsavel"
           [(ngModel)]="filtroBuscaAvancada.responsavel"
-          placeholder="Selecione um responsavel"
+          placeholder="Selecione um responsável"
           [filter]="true"
           filterBy="label"
+          [appendTo]="'body'"
         ></p-dropdown>
       </div>
 

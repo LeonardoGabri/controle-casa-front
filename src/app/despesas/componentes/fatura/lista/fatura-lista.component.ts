@@ -44,7 +44,6 @@ export class FaturaListaComponent implements OnInit{
   ngOnInit(): void {
     this.notificacao = this.notificationService.getMessages();
     this.notificationService.clearMessages();
-    debugger
 
     this.carregarOpcoesResponsavel()
 
@@ -113,7 +112,7 @@ export class FaturaListaComponent implements OnInit{
     this.responsavelApiService.buscarResponsaveis().subscribe({
       next: (dados: any) => {
         this.opcoesResponsavel = dados.map((item: any) => ({
-          label: `${item.responsavel} - ${item.nome}`,
+          label: `${item.nome}`,
           value: item.id
         }));
       },
