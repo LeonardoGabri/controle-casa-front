@@ -17,6 +17,10 @@ const routes: Routes = [
     path: 'formulario/:id',
     component: FaturaFormularioComponent
   },
+  {
+    path: 'formulario/:id/:editaDespesa',
+    component: FaturaFormularioComponent
+  },
   {path: '', redirectTo: 'lista', pathMatch: 'full'}
 ]
 

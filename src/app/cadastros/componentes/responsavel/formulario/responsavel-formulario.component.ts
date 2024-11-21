@@ -1,11 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Message } from "primeng/api";
 import { ResponsavelModel } from "../modelo/responsavel.model";
 import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg.service";
 import { ResponsavelApiService } from "../servico/responsavel-api.service";
 import { navegacaoResponsavel, navegacaoResponsavelNovoCadastro } from "../../../servico/navegacao-cadastro.service";
+import { validaCamposInvalidosFormulario } from "../../../../shared/servico/function/valida-formulario.service";
+import { NotificationService } from "../../../../shared/servico/notification.service";
 
 @Component({
   selector: 'app-responsavel-formulario',
@@ -22,7 +24,8 @@ export class ResponsavelFormularioComponent implements OnInit{
     private formBuilder:FormBuilder,
     private responsavelApiService: ResponsavelApiService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notificationService: NotificationService
   ){}
 
   ngOnInit(): void {
@@ -37,7 +40,7 @@ export class ResponsavelFormularioComponent implements OnInit{
   criarFormulario(novoFormulario?: ResponsavelModel){
     this.formulario = this.formBuilder.group({
       id: [novoFormulario?.id],
-      nome: [novoFormulario?.nome]
+      nome: [novoFormulario?.nome, Validators.required]
     })
   }
 
@@ -53,25 +56,30 @@ export class ResponsavelFormularioComponent implements OnInit{
   }
 
   salvar() {
-    let request = this.formulario.getRawValue();
-    let id = request.id;
-    delete request.id;
+    if(this.formulario.valid){
+      let request = this.formulario.getRawValue();
+      let id = request.id;
+      delete request.id;
 
-    let metodo = id ? this.responsavelApiService.editarResponsavel(id, request) : this.responsavelApiService.salvarResponsavel(request);
+      let metodo = id ? this.responsavelApiService.editarResponsavel(id, request) : this.responsavelApiService.salvarResponsavel(request);
 
-    metodo.subscribe({
-      next: (retorno: any) => {
-        if (retorno) {
-          this.notificacao = new Array(MensagemNotificacao().salvarRegistro);
-          this.cancelar()
+      metodo.subscribe({
+        next: (retorno: any) => {
+          if (retorno) {
+            this.notificationService.addMessage(MensagemNotificacao().salvarRegistro);
+            this.cancelar()
+          }
+        },
+        error: ({ error }) => {
+          this.notificacao = new Array(MensagemNotificacao().erroSalvarRegistro);
+        },
+        complete: () => {
         }
-      },
-      error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao().erroSalvarRegistro);
-      },
-      complete: () => {
-      }
-    });
+      });
+    }else{
+      let camposErros = validaCamposInvalidosFormulario(this.formulario).join(" - ")
+      this.notificacao = new Array(MensagemNotificacao(camposErros).formularioInvalido);
+    }
 }
 
   cancelar(){

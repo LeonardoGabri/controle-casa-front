@@ -1,4 +1,4 @@
-import { navegacaoCadastros } from "../../shared/servico/navegacao.service"
+import { navegacaoCadastros } from "../../shared/servico/navegacao/navegacao.service"
 
 const navegacaoConta = {
   label: 'Conta',

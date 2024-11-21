@@ -1,4 +1,4 @@
-import { navegacaoDespesas } from "../../shared/servico/navegacao.service"
+import { navegacaoDespesas } from "../../shared/servico/navegacao/navegacao.service"
 
 const navegacaoDespesa = {
   label: 'Despesa',
@@ -27,12 +27,12 @@ const navegacaoParcelaNovoCadastro = {
   link: `${navegacaoParcela.link}/formulario`
 }
 
-const navegacaoParcelaEditarCadastro = (id: string) => {
-  return{
+const navegacaoParcelaEditarCadastro = (id: string, editaDespesa?: boolean) => {
+  return {
     label: 'Editar parcela',
-    link: `${navegacaoParcelaNovoCadastro.link}/${id}`
-  }
-}
+    link: `${navegacaoParcelaNovoCadastro.link}/${id}${editaDespesa ? `/${editaDespesa}` : ''}`
+  };
+};
 
 export {
   navegacaoDespesa,

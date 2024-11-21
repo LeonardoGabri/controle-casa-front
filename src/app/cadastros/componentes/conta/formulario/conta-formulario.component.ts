@@ -1,6 +1,6 @@
 import { ContaModel } from './../modelo/conta.model';
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ContaApiService } from '../servico/conta-api.service';
 import { Message } from 'primeng/api';
 import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg.service';
@@ -8,6 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BancoApiService } from '../../banco/servico/banco-api.service';
 import { ResponsavelApiService } from '../../responsavel/servico/responsavel-api.service';
 import { navegacaoContaNovoCadastro } from '../../../servico/navegacao-cadastro.service';
+import { validaCamposInvalidosFormulario } from '../../../../shared/servico/function/valida-formulario.service';
+import { NotificationService } from '../../../../shared/servico/notification.service';
 
 @Component({
   selector: 'app-conta-formulario',
@@ -28,7 +30,8 @@ export class ContaFormularioComponent implements OnInit{
     private router: Router,
     private bancoApiService: BancoApiService,
     private responsavelApiService: ResponsavelApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notificationService: NotificationService
   ){}
 
   ngOnInit(): void {
@@ -46,8 +49,8 @@ export class ContaFormularioComponent implements OnInit{
   criarFormulario(novoFormulario?: ContaModel){
     this.formulario = this.formBuilder.group({
       id: [novoFormulario?.id],
-      bancoId: [novoFormulario?.bancoId],
-      responsavelId: [novoFormulario?.responsavelId]
+      bancoId: [novoFormulario?.bancoId, Validators.required],
+      responsavelId: [novoFormulario?.responsavelId, Validators.required]
     })
   }
 
@@ -67,25 +70,30 @@ export class ContaFormularioComponent implements OnInit{
   }
 
   salvar() {
-    let request = this.formulario.getRawValue();
-    let id = request.id;
-    delete request.id;
+    if(this.formulario.valid){
+      let request = this.formulario.getRawValue();
+      let id = request.id;
+      delete request.id;
 
-    let metodo = id ? this.contaApiService.editarConta(id, request) : this.contaApiService.salvarConta(request);
+      let metodo = id ? this.contaApiService.editarConta(id, request) : this.contaApiService.salvarConta(request);
 
-    metodo.subscribe({
-      next: (retorno: any) => {
-        if (retorno) {
-          this.notificacao = new Array(MensagemNotificacao().salvarRegistro);
-          this.cancelar();
+      metodo.subscribe({
+        next: (retorno: any) => {
+          if (retorno) {
+            this.notificationService.addMessage(MensagemNotificacao().salvarRegistro);
+            this.cancelar();
+          }
+        },
+        error: ({ error }) => {
+          this.notificacao = new Array(MensagemNotificacao().erroSalvarRegistro);
+        },
+        complete: () => {
         }
-      },
-      error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao().erroSalvarRegistro);
-      },
-      complete: () => {
-      }
-    });
+      });
+    }else{
+      let camposErros = validaCamposInvalidosFormulario(this.formulario).join(" - ")
+      this.notificacao = new Array(MensagemNotificacao(camposErros).formularioInvalido);
+    }
 }
 
   cancelar(){

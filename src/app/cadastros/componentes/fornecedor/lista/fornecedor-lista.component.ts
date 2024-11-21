@@ -12,6 +12,7 @@ import { GrupoApiService } from '../../grupo/servico/grupo-api.service';
 import { FiltroParametrosFornecedor, ItemListaFornecedor } from '../modelo/fornecedor.model';
 import { FornecedorApiService } from '../servico/fornecedor-api.service';
 import { SubgrupoApiService } from '../../subgrupo/servico/subgrupo-api.service';
+import { NotificationService } from '../../../../shared/servico/notification.service';
 
 @Component({
   selector: 'app-fornecedor-lista',
@@ -35,10 +36,14 @@ export class FornecedorListaComponent implements OnInit{
   constructor(
     private router: Router,
     private subgrupoApiService: SubgrupoApiService,
-    private fornecedorApiService: FornecedorApiService
+    private fornecedorApiService: FornecedorApiService,
+    private notificationService: NotificationService
   ){}
 
   ngOnInit(): void {
+    this.notificacao = this.notificationService.getMessages();
+    this.notificationService.clearMessages();
+
     this.carregarOpcoesGrupo();
 
     this.buscarDadosFornecedor()

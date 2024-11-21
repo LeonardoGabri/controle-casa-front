@@ -1,20 +1,19 @@
-import { GrupoApiService } from './../../../../cadastros/componentes/grupo/servico/grupo-api.service';
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DespesaModel, PlanejamentoParcelas } from '../modelo/despesa.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Message } from 'primeng/api';
+
 import { ContaApiService } from '../../../../cadastros/componentes/conta/servico/conta-api.service';
 import { FornecedorApiService } from '../../../../cadastros/componentes/fornecedor/servico/fornecedor-api.service';
-import { navegacaoDespesa, navegacaoDespesaNovoCadastro } from '../../../servico/navegacao-despesa.service';
-import { MenuItem, Message } from 'primeng/api';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DespesaApiService } from '../servico/despesa-api.service';
-import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg.service';
-import moment from 'moment';
-import { DatePipe } from '@angular/common';
 import { SubgrupoApiService } from '../../../../cadastros/componentes/subgrupo/servico/subgrupo-api.service';
-import { ResponsavelApiService } from '../../../../cadastros/componentes/responsavel/servico/responsavel-api.service';
-import { FaturaModel } from '../../fatura/modelo/fatura.model';
 import { SituacaoEnum } from '../../../../shared/enum/situacao.enum';
+import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg.service';
+import { navegacaoDespesa, navegacaoDespesaNovoCadastro } from '../../../servico/navegacao-despesa.service';
+import { FaturaModel } from '../../fatura/modelo/fatura.model';
+import { DespesaModel, PlanejamentoParcelas } from '../modelo/despesa.model';
+import { DespesaApiService } from '../servico/despesa-api.service';
+import { NotificationService } from '../../../../shared/servico/notification.service';
 
 @Component({
   selector: 'app-despesa-formulario',
@@ -29,7 +28,6 @@ export class DespesaFormularioComponent implements OnInit {
   opcoesConta: any[] = [];
   opcoesFornecedor: any[] = [];
   opcoesSubgrupo: any[] = [];
-  meses = Array.from({ length: 12 }, (_, i) => ({ label: `${i + 1}`, value: i + 1 }));
   parcelas: FaturaModel[] = []
 
   constructor(
@@ -40,7 +38,8 @@ export class DespesaFormularioComponent implements OnInit {
     private subgrupoApiService: SubgrupoApiService,
     private router: Router,
     private route: ActivatedRoute,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -60,11 +59,11 @@ export class DespesaFormularioComponent implements OnInit {
     const dataAtual = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
 
     this.formulario = this.formBuilder.group({
-      contaId: [novoFormulario?.contaId],
-      fornecedorId: [novoFormulario?.fornecedorId],
-      subgrupoId: [novoFormulario?.subgrupoId],
+      contaId: [novoFormulario?.contaId, Validators.required],
+      fornecedorId: [novoFormulario?.fornecedorId, Validators.required],
+      subgrupoId: [novoFormulario?.subgrupoId, Validators.required],
       dataLancamento: [dataAtual],
-      referenciaCobranca: [novoFormulario?.referenciaCobranca],
+      referenciaCobranca: [novoFormulario?.referenciaCobranca, Validators.required],
       situacao: [novoFormulario?.situacao],
       numeroParcelas: [novoFormulario?.numeroParcelas, [Validators.required, Validators.min(1)]],
       valorTotal: [
@@ -96,27 +95,29 @@ export class DespesaFormularioComponent implements OnInit {
   }
 
   salvar() {
-    let request = this.formulario.getRawValue();
-    let metodo = this.id
-      ? this.despesaApiService.editarDespesa(this.id, request)
-      : this.despesaApiService.salvarDespesa(request);
+    if(this.formulario.valid){
+      let request = this.formulario.getRawValue();
+      let metodo = this.id
+        ? this.despesaApiService.editarDespesa(this.id, request)
+        : this.despesaApiService.salvarDespesa(request);
 
-    if(request.planejamentoParcelas){
-      this.calcularTotalPorcentagemDivisao(request.planejamentoParcelas)
+      if(request.planejamentoParcelas){
+        this.calcularTotalPorcentagemDivisao(request.planejamentoParcelas)
+      }
+
+      metodo.subscribe({
+        next: (retorno: any) => {
+          if (retorno) {
+            this.notificationService.addMessage(MensagemNotificacao().salvarRegistro);
+            this.cancelar();
+          }
+        },
+        error: ({ error }) => {
+          this.notificacao = new Array(MensagemNotificacao(error).erroSalvarRegistro);
+        },
+        complete: () => {},
+      });
     }
-
-    metodo.subscribe({
-      next: (retorno: any) => {
-        if (retorno) {
-          this.notificacao = new Array(MensagemNotificacao().salvarRegistro);
-          this.cancelar();
-        }
-      },
-      error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao(error).erroSalvarRegistro);
-      },
-      complete: () => {},
-    });
   }
 
   cancelar() {

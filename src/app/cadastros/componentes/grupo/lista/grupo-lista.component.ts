@@ -6,6 +6,7 @@ import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg
 import { navegacaoGrupo, navegacaoGrupoEditarCadastro, navegacaoGrupoNovoCadastro } from '../../../servico/navegacao-cadastro.service';
 import { FiltroParametrosGrupo, ItemListaGrupo } from '../modelo/grupo.model';
 import { GrupoApiService } from './../servico/grupo-api.service';
+import { NotificationService } from '../../../../shared/servico/notification.service';
 
 @Component({
   selector: 'app-grupo-lista',
@@ -28,10 +29,14 @@ export class GrupoListaComponent implements OnInit{
 
   constructor(
     private router: Router,
-    private grupoApiService: GrupoApiService
+    private grupoApiService: GrupoApiService,
+    private notificationService: NotificationService
   ){}
 
   ngOnInit(): void {
+    this.notificacao = this.notificationService.getMessages();
+    this.notificationService.clearMessages();
+
     this.buscarDadosGrupo()
   }
 

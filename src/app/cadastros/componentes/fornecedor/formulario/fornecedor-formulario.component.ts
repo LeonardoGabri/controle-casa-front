@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Message } from "primeng/api";
 import { navegacaoFornecedor, navegacaoFornecedorNovoCadastro } from "../../../servico/navegacao-cadastro.service";
 import { GrupoApiService } from "../../grupo/servico/grupo-api.service";
@@ -8,6 +8,7 @@ import { FornecedorApiService } from "../servico/fornecedor-api.service";
 import { FornecedorModel } from "../modelo/fornecedor.model";
 import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg.service";
 import { SubgrupoApiService } from "../../subgrupo/servico/subgrupo-api.service";
+import { NotificationService } from "../../../../shared/servico/notification.service";
 
 @Component({
   selector: 'app-fornecedor-formulario',
@@ -26,7 +27,8 @@ export class FornecedorFormularioComponent implements OnInit{
     private subgrupoApiService: SubgrupoApiService,
     private fornecedorApiService: FornecedorApiService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notificationService: NotificationService
   ){}
 
   ngOnInit(): void {
@@ -43,7 +45,7 @@ export class FornecedorFormularioComponent implements OnInit{
   criarFormulario(novoFormulario?: FornecedorModel){
     this.formulario = this.formBuilder.group({
       id: [novoFormulario?.id],
-      nome: [novoFormulario?.nome],
+      nome: [novoFormulario?.nome, Validators.required],
       subgrupoId: [novoFormulario?.subgrupoId]
     })
   }
@@ -64,25 +66,27 @@ export class FornecedorFormularioComponent implements OnInit{
   }
 
   salvar() {
-    let request = this.formulario.getRawValue();
-    let id = request.id;
-    delete request.id;
+    if(this.formulario.valid){
+      let request = this.formulario.getRawValue();
+      let id = request.id;
+      delete request.id;
 
-    let metodo = id ? this.fornecedorApiService.editarFornecedor(id, request) : this.fornecedorApiService.salvarFornecedor(request);
+      let metodo = id ? this.fornecedorApiService.editarFornecedor(id, request) : this.fornecedorApiService.salvarFornecedor(request);
 
-    metodo.subscribe({
-      next: (retorno: any) => {
-        if (retorno) {
-          this.notificacao = new Array(MensagemNotificacao().salvarRegistro);
-          this.cancelar();
+      metodo.subscribe({
+        next: (retorno: any) => {
+          if (retorno) {
+            this.notificationService.addMessage(MensagemNotificacao().salvarRegistro);
+            this.cancelar();
+          }
+        },
+        error: ({ error }) => {
+          this.notificacao = new Array(MensagemNotificacao().erroSalvarRegistro);
+        },
+        complete: () => {
         }
-      },
-      error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao().erroSalvarRegistro);
-      },
-      complete: () => {
-      }
-    });
+      });
+    }
 }
 
   cancelar(){

@@ -25,11 +25,11 @@ export class AppComponent implements OnInit {
               [
                   {
                       items: [
-                          { label: 'Conta', icon: 'pi pi-shopping-cart', subtext: 'Subtext of item', routerLink: navegacaoConta.link },
                           { label: 'Responsável', icon: 'pi pi-users', subtext: 'Subtext of item', routerLink: navegacaoResponsavel.link },
-                          { label: 'Fornecedor', icon: 'pi pi-shop', subtext: 'Subtext of item', routerLink: navegacaoFornecedor.link },
+                          { label: 'Conta', icon: 'pi pi-shopping-cart', subtext: 'Subtext of item', routerLink: navegacaoConta.link },
                           { label: 'Grupo', icon: 'pi pi-sitemap', subtext: 'Subtext of item', routerLink: navegacaoGrupo.link },
-                          { label: 'Subgrupo', icon: 'pi pi-stop', subtext: 'Subtext of item', routerLink: navegacaoSubgrupo.link }
+                          { label: 'Subgrupo', icon: 'pi pi-stop', subtext: 'Subtext of item', routerLink: navegacaoSubgrupo.link },
+                          { label: 'Fornecedor', icon: 'pi pi-shop', subtext: 'Subtext of item', routerLink: navegacaoFornecedor.link }
                       ]
                   }
               ],

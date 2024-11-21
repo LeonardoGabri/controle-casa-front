@@ -32,7 +32,7 @@
     <ng-template pTemplate="body" let-item>
       <tr>
         <td>{{ item.nome }}</td>
-        <td>{{ item.grupo.nome }}</td>
+        <td>{{ item.grupo?.nome }}</td>
         <td class="actions-column">
           <p-overlayPanel #op>
             <div class="action-option" (click)="editItem(item)">

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Message } from 'primeng/api';
 
@@ -8,6 +8,8 @@ import { navegacaoSubgrupo, navegacaoSubgrupoNovoCadastro } from '../../../servi
 import { SubgrupoModel } from '../modelo/subgrupo.model';
 import { SubgrupoApiService } from '../servico/subgrupo-api.service';
 import { GrupoApiService } from '../../grupo/servico/grupo-api.service';
+import { validaCamposInvalidosFormulario } from '../../../../shared/servico/function/valida-formulario.service';
+import { NotificationService } from '../../../../shared/servico/notification.service';
 
 @Component({
   selector: 'app-subgrupo-formulario',
@@ -26,7 +28,8 @@ export class SubgrupoFormularioComponent implements OnInit{
     private subgrupoApiService: SubgrupoApiService,
     private grupoApiService: GrupoApiService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notificationService: NotificationService
   ){}
 
   ngOnInit(): void {
@@ -43,7 +46,7 @@ export class SubgrupoFormularioComponent implements OnInit{
   criarFormulario(novoFormulario?: SubgrupoModel){
     this.formulario = this.formBuilder.group({
       id: [novoFormulario?.id],
-      nome: [novoFormulario?.nome],
+      nome: [novoFormulario?.nome, Validators.required],
       grupoId: [novoFormulario?.grupoId]
     })
   }
@@ -60,25 +63,31 @@ export class SubgrupoFormularioComponent implements OnInit{
   }
 
   salvar() {
-    let request = this.formulario.getRawValue();
-    let id = request.id;
-    delete request.id;
+    if(this.formulario.valid){
+      let request = this.formulario.getRawValue();
+      let id = request.id;
+      delete request.id;
 
-    let metodo = id ? this.subgrupoApiService.editarSubgrupo(id, request) : this.subgrupoApiService.salvarSubgrupo(request);
+      let metodo = id ? this.subgrupoApiService.editarSubgrupo(id, request) : this.subgrupoApiService.salvarSubgrupo(request);
 
-    metodo.subscribe({
-      next: (retorno: any) => {
-        if (retorno) {
-          this.notificacao = new Array(MensagemNotificacao().salvarRegistro);
-          this.cancelar()
+      metodo.subscribe({
+        next: (retorno: any) => {
+          if (retorno) {
+            this.notificationService.addMessage(MensagemNotificacao().salvarRegistro);
+            this.cancelar()
+          }
+        },
+        error: ({ error }) => {
+          this.notificacao = new Array(MensagemNotificacao().erroSalvarRegistro);
+        },
+        complete: () => {
         }
-      },
-      error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao().erroSalvarRegistro);
-      },
-      complete: () => {
-      }
-    });
+      });
+    }else{
+      let camposErros = validaCamposInvalidosFormulario(this.formulario).join(" - ")
+      this.notificacao = new Array(MensagemNotificacao(camposErros).formularioInvalido);
+    }
+
 }
 
   cancelar(){

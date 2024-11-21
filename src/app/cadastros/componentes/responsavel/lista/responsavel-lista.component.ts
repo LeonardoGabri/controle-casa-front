@@ -5,6 +5,7 @@ import { ResponsavelApiService } from "../servico/responsavel-api.service";
 import { navegacaoResponsavel, navegacaoResponsavelEditarCadastro, navegacaoResponsavelNovoCadastro } from "../../../servico/navegacao-cadastro.service";
 import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg.service";
 import { Message } from "primeng/api";
+import { NotificationService } from "../../../../shared/servico/notification.service";
 
 @Component({
   selector: 'app-responsavel-lista',
@@ -28,10 +29,14 @@ export class ResponsavelListaComponent implements OnInit{
 
   constructor(
     private router: Router,
-    private responsavelApiService: ResponsavelApiService
+    private responsavelApiService: ResponsavelApiService,
+    private notificationService: NotificationService
   ){}
 
   ngOnInit(): void {
+    this.notificacao = this.notificationService.getMessages();
+    this.notificationService.clearMessages();
+
     this.buscarDadosResponsaveis()
   }
 

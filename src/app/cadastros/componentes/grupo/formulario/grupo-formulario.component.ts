@@ -1,11 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { GrupoModel } from "../modelo/grupo.model";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Message } from "primeng/api";
 import { GrupoApiService } from "../servico/grupo-api.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg.service";
 import { navegacaoGrupo, navegacaoGrupoNovoCadastro } from "../../../servico/navegacao-cadastro.service";
+import { NotificationService } from "../../../../shared/servico/notification.service";
+import { validaCamposInvalidosFormulario } from "../../../../shared/servico/function/valida-formulario.service";
 
 @Component({
   selector: 'app-grupo-formulario',
@@ -22,7 +24,8 @@ export class GrupoFormularioComponent implements OnInit{
     private formBuilder:FormBuilder,
     private grupoApiService: GrupoApiService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notificationService: NotificationService
   ){}
 
   ngOnInit(): void {
@@ -37,7 +40,7 @@ export class GrupoFormularioComponent implements OnInit{
   criarFormulario(novoFormulario?: GrupoModel){
     this.formulario = this.formBuilder.group({
       id: [novoFormulario?.id],
-      nome: [novoFormulario?.nome]
+      nome: [novoFormulario?.nome, Validators.required]
     })
   }
 
@@ -53,25 +56,31 @@ export class GrupoFormularioComponent implements OnInit{
   }
 
   salvar() {
-    let request = this.formulario.getRawValue();
-    let id = request.id;
-    delete request.id;
+    if(this.formulario.valid){
+      let request = this.formulario.getRawValue();
+      let id = request.id;
+      delete request.id;
 
-    let metodo = id ? this.grupoApiService.editarGrupo(id, request) : this.grupoApiService.salvarGrupo(request);
+      let metodo = id ? this.grupoApiService.editarGrupo(id, request) : this.grupoApiService.salvarGrupo(request);
 
-    metodo.subscribe({
-      next: (retorno: any) => {
-        if (retorno) {
-          this.notificacao = new Array(MensagemNotificacao().salvarRegistro);
-          this.cancelar()
+      metodo.subscribe({
+        next: (retorno: any) => {
+          if (retorno) {
+            this.notificationService.addMessage(MensagemNotificacao().salvarRegistro);
+            this.cancelar()
+          }
+        },
+        error: ({ error }) => {
+          this.notificacao = new Array(MensagemNotificacao().erroSalvarRegistro);
+        },
+        complete: () => {
         }
-      },
-      error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao().erroSalvarRegistro);
-      },
-      complete: () => {
-      }
-    });
+      });
+    }else{
+      let camposErros = validaCamposInvalidosFormulario(this.formulario).join(" - ")
+      this.notificacao = new Array(MensagemNotificacao(camposErros).formularioInvalido);
+    }
+
 }
 
   cancelar(){

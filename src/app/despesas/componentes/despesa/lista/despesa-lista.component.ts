@@ -11,6 +11,7 @@ import { GrupoApiService } from '../../../../cadastros/componentes/grupo/servico
 import { ContaApiService } from '../../../../cadastros/componentes/conta/servico/conta-api.service';
 import { SubgrupoApiService } from '../../../../cadastros/componentes/subgrupo/servico/subgrupo-api.service';
 import { opcoesSituacao } from '../../../../shared/enum/situacao.enum';
+import { NotificationService } from '../../../../shared/servico/notification.service';
 
 @Component({
   selector: 'app-despesa-lista',
@@ -39,10 +40,14 @@ export class DespesaListaComponent implements OnInit{
     private despesaApiService: DespesaApiService,
     private fornecedorApiService: FornecedorApiService,
     private contaApiService: ContaApiService,
-    private subgrupoApiService: SubgrupoApiService
+    private subgrupoApiService: SubgrupoApiService,
+    private notificationService: NotificationService
   ){}
 
   ngOnInit(): void {
+    this.notificacao = this.notificationService.getMessages();
+    this.notificationService.clearMessages();
+
     this.carregarOpcoesConta()
     this.carregarOpcoesFornecedor()
     this.carregarOpcoesSubgrupo()

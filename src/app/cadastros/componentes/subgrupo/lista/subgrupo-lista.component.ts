@@ -6,6 +6,7 @@ import { SubgrupoApiService } from "../servico/subgrupo-api.service";
 import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg.service";
 import { navegacaoSubgrupo, navegacaoSubgrupoNovoCadastro, navegacaoGrupoEditarCadastro } from "../../../servico/navegacao-cadastro.service";
 import { FiltroParametrosGrupo } from "../../grupo/modelo/grupo.model";
+import { NotificationService } from "../../../../shared/servico/notification.service";
 
 @Component({
   selector: 'app-subgrupo-lista',
@@ -28,10 +29,14 @@ export class SubgrupoListaComponent implements OnInit{
 
   constructor(
     private router: Router,
-    private subgrupoApiService: SubgrupoApiService
+    private subgrupoApiService: SubgrupoApiService,
+    private notificationService: NotificationService
   ){}
 
   ngOnInit(): void {
+    this.notificacao = this.notificationService.getMessages();
+    this.notificationService.clearMessages();
+
     this.buscarDadosGrupo()
   }
 

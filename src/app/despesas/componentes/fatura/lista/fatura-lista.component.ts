@@ -12,6 +12,7 @@ import {
 } from '../../../servico/navegacao-despesa.service';
 import { FiltroParametrosFatura, ItemListaFatura } from '../modelo/fatura.model';
 import { FaturaApiService } from '../servico/fatura.service';
+import { NotificationService } from '../../../../shared/servico/notification.service';
 
 @Component({
   selector: 'app-fatura-lista',
@@ -36,10 +37,15 @@ export class FaturaListaComponent implements OnInit{
   constructor(
     private router: Router,
     private faturaApiService: FaturaApiService,
-    private responsavelApiService: ResponsavelApiService
+    private responsavelApiService: ResponsavelApiService,
+    private notificationService: NotificationService
   ){}
 
   ngOnInit(): void {
+    this.notificacao = this.notificationService.getMessages();
+    this.notificationService.clearMessages();
+    debugger
+
     this.carregarOpcoesResponsavel()
 
     this.buscarDadosDespesa()

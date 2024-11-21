@@ -1,13 +1,14 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { FaturaModel } from "../modelo/fatura.model";
-import { navegacaoParcela, navegacaoParcelaNovoCadastro } from "../../../servico/navegacao-despesa.service";
+import { navegacaoDespesaEditarCadastro, navegacaoParcela, navegacaoParcelaNovoCadastro } from "../../../servico/navegacao-despesa.service";
 import { ResponsavelApiService } from "../../../../cadastros/componentes/responsavel/servico/responsavel-api.service";
 import { FaturaApiService } from "../servico/fatura.service";
 import { Message } from "primeng/api";
 import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SituacaoEnum } from "../../../../shared/enum/situacao.enum";
+import { NotificationService } from "../../../../shared/servico/notification.service";
 
 @Component({
   selector: 'app-fatura-formulario',
@@ -17,6 +18,7 @@ import { SituacaoEnum } from "../../../../shared/enum/situacao.enum";
 export class FaturaFormularioComponent implements OnInit{
   formulario!: FormGroup
   id: string | null = null;
+  editaDespesa: string | null = null;
   notificacao: Message[] = [];
   nomePagina = navegacaoParcelaNovoCadastro.label;
   opcoesResponsavel: any[] = [];
@@ -27,7 +29,7 @@ export class FaturaFormularioComponent implements OnInit{
     private responsavelApiService: ResponsavelApiService,
     private router: Router,
     private route: ActivatedRoute,
-
+    private notificationService: NotificationService
   ){}
 
   ngOnInit(): void {
@@ -36,6 +38,8 @@ export class FaturaFormularioComponent implements OnInit{
     this.carregarOpcoesResponsaveis()
 
     this.id = this.route.snapshot.paramMap.get('id');
+    this.editaDespesa = this.route.snapshot.paramMap.get('editaDespesa');
+    console.log('PARAM', this.route.snapshot)
     if (this.id) {
       this.carregarParcela(this.id);
     }
@@ -44,19 +48,19 @@ export class FaturaFormularioComponent implements OnInit{
   criarFormulario(novoFormulario?: FaturaModel){
     this.formulario = this.formBuilder.group({
       id: [novoFormulario?.id],
-      dataVencimento: [novoFormulario?.id],
+      dataVencimento: [novoFormulario?.id, Validators.required],
       despesaFornecedor: [novoFormulario?.despesaFornecedor],
-      responsavelId: [novoFormulario?.responsavelId],
-      valor: [novoFormulario?.valor],
+      responsavelId: [novoFormulario?.responsavelId, Validators.required],
+      valor: [novoFormulario?.valor, Validators.required],
       situacao: [novoFormulario?.situacao],
       porcentagemDivisao: [novoFormulario?.porcentagemDivisao],
+      parcelaAtual: [novoFormulario?.parcelaAtual],
       despesaId: [novoFormulario?.despesaId],
     })
 
     this.formulario.get('despesaFornecedor')?.disable()
     this.formulario.get('situacao')?.disable()
     this.formulario.get('porcentagemDivisao')?.disable()
-
   }
 
   carregarParcela(id: string) {
@@ -77,30 +81,37 @@ export class FaturaFormularioComponent implements OnInit{
   }
 
   salvar() {
-    let request = this.formulario.getRawValue();
-    delete request.responsavelNome
-    delete request.despesaFornecedor
-    delete request.id
+    if(this.formulario.valid){
+      let request = this.formulario.getRawValue();
+      delete request.responsavelNome
+      delete request.despesaFornecedor
+      delete request.id
 
-    let metodo = this.id
-      ? this.faturaApiService.editarParcela(this.id, request)
-      : this.faturaApiService.salvarParcela(request);
+      let metodo = this.id
+        ? this.faturaApiService.editarParcela(this.id, request)
+        : this.faturaApiService.salvarParcela(request);
 
-    metodo.subscribe({
-      next: (retorno: any) => {
-        if (retorno) {
-          this.notificacao = new Array(MensagemNotificacao().salvarRegistro);
-          this.cancelar();
-        }
-      },
-      error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao(error).erroSalvarRegistro);
-      },
-      complete: () => {},
-    });
+      metodo.subscribe({
+        next: (retorno: any) => {
+          if (retorno) {
+            this.notificationService.addMessage(MensagemNotificacao().salvarRegistro);
+            this.cancelar();
+          }
+        },
+        error: ({ error }) => {
+          this.notificacao = new Array(MensagemNotificacao(error).erroSalvarRegistro);
+        },
+        complete: () => {},
+      });
+    }
   }
 
   cancelar() {
+    let despesaId = this.formulario.get('despesaId')?.value
+    if(this.editaDespesa == 'true'){
+      this.router.navigate([navegacaoDespesaEditarCadastro(despesaId).link])
+      return
+    }
     this.router.navigate([navegacaoParcela.link]);
   }
 

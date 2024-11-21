@@ -7,6 +7,10 @@ export const MensagemNotificacao = (msg?: string) => ({
     severity: 'error',
     detail: `Erro ao salvar registro - ${msg}`
   },
+  formularioInvalido: {
+    severity: 'error',
+    detail: `Campos inválidos - ${msg}`
+  },
   erroAoBuscarRegistro: {
     severity: 'error',
     detail: `Erro ao buscar registro - ${msg}`

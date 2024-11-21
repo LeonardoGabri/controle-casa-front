@@ -5,6 +5,7 @@ export interface FaturaModel{
   responsavelId?: string;
   responsavelNome?: string;
   porcentagemDivisao?: number;
+  parcelaAtual: string
   valor?: number;
   situacao?:string;
   despesaId?: string

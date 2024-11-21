@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { FaturaModel } from "../../../../fatura/modelo/fatura.model";
+import { Router } from "@angular/router";
+import { navegacaoParcelaEditarCadastro } from "../../../../../servico/navegacao-despesa.service";
 
 @Component({
   selector: 'app-parcela-component',
@@ -11,8 +13,14 @@ export class ParcelaComponent{
   @Output() editar = new EventEmitter<FaturaModel>();
   @Output() remover = new EventEmitter<FaturaModel>();
 
-  editarParcela(parcela: FaturaModel) {
-    this.editar.emit(parcela);
+  constructor(
+    private router: Router
+  ){
+
+  }
+
+  editarParcela(parcela: any) {
+    this.router.navigate([navegacaoParcelaEditarCadastro(parcela.id, true).link])
   }
 
   removerParcela(parcela: FaturaModel) {
