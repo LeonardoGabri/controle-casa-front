@@ -51,17 +51,15 @@
 
     <div class="form-group">
       <label for="valor">Valor: R$</label>
-      <input
-        id="valor"
-        type="text"
-        pInputText
+      <p-inputNumber
         formControlName="valor"
+        inputId="currency-br"
+        mode="currency"
+        currency="BRL"
+        locale="pt-BR"
         placeholder="Digite o valor total"
-        mask="separator.2"
-        prefix="R$ "
-        thousandSeparator="."
-        decimalMarker=","
-      />
+      >
+      </p-inputNumber>
     </div>
   </div>
 

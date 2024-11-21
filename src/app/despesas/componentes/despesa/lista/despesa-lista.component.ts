@@ -111,7 +111,6 @@ export class DespesaListaComponent implements OnInit{
       fornecedor: filtroBuscaAvancada?.fornecedor,
       conta: filtroBuscaAvancada?.conta,
       subgrupo: filtroBuscaAvancada?.subgrupo,
-      situacao: filtroBuscaAvancada?.situacao,
     }
   }
 

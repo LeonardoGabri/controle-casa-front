@@ -2,8 +2,20 @@
   <div class="header">
     <h2 class="form-title">{{ nomePagina }}</h2>
     <div class="button-group">
-      <button pButton label="Salvar" icon="pi pi-check" (click)="salvar()" class="p-button-primary"></button>
-      <button pButton label="Cancelar" icon="pi pi-times" (click)="cancelar()" class="p-button-secondary"></button>
+      <button
+        pButton
+        label="Salvar"
+        icon="pi pi-check"
+        (click)="salvar()"
+        class="p-button-primary"
+      ></button>
+      <button
+        pButton
+        label="Cancelar"
+        icon="pi pi-times"
+        (click)="cancelar()"
+        class="p-button-secondary"
+      ></button>
     </div>
   </div>
 
@@ -29,8 +41,6 @@
         filterBy="label"
       ></p-dropdown>
     </div>
-
-
   </div>
 
   <div class="form-row">
@@ -75,45 +85,34 @@
     <div class="form-group">
       <label for="referenciaCobranca">Referencia de Cobrança:</label>
       <p-inputMask
-          id="referenciaCobranca"
-          mask="99/9999"
-          placeholder="MM/AAAA"
-          formControlName="referenciaCobranca"
-        ></p-inputMask>
+        id="referenciaCobranca"
+        mask="99/9999"
+        placeholder="MM/AAAA"
+        formControlName="referenciaCobranca"
+      ></p-inputMask>
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group">
       <label for="valorTotal">Valor Total: R$</label>
-      <input
-        id="valorTotal"
-        type="text"
-        pInputText
+      <p-inputNumber
         formControlName="valorTotal"
+        inputId="currency-br"
+        mode="currency"
+        currency="BRL"
+        locale="pt-BR"
         placeholder="Digite o valor total"
-        mask="separator.2"
-        prefix="R$ "
-        thousandSeparator="."
-        decimalMarker=","
-      />
+      >
+      </p-inputNumber>
     </div>
-
-    <div class="form-group">
-      <label for="situacao">Situação:</label>
-      <input
-          id="situacao"
-          formControlName="situacao"
-        />
-    </div>
-
   </div>
-
-  </div>
+</div>
 
 <app-planejamento-parcelas-component
-(parcelasChange)="atualizarPlanejamentoParcelas($event)">
+  (parcelasChange)="atualizarPlanejamentoParcelas($event)"
 >
+  >
 </app-planejamento-parcelas-component>
 
 <app-parcela-component
@@ -122,6 +121,5 @@
   (remover)="onRemoverParcela($event)"
 >
 </app-parcela-component>
-
 
 <p-messages [(value)]="notificacao" [enableService]="false"></p-messages>

@@ -63,17 +63,6 @@
           >
         </p-dropdown>
       </div>
-      <div class="form-group">
-        <label>Situação:</label>
-        <p-dropdown
-          [options]="opcoesSituacao"
-          [(ngModel)]="filtroBuscaAvancada.situacao"
-          placeholder="Selecione uma situacao"
-          [filter]="true"
-          filterBy="label"
-          >
-        </p-dropdown>
-      </div>
 
       <div class="dialog-footer">
         <button pButton label="Buscar" icon="pi pi-search" (click)="aplicarBuscaAvancada()" class="p-button-primary"></button>
@@ -90,7 +79,6 @@
         <th>Grupo</th>
         <th>Valor Total</th>
         <th>Parcelas</th>
-        <th>Situação</th>
         <th style="width: 1%;"></th>
       </tr>
     </ng-template>
@@ -102,7 +90,6 @@
         <td>{{ item.subgrupo.nome }}</td>
         <td>{{ item.valorTotal }}</td>
         <td>{{ item.numeroParcelas }}</td>
-        <td>{{ item.situacao }}</td>
 
         <td class="actions-column">
           <p-overlayPanel #op>

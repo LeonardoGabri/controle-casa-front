@@ -8,7 +8,6 @@
         <th>Fornecedor</th>
         <th>Responsável</th>
         <th>Valor</th>
-        <th>Situação</th>
         <th>Ações</th>
       </tr>
     </thead>
@@ -18,7 +17,6 @@
         <td>{{ parcela.despesaFornecedor }}</td>
         <td>{{ parcela.responsavelNome }}</td>
         <td>{{ parcela.valor | currency: 'BRL' }}</td>
-        <td>{{ parcela.situacao }}</td>
         <td class="actions-column">
           <p-overlayPanel #op>
             <div class="action-option" (click)="editarParcela(parcela)">

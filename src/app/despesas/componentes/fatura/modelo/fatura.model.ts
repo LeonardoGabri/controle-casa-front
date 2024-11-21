@@ -7,7 +7,6 @@ export interface FaturaModel{
   porcentagemDivisao?: number;
   parcelaAtual: string
   valor?: number;
-  situacao?:string;
   despesaId?: string
 }
 
@@ -20,11 +19,9 @@ export interface ItemListaFatura{
   valor: number
   parcelaAtual: string
   despesaFornecedor: string
-  situacao: string
 }
 
 export interface FiltroParametrosFatura{
   responsavel?: string
   referenciaCobranca?: string
-  situacao?: string
 }

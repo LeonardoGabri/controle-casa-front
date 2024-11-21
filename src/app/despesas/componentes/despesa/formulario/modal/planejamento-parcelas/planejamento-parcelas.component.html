@@ -34,41 +34,64 @@
     </tbody>
   </table>
 
-  <button pButton label="Incluir" icon="pi pi-plus" (click)="abrirModal()"></button>
+  <button
+    pButton
+    label="Incluir"
+    icon="pi pi-plus"
+    (click)="abrirModal()"
+  ></button>
 
-  <p-dialog header="Adicionar Nova Parcela" [(visible)]="modalVisivel" [modal]="true" [closable]="true" (onHide)="fecharModal()">
+  <p-dialog
+    header="Adicionar Nova Parcela"
+    [(visible)]="modalVisivel"
+    [modal]="true"
+    [closable]="true"
+    (onHide)="fecharModal()"
+  >
     <form [formGroup]="formulario">
       <div class="form-group">
         <label for="porcentagemDivisao">Porcentagem de Divisão:</label>
-        <input
-          id="porcentagemDivisao"
-          type="number"
-          pInputText
+        <p-inputNumber
           formControlName="porcentagemDivisao"
-          placeholder="Digite a porcentagem"
-          min="0"
-        />
+          inputId="percent"
+          [max]="100"
+          [min]="0"
+          suffix="%"
+          mode="decimal"
+        ></p-inputNumber>
       </div>
 
       <div class="form-group">
         <label for="responsavel">Responsável:</label>
         <p-dropdown
-         id="responsavel"
-         [options]="opcoesResponsavel"
-         formControlName="responsavelId"
-         placeholder="Selecione o responsável"
-         [filter]="true"
-         [appendTo]="'body'"
+          id="responsavel"
+          [options]="opcoesResponsavel"
+          formControlName="responsavelId"
+          placeholder="Selecione o responsável"
+          [filter]="true"
+          [appendTo]="'body'"
           filterBy="label"
-         (onChange)="atualizaNomeResponsavel($event)"
-         >
+          (onChange)="atualizaNomeResponsavel($event)"
+        >
         </p-dropdown>
       </div>
     </form>
     <p-footer>
-      <button pButton label="Salvar" icon="pi pi-check" (click)="adicionarParcela()"></button>
-      <button pButton label="Cancelar" icon="pi pi-times" class="p-button-secondary" (click)="fecharModal()"></button>
+      <button
+        pButton
+        label="Salvar"
+        icon="pi pi-check"
+        (click)="adicionarParcela()"
+      ></button>
+      <button
+        pButton
+        label="Cancelar"
+        icon="pi pi-times"
+        class="p-button-secondary"
+        (click)="fecharModal()"
+      ></button>
     </p-footer>
   </p-dialog>
 
   <p-messages [(value)]="notificacao" [enableService]="false"></p-messages>
+</div>

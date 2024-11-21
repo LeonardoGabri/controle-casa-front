@@ -10,7 +10,6 @@ export interface DespesaModel{
   referenciaCobranca?: string;
   numeroParcelas?: string;
   valorTotal?: string;
-  situacao?: string
   planejamentoParcelas?: PlanejamentoParcelas[];
 }
 
@@ -30,7 +29,6 @@ export interface ItemListaDespesa {
   valorTotal: string
   valorTotalAtivo: string
   referenciaCobranca: string
-  situacao: string
   parcelas: any
 }
 
@@ -38,5 +36,4 @@ export interface FiltroParametrosDespesa{
   fornecedor?: string
   conta?: string
   subgrupo?:string;
-  situacao?: string
 }

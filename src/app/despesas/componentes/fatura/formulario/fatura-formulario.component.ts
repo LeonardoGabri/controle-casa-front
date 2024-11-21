@@ -9,6 +9,7 @@ import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg
 import { ActivatedRoute, Router } from "@angular/router";
 import { SituacaoEnum } from "../../../../shared/enum/situacao.enum";
 import { NotificationService } from "../../../../shared/servico/notification.service";
+import { validaCamposInvalidosFormulario } from "../../../../shared/servico/function/valida-formulario.service";
 
 @Component({
   selector: 'app-fatura-formulario',
@@ -52,7 +53,6 @@ export class FaturaFormularioComponent implements OnInit{
       despesaFornecedor: [novoFormulario?.despesaFornecedor],
       responsavelId: [novoFormulario?.responsavelId, Validators.required],
       valor: [novoFormulario?.valor, Validators.required],
-      situacao: [novoFormulario?.situacao],
       porcentagemDivisao: [novoFormulario?.porcentagemDivisao],
       parcelaAtual: [novoFormulario?.parcelaAtual],
       despesaId: [novoFormulario?.despesaId],
@@ -103,6 +103,9 @@ export class FaturaFormularioComponent implements OnInit{
         },
         complete: () => {},
       });
+    }else{
+      let camposErros = validaCamposInvalidosFormulario(this.formulario).join(" - ")
+      this.notificacao = new Array(MensagemNotificacao(camposErros).formularioInvalido);
     }
   }
 

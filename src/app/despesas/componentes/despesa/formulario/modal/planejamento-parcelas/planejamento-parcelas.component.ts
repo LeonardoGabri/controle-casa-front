@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PlanejamentoParcelas } from "../../../modelo/despesa.model";
 import { ResponsavelApiService } from "../../../../../../cadastros/componentes/responsavel/servico/responsavel-api.service";
 import { MenuItem, Message } from "primeng/api";
 import { MensagemNotificacao } from "../../../../../../shared/mensagem/notificacao-msg.service";
+import { validaCamposInvalidosFormulario } from "../../../../../../shared/servico/function/valida-formulario.service";
 
 @Component({
   selector: 'app-planejamento-parcelas-component',
@@ -35,9 +36,9 @@ export class PlanejamentoParcelasComponent implements OnInit{
   criarFormulario(novoFormulario?: PlanejamentoParcelas){
     this.formulario = this.formBuilder.group({
       indTabela: [novoFormulario?.indTabela],
-      porcentagemDivisao: [novoFormulario?.porcentagemDivisao],
-      responsavelId: [novoFormulario?.responsavelId],
-      responsavelNome: [novoFormulario?.responsavelNome]
+      porcentagemDivisao: [novoFormulario?.porcentagemDivisao, Validators.required],
+      responsavelId: [novoFormulario?.responsavelId, Validators.required],
+      responsavelNome: [novoFormulario?.responsavelNome, Validators.required]
     })
   }
 
@@ -58,17 +59,22 @@ export class PlanejamentoParcelasComponent implements OnInit{
   }
 
   adicionarParcela() {
-    const index = this.formulario.get('indTabela')?.value;
+    if(this.formulario.valid){
+      const index = this.formulario.get('indTabela')?.value;
 
-    if (index === null || index === undefined) {
-      this.parcelas.push({ ...this.formulario.getRawValue() });
-    } else {
-      this.parcelas[index] = { ...this.formulario.getRawValue() };
+      if (index === null || index === undefined) {
+        this.parcelas.push({ ...this.formulario.getRawValue() });
+      } else {
+        this.parcelas[index] = { ...this.formulario.getRawValue() };
+      }
+
+      this.atualizarIndTabela();
+      this.parcelasChange.emit(this.parcelas);
+      this.fecharModal();
+    }else{
+      let camposErros = validaCamposInvalidosFormulario(this.formulario).join(" - ")
+      this.notificacao = new Array(MensagemNotificacao(camposErros).formularioInvalido);
     }
-
-    this.atualizarIndTabela();
-    this.parcelasChange.emit(this.parcelas);
-    this.fecharModal();
   }
 
   editarParcela(item: PlanejamentoParcelas) {

@@ -14,6 +14,7 @@ import { FaturaModel } from '../../fatura/modelo/fatura.model';
 import { DespesaModel, PlanejamentoParcelas } from '../modelo/despesa.model';
 import { DespesaApiService } from '../servico/despesa-api.service';
 import { NotificationService } from '../../../../shared/servico/notification.service';
+import { validaCamposInvalidosFormulario } from '../../../../shared/servico/function/valida-formulario.service';
 
 @Component({
   selector: 'app-despesa-formulario',
@@ -64,7 +65,6 @@ export class DespesaFormularioComponent implements OnInit {
       subgrupoId: [novoFormulario?.subgrupoId, Validators.required],
       dataLancamento: [dataAtual],
       referenciaCobranca: [novoFormulario?.referenciaCobranca, Validators.required],
-      situacao: [novoFormulario?.situacao],
       numeroParcelas: [novoFormulario?.numeroParcelas, [Validators.required, Validators.min(1)]],
       valorTotal: [
         novoFormulario?.valorTotal,
@@ -117,6 +117,9 @@ export class DespesaFormularioComponent implements OnInit {
         },
         complete: () => {},
       });
+    }else{
+      let camposErros = validaCamposInvalidosFormulario(this.formulario).join(" - ")
+      this.notificacao = new Array(MensagemNotificacao(camposErros).formularioInvalido);
     }
   }
 

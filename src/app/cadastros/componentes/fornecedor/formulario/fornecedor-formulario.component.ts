@@ -9,6 +9,7 @@ import { FornecedorModel } from "../modelo/fornecedor.model";
 import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg.service";
 import { SubgrupoApiService } from "../../subgrupo/servico/subgrupo-api.service";
 import { NotificationService } from "../../../../shared/servico/notification.service";
+import { validaCamposInvalidosFormulario } from "../../../../shared/servico/function/valida-formulario.service";
 
 @Component({
   selector: 'app-fornecedor-formulario',
@@ -86,6 +87,9 @@ export class FornecedorFormularioComponent implements OnInit{
         complete: () => {
         }
       });
+    }else{
+      let camposErros = validaCamposInvalidosFormulario(this.formulario).join(" - ")
+      this.notificacao = new Array(MensagemNotificacao(camposErros).formularioInvalido);
     }
 }
 
