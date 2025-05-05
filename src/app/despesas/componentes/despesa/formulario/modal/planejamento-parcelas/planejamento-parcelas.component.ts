@@ -41,7 +41,7 @@ export class PlanejamentoParcelasComponent implements OnInit {
         Validators.required,
       ],
       responsavelId: [novoFormulario?.responsavelId, Validators.required],
-      responsavelNome: [novoFormulario?.responsavelNome, Validators.required],
+      responsavelNome: [novoFormulario?.responsavelNome],
     });
   }
 
@@ -127,9 +127,16 @@ export class PlanejamentoParcelasComponent implements OnInit {
   }
 
   atualizaNomeResponsavel(item: any) {
+    let idResponsavel = this.formulario.get('responsavelId')?.value
+    let labelResponsavel = this.opcoesResponsavel.find(item => {
+      if(item.value == idResponsavel){
+        return item.label
+      }
+    })
+
     this.formulario
       .get('responsavelNome')
-      ?.setValue(item.originalEvent.currentTarget.ariaLabel);
+      ?.setValue(labelResponsavel.label);
   }
 
   calcularTotalPorcentagemDivisao(

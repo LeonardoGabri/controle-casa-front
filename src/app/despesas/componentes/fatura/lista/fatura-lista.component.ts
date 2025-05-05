@@ -21,6 +21,7 @@ import { NotificationService } from '../../../../shared/servico/notification.ser
 })
 export class FaturaListaComponent implements OnInit{
   iteansParcelas: ItemListaFatura[]  = [];
+  valorTotal: Number = 0.00
   notificacao: Message[] =[]
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosFatura = {};
@@ -58,7 +59,8 @@ export class FaturaListaComponent implements OnInit{
     let params = this.criarParamentrosBusca(this.pesquisar, this.filtroBuscaAvancada)
     this.faturaApiService.buscarParcelas(params, this.paginacao.page, this.paginacao.size).subscribe({
       next: (response: any) => {
-          this.iteansParcelas = response
+          this.iteansParcelas = response.parcelas
+          this.valorTotal = response.valorTotal
       },
       error: ({ error }) => {
         this.notificacao = new Array(MensagemNotificacao(error).erroAoListar);
