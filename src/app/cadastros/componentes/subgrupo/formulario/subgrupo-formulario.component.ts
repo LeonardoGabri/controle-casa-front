@@ -39,7 +39,7 @@ export class SubgrupoFormularioComponent implements OnInit{
 
     this.id = this.route.snapshot.paramMap.get('id');
     if (this.id) {
-      this.carregarGrupo(this.id);
+      this.carregarSubGrupo(this.id);
     }
   }
 
@@ -51,10 +51,11 @@ export class SubgrupoFormularioComponent implements OnInit{
     })
   }
 
-  carregarGrupo(id: string) {
+  carregarSubGrupo(id: string) {
     this.subgrupoApiService.buscarSubgrupoPorId(id).subscribe({
-      next: (responsavel: any) => {
-        this.formulario.patchValue(responsavel);
+      next: (subgrupo: any) => {
+        this.formulario.patchValue(subgrupo);
+        this.formulario.get('grupoId')?.setValue(subgrupo?.grupo?.id)
       },
       error: ({error}) => {
         this.notificacao = [MensagemNotificacao(error).erroAoBuscarRegistro];

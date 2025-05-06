@@ -55,8 +55,9 @@ export class FornecedorFormularioComponent implements OnInit{
     this.fornecedorApiService.buscarFornecedorPorId(id).subscribe({
       next: (fornecedor: any) => {
         let retorno = {
+          id: fornecedor.id,
           nome: fornecedor.nome,
-          grupoId: fornecedor.grupo.id
+          subgrupoId: fornecedor.subgrupo.id
         }
         this.formulario.patchValue(retorno);
       },

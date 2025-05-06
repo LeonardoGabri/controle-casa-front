@@ -60,7 +60,7 @@
     </div>
   </p-dialog>
 
-  <p-table #table [value]="itensConta" [paginator]="true" [rows]="10" [globalFilterFields]="['nome', 'responsavel']">
+  <p-table #table [value]="itensConta" [paginator]="true" [rows]="paginacao.size" [globalFilterFields]="['nome', 'responsavel']">
     <ng-template pTemplate="header">
       <tr class="header-row">
         <th>Conta</th>

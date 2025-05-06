@@ -1,12 +1,13 @@
-import { Component, OnInit } from "@angular/core";
-import { FiltroParametrosSubgrupo, ItemListaSubgrupo } from "../modelo/subgrupo.model";
-import { Message } from "primeng/api";
-import { Router } from "@angular/router";
-import { SubgrupoApiService } from "../servico/subgrupo-api.service";
-import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg.service";
-import { navegacaoSubgrupo, navegacaoSubgrupoNovoCadastro, navegacaoGrupoEditarCadastro } from "../../../servico/navegacao-cadastro.service";
-import { FiltroParametrosGrupo } from "../../grupo/modelo/grupo.model";
-import { NotificationService } from "../../../../shared/servico/notification.service";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Message } from 'primeng/api';
+
+import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg.service';
+import { NotificationService } from '../../../../shared/servico/notification.service';
+import { navegacaoSubgrupo, navegacaoSubgrupoEditarCadastro, navegacaoSubgrupoNovoCadastro } from '../../../servico/navegacao-cadastro.service';
+import { FiltroParametrosGrupo } from '../../grupo/modelo/grupo.model';
+import { FiltroParametrosSubgrupo, ItemListaSubgrupo } from '../modelo/subgrupo.model';
+import { SubgrupoApiService } from '../servico/subgrupo-api.service';
 
 @Component({
   selector: 'app-subgrupo-lista',
@@ -72,7 +73,7 @@ export class SubgrupoListaComponent implements OnInit{
 
 
   editItem(item: ItemListaSubgrupo) {
-    this.router.navigate([navegacaoGrupoEditarCadastro(item.id).link])
+    this.router.navigate([navegacaoSubgrupoEditarCadastro(item.id).link])
   }
 
   removeItem(item: ItemListaSubgrupo) {

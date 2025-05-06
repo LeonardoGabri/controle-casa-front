@@ -1,3 +1,4 @@
+import { FornecedorModel } from './../../../../cadastros/componentes/fornecedor/modelo/fornecedor.model';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -98,6 +99,10 @@ export class DespesaFormularioComponent implements OnInit {
 
   salvar() {
     if(this.formulario.valid){
+      if(this.formulario.get('valorTotal')?.dirty && this.formulario.get('planejamentoParcelas')?.value == null){
+        this.notificationService.addMessage(MensagemNotificacao().erroSomaPorcentagem);
+        return
+      }
       let request = this.formulario.getRawValue();
       let metodo = this.id
         ? this.despesaApiService.editarDespesa(this.id, request)
@@ -147,6 +152,7 @@ export class DespesaFormularioComponent implements OnInit {
         this.opcoesFornecedor = dados.map((item: any) => ({
           label: item.nome,
           value: item.id,
+          subgrupoId: item?.subgrupo?.id
         }));
       },
       error: (err) => console.error('Erro ao carregar opções de fornecedores', err)
@@ -187,5 +193,12 @@ export class DespesaFormularioComponent implements OnInit {
   onRemoverParcela(parcela: FaturaModel) {
     console.log("Remover parcela:", parcela);
     // Lógica para remover a parcela
+  }
+
+  alteraFornecedor(fornecedor: any){
+    let opcoeEncontrada = this.opcoesFornecedor.find((item: any) => {
+      return item.value == fornecedor.value
+    })
+    this.formulario.get('subgrupoId')?.setValue(opcoeEncontrada?.subgrupoId)
   }
 }

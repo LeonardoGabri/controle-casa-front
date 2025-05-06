@@ -21,7 +21,7 @@ import { NotificationService } from '../../../../shared/servico/notification.ser
 })
 export class FaturaListaComponent implements OnInit{
   iteansParcelas: ItemListaFatura[]  = [];
-  valorTotal: Number = 0.00
+  valorTotal: number = 0.00
   notificacao: Message[] =[]
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosFatura = {};

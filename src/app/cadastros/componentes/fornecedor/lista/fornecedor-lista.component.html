@@ -58,7 +58,7 @@
     </div>
   </p-dialog>
 
-  <p-table #table [value]="itensConta" [paginator]="true" [rows]="10" [globalFilterFields]="['nome', 'responsavel']">
+  <p-table #table [value]="itensConta" [paginator]="true" [rows]="paginacao.size"  [globalFilterFields]="['nome', 'responsavel']">
     <ng-template pTemplate="header">
       <tr class="header-row">
         <th>Nome</th>
@@ -70,7 +70,7 @@
     <ng-template pTemplate="body" let-item>
       <tr>
         <td>{{ item.nome }}</td>
-        <td>{{ item.subgrupo.nome }}</td>
+        <td>{{ item?.subgrupo?.nome }}</td>
         <td class="actions-column">
           <p-overlayPanel #op>
             <div class="action-option" (click)="editItem(item)">

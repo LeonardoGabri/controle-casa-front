@@ -1,7 +1,7 @@
 <div class="list-container">
   <div class="list-header">
     <h2 class="list-title">{{ nomePagina }}</h2>
-    <h1> Valor Total: {{ valorTotal }}</h1>
+    <h1> Valor Total: {{ valorTotal | currency:'BRL':'symbol':'1.2-2':'pt-BR'}}</h1>
     <div class="header-actions">
       <input
         pInputText
@@ -53,7 +53,7 @@
     </div>
   </p-dialog>
 
-  <p-table #table [value]="iteansParcelas" [paginator]="true" [rows]="10" [globalFilterFields]="['nome', 'responsavel']">
+  <p-table #table [value]="iteansParcelas" [paginator]="true" [rows]="paginacao.size" [globalFilterFields]="['nome', 'responsavel']">
     <ng-template pTemplate="header">
       <tr class="header-row">
         <th>Responsável</th>
@@ -68,9 +68,9 @@
     <ng-template pTemplate="body" let-item>
       <tr>
         <td>{{ item.responsavelNome }}</td>
-        <td>{{ item.dataVencimento }}</td>
+        <td>{{ item.dataVencimento | date:'dd/MM/yyyy' }}</td>
         <td>{{ item.despesaFornecedor }}</td>
-        <td>{{ item.valor }}</td>
+        <td>{{ item.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
         <td>{{ item.parcelaAtual }}</td>
 
         <td class="actions-column">

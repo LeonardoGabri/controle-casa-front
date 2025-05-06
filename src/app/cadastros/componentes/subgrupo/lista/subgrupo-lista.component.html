@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <p-table #table [value]="itensSubgrupo" [paginator]="true" [rows]="10" [globalFilterFields]="['nome', 'grupo.nome']">
+  <p-table #table [value]="itensSubgrupo" [paginator]="true" [rows]="paginacao.size"  [globalFilterFields]="['nome', 'grupo.nome']">
     <ng-template pTemplate="header">
       <tr class="header-row">
         <th>Nome</th>

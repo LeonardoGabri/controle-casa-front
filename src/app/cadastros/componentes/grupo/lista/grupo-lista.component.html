@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <p-table #table [value]="itensGrupo" [paginator]="true" [rows]="10">
+  <p-table #table [value]="itensGrupo" [paginator]="true" [rows]="paginacao.size" >
     <ng-template pTemplate="header">
       <tr class="header-row">
         <th>Nome</th>
