@@ -77,12 +77,6 @@ export class AppComponent implements OnInit {
                 icon: 'pi pi-shop',
                 subtext: 'Subtext of item',
                 routerLink: navegacaoFornecedor.link,
-              },
-              {
-                label: 'Sair',
-                icon: 'pi pi-sign-out',
-                target: 'end',
-                command: () => this.logout()
               }
             ],
           },
