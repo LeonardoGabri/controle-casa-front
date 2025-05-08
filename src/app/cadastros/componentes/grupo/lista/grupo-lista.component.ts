@@ -6,7 +6,7 @@ import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg
 import { navegacaoGrupo, navegacaoGrupoEditarCadastro, navegacaoGrupoNovoCadastro } from '../../../servico/navegacao-cadastro.service';
 import { FiltroParametrosGrupo, ItemListaGrupo } from '../modelo/grupo.model';
 import { GrupoApiService } from './../servico/grupo-api.service';
-import { NotificationService } from '../../../../shared/servico/notification.service';
+import { NotificationService } from '../../../../shared/mensagem/notification.service';
 
 @Component({
   selector: 'app-grupo-lista',
@@ -15,7 +15,6 @@ import { NotificationService } from '../../../../shared/servico/notification.ser
 })
 export class GrupoListaComponent implements OnInit{
   itensGrupo: ItemListaGrupo[]  = [];
-  notificacao: Message[] =[]
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosGrupo = {};
   mostrarBuscaAvancada = false;
@@ -34,9 +33,6 @@ export class GrupoListaComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-    this.notificacao = this.notificationService.getMessages();
-    this.notificationService.clearMessages();
-
     this.buscarDadosGrupo()
   }
 
@@ -51,7 +47,7 @@ export class GrupoListaComponent implements OnInit{
           this.itensGrupo = response
       },
       error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao(error).erroAoListar);
+        this.notificationService.error(MensagemNotificacao(error).erroAoListar.detail)
       },
     })
   }
@@ -79,10 +75,10 @@ export class GrupoListaComponent implements OnInit{
     this.grupoApiService.deletarGrupo(item.id).subscribe({
       next: (response: any) => {
           this.buscarDadosGrupo()
-          this.notificacao = new Array(MensagemNotificacao().deletarRegistro);
-      },
+          this.notificationService.success(MensagemNotificacao().deletarRegistro.summary)
+        },
       error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao(error).erroAoDeletar);
+        this.notificationService.error(MensagemNotificacao(error).erroAoDeletar.detail)
       },
     })
   }

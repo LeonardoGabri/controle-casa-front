@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { Message } from 'primeng/api';
 
 import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg.service';
-import { NotificationService } from '../../../../shared/servico/notification.service';
 import { navegacaoSubgrupo, navegacaoSubgrupoEditarCadastro, navegacaoSubgrupoNovoCadastro } from '../../../servico/navegacao-cadastro.service';
 import { FiltroParametrosGrupo } from '../../grupo/modelo/grupo.model';
 import { FiltroParametrosSubgrupo, ItemListaSubgrupo } from '../modelo/subgrupo.model';
 import { SubgrupoApiService } from '../servico/subgrupo-api.service';
+import { NotificationService } from '../../../../shared/mensagem/notification.service';
 
 @Component({
   selector: 'app-subgrupo-lista',
@@ -16,7 +16,6 @@ import { SubgrupoApiService } from '../servico/subgrupo-api.service';
 })
 export class SubgrupoListaComponent implements OnInit{
   itensSubgrupo: ItemListaSubgrupo[]  = [];
-  notificacao: Message[] =[]
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosSubgrupo = {};
   mostrarBuscaAvancada = false;
@@ -35,9 +34,6 @@ export class SubgrupoListaComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-    this.notificacao = this.notificationService.getMessages();
-    this.notificationService.clearMessages();
-
     this.buscarDadosGrupo()
   }
 
@@ -52,7 +48,7 @@ export class SubgrupoListaComponent implements OnInit{
           this.itensSubgrupo = response
       },
       error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao(error).erroAoListar);
+        this.notificationService.error(MensagemNotificacao().erroAoListar.detail)
       },
     })
   }
@@ -80,10 +76,10 @@ export class SubgrupoListaComponent implements OnInit{
     this.subgrupoApiService.deletarSubgrupo(item.id).subscribe({
       next: (response: any) => {
           this.buscarDadosGrupo()
-          this.notificacao = new Array(MensagemNotificacao().deletarRegistro);
-      },
+          this.notificationService.success(MensagemNotificacao().deletarRegistro.summary)
+        },
       error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao(error).erroAoDeletar);
+        this.notificationService.error(MensagemNotificacao().erroAoDeletar.detail)
       },
     })
   }

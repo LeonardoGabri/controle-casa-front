@@ -8,8 +8,8 @@ import { Message } from "primeng/api";
 import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SituacaoEnum } from "../../../../shared/enum/situacao.enum";
-import { NotificationService } from "../../../../shared/servico/notification.service";
 import { validaCamposInvalidosFormulario } from "../../../../shared/servico/function/valida-formulario.service";
+import { NotificationService } from "../../../../shared/mensagem/notification.service";
 
 @Component({
   selector: 'app-fatura-formulario',
@@ -20,7 +20,6 @@ export class FaturaFormularioComponent implements OnInit{
   formulario!: FormGroup
   id: string | null = null;
   editaDespesa: string | null = null;
-  notificacao: Message[] = [];
   nomePagina = navegacaoParcelaNovoCadastro.label;
   opcoesResponsavel: any[] = [];
 
@@ -40,7 +39,6 @@ export class FaturaFormularioComponent implements OnInit{
 
     this.id = this.route.snapshot.paramMap.get('id');
     this.editaDespesa = this.route.snapshot.paramMap.get('editaDespesa');
-    console.log('PARAM', this.route.snapshot)
     if (this.id) {
       this.carregarParcela(this.id);
     }
@@ -75,7 +73,7 @@ export class FaturaFormularioComponent implements OnInit{
         }
       },
       error: ({ error }) => {
-        this.notificacao = [MensagemNotificacao(error.details).erroAoBuscarRegistro];
+        this.notificationService.error(MensagemNotificacao(error).erroAoBuscarRegistro.detail)
       },
     });
   }
@@ -94,18 +92,18 @@ export class FaturaFormularioComponent implements OnInit{
       metodo.subscribe({
         next: (retorno: any) => {
           if (retorno) {
-            this.notificationService.addMessage(MensagemNotificacao().salvarRegistro);
+            this.notificationService.error(MensagemNotificacao().salvarRegistro.summary)
             this.cancelar();
           }
         },
         error: ({ error }) => {
-          this.notificacao = new Array(MensagemNotificacao(error).erroSalvarRegistro);
+          this.notificationService.error(MensagemNotificacao(error).erroSalvarRegistro.detail)
         },
         complete: () => {},
       });
     }else{
       let camposErros = validaCamposInvalidosFormulario(this.formulario).join(" - ")
-      this.notificacao = new Array(MensagemNotificacao(camposErros).formularioInvalido);
+      this.notificationService.error(MensagemNotificacao(camposErros).formularioInvalido.detail)
     }
   }
 

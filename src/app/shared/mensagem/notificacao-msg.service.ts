@@ -9,7 +9,7 @@ export const MensagemNotificacao = (msg?: string) => ({
   },
   formularioInvalido: {
     severity: 'error',
-    detail: `Campos inválidos - ${msg}`
+    detail: `Campos inválidos`
   },
   erroAoBuscarRegistro: {
     severity: 'error',
@@ -34,6 +34,10 @@ export const MensagemNotificacao = (msg?: string) => ({
   erroSomaPorcentagem: {
     severity: 'warning',
     detail: 'A soma das porcentagens nao atingiu 100%'
+  },
+  sessaoExpirada: {
+    severity: 'error',
+    detail: `Sessão Expirada`
   }
 
 });

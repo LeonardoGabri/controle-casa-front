@@ -1,4 +1,16 @@
-<div class="card">
-  <p-megaMenu [model]="items" />
+<div *ngIf="showMenu" class="card">
+  <p-megaMenu [model]="items">
+    <ng-template pTemplate="end">
+      <button
+        pButton
+        icon="pi pi-sign-out"
+        label="Sair"
+        (click)="logout()"
+        class="logout-btn"
+      ></button>
+    </ng-template>
+  </p-megaMenu>
 </div>
+
 <router-outlet></router-outlet>
+<p-toast position="bottom-center"></p-toast>

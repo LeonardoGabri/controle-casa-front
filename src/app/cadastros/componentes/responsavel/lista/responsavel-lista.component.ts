@@ -5,7 +5,7 @@ import { ResponsavelApiService } from "../servico/responsavel-api.service";
 import { navegacaoResponsavel, navegacaoResponsavelEditarCadastro, navegacaoResponsavelNovoCadastro } from "../../../servico/navegacao-cadastro.service";
 import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg.service";
 import { Message } from "primeng/api";
-import { NotificationService } from "../../../../shared/servico/notification.service";
+import { NotificationService } from "../../../../shared/mensagem/notification.service";
 
 @Component({
   selector: 'app-responsavel-lista',
@@ -15,7 +15,6 @@ import { NotificationService } from "../../../../shared/servico/notification.ser
 export class ResponsavelListaComponent implements OnInit{
   itensResponsaveis: ItemListaResponsavel[]  = [];
   nomePagina = navegacaoResponsavel.label
-  notificacao: Message[] =[]
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosResponsavel = {};
   mostrarBuscaAvancada = false;
@@ -34,9 +33,6 @@ export class ResponsavelListaComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-    this.notificacao = this.notificationService.getMessages();
-    this.notificationService.clearMessages();
-
     this.buscarDadosResponsaveis()
   }
 
@@ -51,7 +47,7 @@ export class ResponsavelListaComponent implements OnInit{
           this.itensResponsaveis = response
       },
       error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao(error).erroAoListar);
+        this.notificationService.error(MensagemNotificacao().erroAoListar.detail + error)
       },
     })
   }
@@ -74,10 +70,10 @@ export class ResponsavelListaComponent implements OnInit{
     this.responsavelApiService.deletarResponsavel(item.id).subscribe({
       next: (responsavel: any) => {
         this.buscarDadosResponsaveis();
+        this.notificationService.success(MensagemNotificacao().deletarRegistro.summary)
       },
       error: ({error}) => {
-        this.notificacao = [MensagemNotificacao(error).erroAoListar];
-      }
+        this.notificationService.error(MensagemNotificacao().erroAoDeletar.detail + error)      }
     })
   }
 }

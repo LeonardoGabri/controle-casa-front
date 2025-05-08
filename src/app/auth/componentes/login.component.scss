@@ -1,0 +1,14 @@
+.login-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #121212;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 300px;
+}

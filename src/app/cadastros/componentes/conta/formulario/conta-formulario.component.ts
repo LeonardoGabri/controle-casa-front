@@ -9,7 +9,7 @@ import { BancoApiService } from '../../banco/servico/banco-api.service';
 import { ResponsavelApiService } from '../../responsavel/servico/responsavel-api.service';
 import { navegacaoContaNovoCadastro } from '../../../servico/navegacao-cadastro.service';
 import { validaCamposInvalidosFormulario } from '../../../../shared/servico/function/valida-formulario.service';
-import { NotificationService } from '../../../../shared/servico/notification.service';
+import { NotificationService } from '../../../../shared/mensagem/notification.service';
 
 @Component({
   selector: 'app-conta-formulario',
@@ -18,7 +18,6 @@ import { NotificationService } from '../../../../shared/servico/notification.ser
 })
 export class ContaFormularioComponent implements OnInit{
   formulario!: FormGroup
-  notificacao: Message[] = [];
   nomePagina = navegacaoContaNovoCadastro.label
   opcoesBanco: any[] = [];
   opcoesResponsavel: any[] = [];
@@ -64,7 +63,7 @@ export class ContaFormularioComponent implements OnInit{
         this.formulario.patchValue(retorno);
       },
       error: ({error}) => {
-        this.notificacao = [MensagemNotificacao(error).erroSalvarRegistro];
+        this.notificationService.error(MensagemNotificacao().erroAoBuscarRegistro.detail + error)
       }
     });
   }
@@ -80,19 +79,19 @@ export class ContaFormularioComponent implements OnInit{
       metodo.subscribe({
         next: (retorno: any) => {
           if (retorno) {
-            this.notificationService.addMessage(MensagemNotificacao().salvarRegistro);
+            this.notificationService.success(MensagemNotificacao().salvarRegistro.summary);
             this.cancelar();
           }
         },
         error: ({ error }) => {
-          this.notificacao = new Array(MensagemNotificacao().erroSalvarRegistro);
+          this.notificationService.error(MensagemNotificacao().erroSalvarRegistro.detail + error)
         },
         complete: () => {
         }
       });
     }else{
       let camposErros = validaCamposInvalidosFormulario(this.formulario).join(" - ")
-      this.notificacao = new Array(MensagemNotificacao(camposErros).formularioInvalido);
+      this.notificationService.error(MensagemNotificacao(camposErros).formularioInvalido.detail)
     }
 }
 

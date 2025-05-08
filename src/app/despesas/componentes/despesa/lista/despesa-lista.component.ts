@@ -1,17 +1,20 @@
-import { FornecedorApiService } from './../../../../cadastros/componentes/fornecedor/servico/fornecedor-api.service';
-import { Component, OnInit } from "@angular/core";
-import { FiltroParametrosDespesa, ItemListaDespesa } from "../modelo/despesa.model";
-import { Message } from "primeng/api";
-import { DespesaApiService } from "../servico/despesa-api.service";
-import { Router } from "@angular/router";
-import { MensagemNotificacao } from "../../../../shared/mensagem/notificacao-msg.service";
-import { navegacaoDespesa, navegacaoDespesaEditarCadastro, navegacaoDespesaNovoCadastro } from "../../../servico/navegacao-despesa.service";
-import { BancoApiService } from '../../../../cadastros/componentes/banco/servico/banco-api.service';
-import { GrupoApiService } from '../../../../cadastros/componentes/grupo/servico/grupo-api.service';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Message } from 'primeng/api';
+
 import { ContaApiService } from '../../../../cadastros/componentes/conta/servico/conta-api.service';
 import { SubgrupoApiService } from '../../../../cadastros/componentes/subgrupo/servico/subgrupo-api.service';
 import { opcoesSituacao } from '../../../../shared/enum/situacao.enum';
-import { NotificationService } from '../../../../shared/servico/notification.service';
+import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg.service';
+import {
+  navegacaoDespesa,
+  navegacaoDespesaEditarCadastro,
+  navegacaoDespesaNovoCadastro,
+} from '../../../servico/navegacao-despesa.service';
+import { FiltroParametrosDespesa, ItemListaDespesa } from '../modelo/despesa.model';
+import { DespesaApiService } from '../servico/despesa-api.service';
+import { FornecedorApiService } from './../../../../cadastros/componentes/fornecedor/servico/fornecedor-api.service';
+import { NotificationService } from '../../../../shared/mensagem/notification.service';
 
 @Component({
   selector: 'app-despesa-lista',
@@ -20,7 +23,6 @@ import { NotificationService } from '../../../../shared/servico/notification.ser
 })
 export class DespesaListaComponent implements OnInit{
   itensDespesa: ItemListaDespesa[]  = [];
-  notificacao: Message[] =[]
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosDespesa = {};
   mostrarBuscaAvancada = false;
@@ -45,9 +47,6 @@ export class DespesaListaComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-    this.notificacao = this.notificationService.getMessages();
-    this.notificationService.clearMessages();
-
     this.carregarOpcoesConta()
     this.carregarOpcoesFornecedor()
     this.carregarOpcoesSubgrupo()
@@ -66,7 +65,7 @@ export class DespesaListaComponent implements OnInit{
           this.itensDespesa = response
       },
       error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao(error).erroAoListar);
+        this.notificationService.error(MensagemNotificacao(error).erroAoListar.detail)
       },
     })
   }
@@ -94,10 +93,10 @@ export class DespesaListaComponent implements OnInit{
     this.despesaApiService.deletarDespesa(item.id).subscribe({
       next: (response: any) => {
           this.buscarDadosDespesa()
-          this.notificacao = new Array(MensagemNotificacao().deletarRegistro);
-      },
+          this.notificationService.success(MensagemNotificacao().deletarRegistro.summary)
+        },
       error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao(error).erroAoDeletar);
+        this.notificationService.error(MensagemNotificacao(error).erroAoDeletar.detail)
       },
     })
   }

@@ -16,7 +16,7 @@
         <td>{{ parcela.dataVencimento | date: 'dd/MM/yyyy' }}</td>
         <td>{{ parcela.despesaFornecedor }}</td>
         <td>{{ parcela.responsavelNome }}</td>
-        <td>{{ parcela.valor | currency: 'BRL' }}</td>
+        <td>{{ parcela.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
         <td class="actions-column">
           <p-overlayPanel #op>
             <div class="action-option" (click)="editarParcela(parcela)">

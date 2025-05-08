@@ -7,7 +7,7 @@ import { navegacaoConta, navegacaoContaEditarCadastro, navegacaoContaNovoCadastr
 import { ResponsavelApiService } from '../../responsavel/servico/responsavel-api.service';
 import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg.service';
 import { Message } from 'primeng/api';
-import { NotificationService } from '../../../../shared/servico/notification.service';
+import { NotificationService } from '../../../../shared/mensagem/notification.service';
 
 @Component({
   selector: 'app-conta-lista',
@@ -17,7 +17,6 @@ import { NotificationService } from '../../../../shared/servico/notification.ser
 export class ContaListaComponent implements OnInit{
   itensConta: ItemListaConta[]  = [];
   nomePagina = navegacaoConta.label
-  notificacao: Message[] =[]
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosConta = {};
   mostrarBuscaAvancada = false;
@@ -38,9 +37,6 @@ export class ContaListaComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-    this.notificacao = this.notificationService.getMessages();
-    this.notificationService.clearMessages();
-
     this.carregarOpcoesBanco();
     this.carregarOpcoesResponsavel();
 
@@ -58,7 +54,7 @@ export class ContaListaComponent implements OnInit{
           this.itensConta = response
       },
       error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao(error).erroAoListar);
+        this.notificationService.error(MensagemNotificacao().erroAoListar.detail)
       },
     })
   }
@@ -86,11 +82,11 @@ export class ContaListaComponent implements OnInit{
     this.contaApiService.deletarConta(item.id).subscribe({
       next: (dados: any) => {
         this.buscarDadosConta()
-        this.notificacao = new Array(MensagemNotificacao().deletarRegistro);
+        this.notificationService.success(MensagemNotificacao().deletarRegistro.summary)
 
       },
       error: (err) => {
-        this.notificacao = new Array(MensagemNotificacao(err).erroAoDeletar);
+        this.notificationService.error(MensagemNotificacao().erroAoDeletar.detail)
       }
     });
   }

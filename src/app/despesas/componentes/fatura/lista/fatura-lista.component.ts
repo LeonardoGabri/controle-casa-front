@@ -12,7 +12,7 @@ import {
 } from '../../../servico/navegacao-despesa.service';
 import { FiltroParametrosFatura, ItemListaFatura } from '../modelo/fatura.model';
 import { FaturaApiService } from '../servico/fatura.service';
-import { NotificationService } from '../../../../shared/servico/notification.service';
+import { NotificationService } from '../../../../shared/mensagem/notification.service';
 
 @Component({
   selector: 'app-fatura-lista',
@@ -22,7 +22,6 @@ import { NotificationService } from '../../../../shared/servico/notification.ser
 export class FaturaListaComponent implements OnInit{
   iteansParcelas: ItemListaFatura[]  = [];
   valorTotal: number = 0.00
-  notificacao: Message[] =[]
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosFatura = {};
   mostrarBuscaAvancada = false;
@@ -43,9 +42,6 @@ export class FaturaListaComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-    this.notificacao = this.notificationService.getMessages();
-    this.notificationService.clearMessages();
-
     this.carregarOpcoesResponsavel()
 
     this.buscarDadosDespesa()
@@ -63,7 +59,7 @@ export class FaturaListaComponent implements OnInit{
           this.valorTotal = response.valorTotal
       },
       error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao(error).erroAoListar);
+        this.notificationService.error(MensagemNotificacao(error).erroAoListar.detail)
       },
     })
   }
@@ -91,10 +87,10 @@ export class FaturaListaComponent implements OnInit{
     this.faturaApiService.deletarParcela(item.id).subscribe({
       next: (response: any) => {
           this.buscarDadosDespesa()
-          this.notificacao = new Array(MensagemNotificacao().deletarRegistro);
-      },
+          this.notificationService.success(MensagemNotificacao().deletarRegistro.summary)
+        },
       error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao(error).erroAoDeletar);
+        this.notificationService.error(MensagemNotificacao(error).erroAoDeletar.detail)
       },
     })
   }

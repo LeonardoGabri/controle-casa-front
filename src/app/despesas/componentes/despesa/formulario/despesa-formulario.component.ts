@@ -14,8 +14,8 @@ import { navegacaoDespesa, navegacaoDespesaNovoCadastro } from '../../../servico
 import { FaturaModel } from '../../fatura/modelo/fatura.model';
 import { DespesaModel, PlanejamentoParcelas } from '../modelo/despesa.model';
 import { DespesaApiService } from '../servico/despesa-api.service';
-import { NotificationService } from '../../../../shared/servico/notification.service';
 import { validaCamposInvalidosFormulario } from '../../../../shared/servico/function/valida-formulario.service';
+import { NotificationService } from '../../../../shared/mensagem/notification.service';
 
 @Component({
   selector: 'app-despesa-formulario',
@@ -25,7 +25,6 @@ import { validaCamposInvalidosFormulario } from '../../../../shared/servico/func
 export class DespesaFormularioComponent implements OnInit {
   formulario!: FormGroup;
   nomePagina = navegacaoDespesaNovoCadastro.label;
-  notificacao: Message[] = [];
   id: string | null = null;
   opcoesConta: any[] = [];
   opcoesFornecedor: any[] = [];
@@ -92,7 +91,7 @@ export class DespesaFormularioComponent implements OnInit {
         this.parcelas = despesa.parcelas
       },
       error: ({ error }) => {
-        this.notificacao = [MensagemNotificacao(error).erroAoBuscarRegistro];
+        this.notificationService.error(MensagemNotificacao(error).erroAoBuscarRegistro.detail)
       },
     });
   }
@@ -100,7 +99,7 @@ export class DespesaFormularioComponent implements OnInit {
   salvar() {
     if(this.formulario.valid){
       if(this.formulario.get('valorTotal')?.dirty && this.formulario.get('planejamentoParcelas')?.value == null){
-        this.notificationService.addMessage(MensagemNotificacao().erroSomaPorcentagem);
+        this.notificationService.error(MensagemNotificacao().erroSomaPorcentagem.detail)
         return
       }
       let request = this.formulario.getRawValue();
@@ -115,18 +114,18 @@ export class DespesaFormularioComponent implements OnInit {
       metodo.subscribe({
         next: (retorno: any) => {
           if (retorno) {
-            this.notificationService.addMessage(MensagemNotificacao().salvarRegistro);
+            this.notificationService.error(MensagemNotificacao().salvarRegistro.summary)
             this.cancelar();
           }
         },
         error: ({ error }) => {
-          this.notificacao = new Array(MensagemNotificacao(error).erroSalvarRegistro);
+          this.notificationService.error(MensagemNotificacao(error).erroSalvarRegistro.detail)
         },
         complete: () => {},
       });
     }else{
       let camposErros = validaCamposInvalidosFormulario(this.formulario).join(" - ")
-      this.notificacao = new Array(MensagemNotificacao(camposErros).formularioInvalido);
+      this.notificationService.error(MensagemNotificacao(camposErros).formularioInvalido.detail)
     }
   }
 
@@ -179,7 +178,7 @@ export class DespesaFormularioComponent implements OnInit {
     const somaPorcentagem = planejamentoParcelas.reduce((soma, item) => soma + (item.porcentagemDivisao || 0), 0);
      somaPorcentagem === 100;
      if(somaPorcentagem !== 100){
-        this.notificacao.push(MensagemNotificacao().erroSomaPorcentagem)
+      this.notificationService.error(MensagemNotificacao().erroSomaPorcentagem.detail)
      }
   }
 
@@ -187,12 +186,10 @@ export class DespesaFormularioComponent implements OnInit {
 
   onEditarParcela(parcela: FaturaModel) {
     console.log("Editar parcela:", parcela);
-    // Lógica para editar a parcela
   }
 
   onRemoverParcela(parcela: FaturaModel) {
     console.log("Remover parcela:", parcela);
-    // Lógica para remover a parcela
   }
 
   alteraFornecedor(fornecedor: any){

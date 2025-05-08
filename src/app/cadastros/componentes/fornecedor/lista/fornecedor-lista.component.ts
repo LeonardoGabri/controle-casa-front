@@ -8,11 +8,10 @@ import {
   navegacaoFornecedorEditarCadastro,
   navegacaoFornecedorNovoCadastro,
 } from '../../../servico/navegacao-cadastro.service';
-import { GrupoApiService } from '../../grupo/servico/grupo-api.service';
 import { FiltroParametrosFornecedor, ItemListaFornecedor } from '../modelo/fornecedor.model';
 import { FornecedorApiService } from '../servico/fornecedor-api.service';
 import { SubgrupoApiService } from '../../subgrupo/servico/subgrupo-api.service';
-import { NotificationService } from '../../../../shared/servico/notification.service';
+import { NotificationService } from '../../../../shared/mensagem/notification.service';
 
 @Component({
   selector: 'app-fornecedor-lista',
@@ -22,7 +21,6 @@ import { NotificationService } from '../../../../shared/servico/notification.ser
 export class FornecedorListaComponent implements OnInit{
   itensConta: ItemListaFornecedor[]  = [];
   nomePagina = navegacaoFornecedor.label
-  notificacao: Message[] =[]
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosFornecedor = {};
   mostrarBuscaAvancada = false;
@@ -41,9 +39,6 @@ export class FornecedorListaComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-    this.notificacao = this.notificationService.getMessages();
-    this.notificationService.clearMessages();
-
     this.carregarOpcoesGrupo();
 
     this.buscarDadosFornecedor()
@@ -60,7 +55,7 @@ export class FornecedorListaComponent implements OnInit{
           this.itensConta = response
       },
       error: ({ error }) => {
-        this.notificacao = new Array(MensagemNotificacao(error).erroAoListar);
+        this.notificationService.error(MensagemNotificacao(error).erroAoBuscarRegistro.detail)
       },
     })
   }
@@ -88,11 +83,11 @@ export class FornecedorListaComponent implements OnInit{
     this.fornecedorApiService.deletarFornecedor(item.id).subscribe({
       next: (dados: any) => {
         this.buscarDadosFornecedor()
-        this.notificacao = new Array(MensagemNotificacao().deletarRegistro);
+        this.notificationService.success(MensagemNotificacao().deletarRegistro.summary)
 
       },
       error: (err) => {
-        this.notificacao = new Array(MensagemNotificacao(err).erroAoDeletar);
+        this.notificationService.error(MensagemNotificacao(err).erroAoDeletar.detail)
       }
     });
   }
