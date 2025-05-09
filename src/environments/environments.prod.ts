@@ -1,7 +1,6 @@
 export const environment = {
-  production: false,
+  production: true,
   url: {
-    service: 'http://localhost:8080'
-    //service: '${URL_SERVICE}'
+    service: '${API_SERVICE}'
   }
 }
