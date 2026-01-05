@@ -21,6 +21,12 @@ export class ContaFormularioComponent implements OnInit{
   nomePagina = navegacaoContaNovoCadastro.label
   opcoesBanco: any[] = [];
   opcoesResponsavel: any[] = [];
+  tipoConta = [
+    {label: 'Crédito', value: 'CREDITO'},
+    {label: 'Conta Corrente', value: 'CONTA_CORRENTE'},
+    {label: 'Investimento', value: 'INVESTIMENTO'},
+  ];
+
   id: string | null = null;
 
   constructor(
@@ -49,7 +55,9 @@ export class ContaFormularioComponent implements OnInit{
     this.formulario = this.formBuilder.group({
       id: [novoFormulario?.id],
       bancoId: [novoFormulario?.bancoId, Validators.required],
-      responsavelId: [novoFormulario?.responsavelId, Validators.required]
+      responsavelId: [novoFormulario?.responsavelId, Validators.required],
+      tipo: [novoFormulario?.tipo, Validators.required]
+
     })
   }
 
@@ -57,8 +65,10 @@ export class ContaFormularioComponent implements OnInit{
     this.contaApiService.buscarContaPorId(id).subscribe({
       next: (conta: any) => {
         let retorno = {
+          id: conta.id,
           bancoId: conta.banco.id,
-          responsavelId: conta.responsavel.id
+          responsavelId: conta.responsavel.id,
+          tipo: conta.tipo
         }
         this.formulario.patchValue(retorno);
       },

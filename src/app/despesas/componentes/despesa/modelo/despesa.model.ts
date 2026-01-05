@@ -1,16 +1,19 @@
 import { ContaModel } from "../../../../cadastros/componentes/conta/modelo/conta.model";
 import { FornecedorModel } from "../../../../cadastros/componentes/fornecedor/modelo/fornecedor.model";
 import { SubgrupoModel } from "../../../../cadastros/componentes/subgrupo/modelo/subgrupo.model";
+import {FaturaModel} from "../../fatura/modelo/fatura.model";
 
 export interface DespesaModel{
   contaId?: string;
   fornecedorId?: string;
   subgrupoId?: string;
+  descricao?: string;
   dataLancamento?: string;
   referenciaCobranca?: string;
   numeroParcelas?: string;
   valorTotal?: string;
   planejamentoParcelas?: PlanejamentoParcelas[];
+  parcelas: FaturaModel[]
 }
 
 export interface PlanejamentoParcelas{

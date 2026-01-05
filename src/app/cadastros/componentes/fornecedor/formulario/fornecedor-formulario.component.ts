@@ -56,7 +56,7 @@ export class FornecedorFormularioComponent implements OnInit{
         let retorno = {
           id: fornecedor.id,
           nome: fornecedor.nome,
-          subgrupoId: fornecedor.subgrupo.id
+          subgrupoId: fornecedor.subgrupo?.id ?? null
         }
         this.formulario.patchValue(retorno);
       },

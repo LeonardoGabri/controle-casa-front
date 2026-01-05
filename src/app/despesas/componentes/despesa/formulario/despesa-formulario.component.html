@@ -42,6 +42,11 @@
         [appendTo]="'body'"
       ></p-dropdown>
     </div>
+
+    <div class="form-group">
+      <label for="fornecedor">Descrição:</label>
+      <input id="descricao" type="text" pInputText placeholder="Descrição" formControlName="descricao" />
+    </div>
   </div>
 
   <div class="form-row">
@@ -114,13 +119,14 @@
 
 <app-planejamento-parcelas-component
   [planejamentoAberto]="planejamentoAberto"
+  [despesa]="this.formulario.getRawValue()"
   (parcelasChange)="atualizarPlanejamentoParcelas($event)"
->
+  (emitirParcelasCalculadas)="atualizarParcelas($event)"
   >
 </app-planejamento-parcelas-component>
 
 <app-parcela-component
-  [parcelas]="parcelas"
+  [parcelas]="formulario.get('parcelas')?.value"
   (editar)="onEditarParcela($event)"
   (remover)="onRemoverParcela($event)"
 >

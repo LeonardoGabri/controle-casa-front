@@ -90,7 +90,7 @@
       <tr>
         <td>{{ item.conta.banco.nome + ' - ' + item.conta.responsavel.nome }}</td>
         <td>{{ item.fornecedor.nome }}</td>
-        <td>{{ item.subgrupo.nome }}</td>
+        <td>{{ item.subgrupo?.nome ?? null }}</td>
         <td>{{ item.valorTotal | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
         <td>{{ item.numeroParcelas }}</td>
 

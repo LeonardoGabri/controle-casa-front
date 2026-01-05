@@ -1,4 +1,5 @@
 <div class="form-container">
+  <!-- Botão de abrir/fechar -->
   <button
     pButton
     [icon]="planejamentoAberto ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
@@ -11,39 +12,56 @@
   <div *ngIf="planejamentoAberto" class="content-container">
     <table class="styled-table full-width">
       <thead>
-        <tr>
-          <th>Porcentagem de Divisão</th>
-          <th>Responsável</th>
-          <th>Ações</th>
-        </tr>
+      <tr>
+        <th>Porcentagem de Divisão</th>
+        <th>Responsável</th>
+        <th>Ações</th>
+      </tr>
       </thead>
+
       <tbody>
-        <tr *ngFor="let parcela of parcelas">
-          <td>{{ parcela.porcentagemDivisao }}%</td>
-          <td>{{ parcela.responsavelNome }}</td>
-          <td>
-            <button
-              pButton
-              icon="pi pi-pencil"
-              (click)="editarParcela(parcela)"
-            ></button>
-            <button
-              pButton
-              icon="pi pi-trash"
-              (click)="removerParcela(parcela)"
-            ></button>
-          </td>
-        </tr>
+      <tr *ngFor="let planejamento of planejamentoParcelas">
+        <td>{{ planejamento.porcentagemDivisao }}%</td>
+        <td>{{ planejamento.responsavelNome }}</td>
+        <td>
+          <button
+            pButton
+            icon="pi pi-pencil"
+            class="p-button-text"
+            (click)="editarParcela(planejamento)"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-text p-button-danger"
+            (click)="removerParcela(planejamento)"
+          ></button>
+        </td>
+      </tr>
       </tbody>
     </table>
 
-    <!-- Botão de incluir -->
-    <button
-      pButton
-      label="Incluir"
-      icon="pi pi-plus"
-      (click)="abrirModal()"
-    ></button>
+    <!-- Rodapé do planejamento -->
+    <div class="planejamento-footer">
+      <!-- Ação secundária -->
+      <button
+        pButton
+        label="Incluir"
+        icon="pi pi-plus"
+        class="p-button-text"
+        (click)="abrirModal()"
+      ></button>
+
+      <!-- Ação principal -->
+      <button
+        pButton
+        label="Gerar Parcelas"
+        icon="pi pi-refresh"
+        class="p-button-success"
+        (click)="gerarParcelas()"
+        [disabled]="planejamentoParcelas.length === 0"
+      ></button>
+    </div>
   </div>
 </div>
 

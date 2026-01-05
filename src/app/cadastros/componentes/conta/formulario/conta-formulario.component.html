@@ -29,4 +29,16 @@
     [appendTo]="'body'"
     ></p-dropdown>
   </div>
+
+  <div class="form-group">
+    <label for="responsavel">Tipo:</label>
+    <p-dropdown id="tipo"
+                [options]="tipoConta"
+                formControlName="tipo"
+                placeholder="Selecione o tipo da Conta"
+                [filter]="true"
+                filterBy="label"
+                [appendTo]="'body'"
+    ></p-dropdown>
+  </div>
 </div>

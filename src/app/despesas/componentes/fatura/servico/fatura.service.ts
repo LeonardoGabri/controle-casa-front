@@ -5,6 +5,7 @@ import { take } from 'rxjs';
 import { environment } from '../../../../../environments/environments';
 import { filtroService } from '../../../../shared/filter/filter-params.service';
 import { FaturaModel, FiltroParametrosFatura } from '../modelo/fatura.model';
+import {DespesaModel} from "../../despesa/modelo/despesa.model";
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +40,10 @@ export class FaturaApiService{
 
   deletarParcela(id: string){
     return this.http.delete(`${this.pathApiDespesa}/${id}`).pipe(take(1))
+  }
+
+  calcularParcelas(despesa: DespesaModel){
+    return this.http.post(`${this.pathApiDespesa}/calcular-parcelas`, despesa).pipe(take(1))
+
   }
 }

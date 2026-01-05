@@ -65,6 +65,7 @@
       <tr class="header-row">
         <th>Conta</th>
         <th>Responsável</th>
+        <th>Tipo da Conta</th>
         <th style="width: 1%;"></th>
       </tr>
     </ng-template>
@@ -73,6 +74,7 @@
       <tr>
         <td>{{ item.nome }}</td>
         <td>{{ item.responsavel }}</td>
+        <td>{{ item.tipo }}</td>
         <td class="actions-column">
           <p-overlayPanel #op>
             <div class="action-option" (click)="editItem(item)">

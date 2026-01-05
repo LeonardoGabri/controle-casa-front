@@ -29,7 +29,6 @@ export class DespesaFormularioComponent implements OnInit {
   opcoesConta: any[] = [];
   opcoesFornecedor: any[] = [];
   opcoesSubgrupo: any[] = [];
-  parcelas: FaturaModel[] = []
   planejamentoAberto = true;
 
   constructor(
@@ -64,7 +63,8 @@ export class DespesaFormularioComponent implements OnInit {
     this.formulario = this.formBuilder.group({
       contaId: [novoFormulario?.contaId, Validators.required],
       fornecedorId: [novoFormulario?.fornecedorId, Validators.required],
-      subgrupoId: [novoFormulario?.subgrupoId, Validators.required],
+      subgrupoId: [novoFormulario?.subgrupoId],
+      descricao:[novoFormulario?.descricao],
       dataLancamento: [dataAtual],
       referenciaCobranca: [novoFormulario?.referenciaCobranca, Validators.required],
       numeroParcelas: [novoFormulario?.numeroParcelas, [Validators.required, Validators.min(1)]],
@@ -73,6 +73,7 @@ export class DespesaFormularioComponent implements OnInit {
         [Validators.required, Validators.min(0), Validators.pattern(/^\d+(\.\d{1,2})?$/)]
       ],
       planejamentoParcelas: [novoFormulario?.planejamentoParcelas],
+      parcelas: [novoFormulario?.parcelas],
     });
 
     this.formulario.get('situacao')?.disable()
@@ -88,7 +89,7 @@ export class DespesaFormularioComponent implements OnInit {
         if(!despesa.situacao){
           this.formulario.get('situacao')?.setValue(SituacaoEnum.ABERTA.toString())
         }
-        this.parcelas = despesa.parcelas
+        this.formulario.get('parcelas')?.setValue(despesa.parcelas)
       },
       error: ({ error }) => {
         this.notificationService.error(MensagemNotificacao(error).erroAoBuscarRegistro.detail)
@@ -103,18 +104,33 @@ export class DespesaFormularioComponent implements OnInit {
         return
       }
       let request = this.formulario.getRawValue();
+
+      if(request.planejamentoParcelas){
+        this.calcularTotalPorcentagemDivisao(request.planejamentoParcelas)
+        request.planejamentoParcelas.map((item: PlanejamentoParcelas) => {
+          delete item.responsavelNome
+          delete item.indTabela
+        })
+      }
+
+      if(request.parcelas){
+        const parcelasAjustadas = request.parcelas.map(
+          ({ responsavel, ...rest }: FaturaModel) => ({
+            ...rest,
+            responsavelId: responsavel?.id
+          })
+        );
+        request.parcelas = parcelasAjustadas
+      }
+
       let metodo = this.id
         ? this.despesaApiService.editarDespesa(this.id, request)
         : this.despesaApiService.salvarDespesa(request);
 
-      if(request.planejamentoParcelas){
-        this.calcularTotalPorcentagemDivisao(request.planejamentoParcelas)
-      }
-
       metodo.subscribe({
         next: (retorno: any) => {
           if (retorno) {
-            this.notificationService.error(MensagemNotificacao().salvarRegistro.summary)
+            this.notificationService.success(MensagemNotificacao().salvarRegistro.summary)
             this.cancelar();
           }
         },
@@ -172,6 +188,10 @@ export class DespesaFormularioComponent implements OnInit {
 
   atualizarPlanejamentoParcelas(parcelasAtualizadas: PlanejamentoParcelas[]) {
     this.formulario.get('planejamentoParcelas')?.setValue(parcelasAtualizadas)
+  }
+
+  atualizarParcelas(parcelas: FaturaModel[]) {
+    this.formulario.get('parcelas')?.setValue(parcelas)
   }
 
   calcularTotalPorcentagemDivisao(planejamentoParcelas: PlanejamentoParcelas[]) {

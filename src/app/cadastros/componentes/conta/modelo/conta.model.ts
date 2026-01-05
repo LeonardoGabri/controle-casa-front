@@ -2,6 +2,8 @@ export interface ContaModel{
   id?: string;
   bancoId?: string;
   responsavelId?: string
+  tipo?: string
+
 }
 
 export interface ItemListaConta {

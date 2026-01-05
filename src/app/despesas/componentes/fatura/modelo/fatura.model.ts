@@ -1,9 +1,10 @@
+import {ResponsavelModel} from "../../../../cadastros/componentes/responsavel/modelo/responsavel.model";
+
 export interface FaturaModel{
   id?: string
   dataVencimento?: Date;
-  despesaFornecedor?: string;
-  responsavelId?: string;
-  responsavelNome?: string;
+  fornecedor?: string;
+  responsavel?: ResponsavelModel;
   porcentagemDivisao?: number;
   parcelaAtual: string
   valor?: number;

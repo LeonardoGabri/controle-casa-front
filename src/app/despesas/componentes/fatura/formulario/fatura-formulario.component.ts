@@ -48,8 +48,8 @@ export class FaturaFormularioComponent implements OnInit{
     this.formulario = this.formBuilder.group({
       id: [novoFormulario?.id],
       dataVencimento: [novoFormulario?.id, Validators.required],
-      despesaFornecedor: [novoFormulario?.despesaFornecedor],
-      responsavelId: [novoFormulario?.responsavelId, Validators.required],
+      fornecedor: [novoFormulario?.fornecedor],
+      responsavel: [novoFormulario?.responsavel, Validators.required],
       valor: [novoFormulario?.valor, Validators.required],
       porcentagemDivisao: [novoFormulario?.porcentagemDivisao],
       parcelaAtual: [novoFormulario?.parcelaAtual],
@@ -80,9 +80,11 @@ export class FaturaFormularioComponent implements OnInit{
 
   salvar() {
     if(this.formulario.valid){
-      let request = this.formulario.getRawValue();
-      delete request.responsavelNome
-      delete request.despesaFornecedor
+      let request = {
+        ...this.formulario.getRawValue(),
+        responsavelId: this.formulario.getRawValue().responsavel.id
+      };
+      delete request.responsavel
       delete request.id
 
       let metodo = this.id

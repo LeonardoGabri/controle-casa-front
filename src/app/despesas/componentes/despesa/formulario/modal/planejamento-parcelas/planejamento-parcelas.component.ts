@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PlanejamentoParcelas } from '../../../modelo/despesa.model';
+import {DespesaModel, PlanejamentoParcelas} from '../../../modelo/despesa.model';
 import { ResponsavelApiService } from '../../../../../../cadastros/componentes/responsavel/servico/responsavel-api.service';
 import { MenuItem, Message } from 'primeng/api';
 import { MensagemNotificacao } from '../../../../../../shared/mensagem/notificacao-msg.service';
 import { validaCamposInvalidosFormulario } from '../../../../../../shared/servico/function/valida-formulario.service';
+import {FaturaApiService} from "../../../../fatura/servico/fatura.service";
+import {FaturaModel} from "../../../../fatura/modelo/fatura.model";
 
 @Component({
   selector: 'app-planejamento-parcelas-component',
@@ -15,7 +17,11 @@ export class PlanejamentoParcelasComponent implements OnInit {
   formulario!: FormGroup;
   opcoesResponsavel: any[] = [];
   notificacao: Message[] = [];
-  @Input() parcelas: PlanejamentoParcelas[] = [];
+  @Input() planejamentoParcelas: PlanejamentoParcelas[] = [];
+  @Output() emitirParcelasCalculadas = new EventEmitter<FaturaModel[]>();
+
+  @Input() despesa!: DespesaModel
+
   @Output() parcelasChange = new EventEmitter<PlanejamentoParcelas[]>();
   menuAcoes: MenuItem[] = [];
   modalVisivel = false;
@@ -23,7 +29,8 @@ export class PlanejamentoParcelasComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private responsavelApiService: ResponsavelApiService
+    private responsavelApiService: ResponsavelApiService,
+    private faturaApiService: FaturaApiService
   ) {}
 
   ngOnInit(): void {
@@ -74,13 +81,13 @@ export class PlanejamentoParcelasComponent implements OnInit {
       const index = this.formulario.get('indTabela')?.value;
 
       if (index === null || index === undefined) {
-        this.parcelas.push({ ...this.formulario.getRawValue() });
+        this.planejamentoParcelas.push({ ...this.formulario.getRawValue() });
       } else {
-        this.parcelas[index] = { ...this.formulario.getRawValue() };
+        this.planejamentoParcelas[index] = { ...this.formulario.getRawValue() };
       }
 
       this.atualizarIndTabela();
-      this.parcelasChange.emit(this.parcelas);
+      this.parcelasChange.emit(this.planejamentoParcelas);
       this.fecharModal();
     } else {
       let camposErros = validaCamposInvalidosFormulario(this.formulario).join(
@@ -99,9 +106,9 @@ export class PlanejamentoParcelasComponent implements OnInit {
 
   removerParcela(item: any) {
     if (item) {
-      const index = this.parcelas.indexOf(item);
+      const index = this.planejamentoParcelas.indexOf(item);
       if (index > -1) {
-        this.parcelas.splice(index, 1);
+        this.planejamentoParcelas.splice(index, 1);
       }
       item = null;
     }
@@ -121,7 +128,7 @@ export class PlanejamentoParcelasComponent implements OnInit {
   }
 
   atualizarIndTabela() {
-    this.parcelas.forEach((item: PlanejamentoParcelas, index: number) => {
+    this.planejamentoParcelas.forEach((item: PlanejamentoParcelas, index: number) => {
       item.indTabela = index;
     });
   }
@@ -155,5 +162,13 @@ export class PlanejamentoParcelasComponent implements OnInit {
 
   togglePlanejamento() {
     this.planejamentoAberto = !this.planejamentoAberto;
+  }
+
+  gerarParcelas(){
+    this.faturaApiService.calcularParcelas(this.despesa).subscribe({
+      next: (parcelasCalculadas: any) => {
+        this.emitirParcelasCalculadas.emit(parcelasCalculadas);
+      }
+    })
   }
 }
