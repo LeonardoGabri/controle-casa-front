@@ -6,6 +6,7 @@ import { ResponsavelApiService } from '../../../../cadastros/componentes/respons
 import { opcoesSituacao } from '../../../../shared/enum/situacao.enum';
 import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg.service';
 import {
+  navegacaoDespesaEditarCadastro,
   navegacaoParcela,
   navegacaoParcelaEditarCadastro,
   navegacaoParcelaNovoCadastro,
@@ -84,7 +85,7 @@ export class FaturaListaComponent implements OnInit{
 
 
   editItem(item: ItemListaFatura) {
-    this.router.navigate([navegacaoParcelaEditarCadastro(item.id).link])
+    this.router.navigate([navegacaoDespesaEditarCadastro(item.despesaId, item.id).link])
   }
 
   removeItem(item: ItemListaFatura) {

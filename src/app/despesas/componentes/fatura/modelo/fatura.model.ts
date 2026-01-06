@@ -18,7 +18,9 @@ export interface ItemListaFatura{
   dataVencimento: string
   valor: number
   parcelaAtual: string
-  despesaFornecedor: string
+  fornecedorId: string
+  fornecedorNome: string
+  despesaId: string
 }
 
 export interface FiltroParametrosFatura{

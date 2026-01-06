@@ -86,7 +86,7 @@ export class DespesaListaComponent implements OnInit{
 
 
   editItem(item: ItemListaDespesa) {
-    this.router.navigate([navegacaoDespesaEditarCadastro(item.id).link])
+    this.router.navigate([navegacaoDespesaEditarCadastro(item.id, undefined).link])
   }
 
   removeItem(item: ItemListaDespesa) {

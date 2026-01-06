@@ -10,10 +10,10 @@ const navegacaoDespesaNovoCadastro = {
   link: `${navegacaoDespesa.link}/formulario`
 }
 
-const navegacaoDespesaEditarCadastro = (id: string) => {
+const navegacaoDespesaEditarCadastro = (id: string, idParcela?: string) => {
   return{
     label: 'Editar despesa',
-    link: `${navegacaoDespesaNovoCadastro.link}/${id}`
+    link: `${navegacaoDespesaNovoCadastro.link}/${id}/${idParcela}`
   }
 }
 

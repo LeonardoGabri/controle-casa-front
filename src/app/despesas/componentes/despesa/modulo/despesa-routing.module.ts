@@ -13,7 +13,7 @@ const routes: Routes = [
     component: DespesaFormularioComponent
   },
   {
-    path: 'formulario/:id',
+    path: 'formulario/:id/:idParcela',
     component: DespesaFormularioComponent
   },
   {path: '', redirectTo: 'lista', pathMatch: 'full'}

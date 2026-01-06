@@ -10,7 +10,11 @@ import { FornecedorApiService } from '../../../../cadastros/componentes/forneced
 import { SubgrupoApiService } from '../../../../cadastros/componentes/subgrupo/servico/subgrupo-api.service';
 import { SituacaoEnum } from '../../../../shared/enum/situacao.enum';
 import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg.service';
-import { navegacaoDespesa, navegacaoDespesaNovoCadastro } from '../../../servico/navegacao-despesa.service';
+import {
+  navegacaoDespesa,
+  navegacaoDespesaNovoCadastro,
+  navegacaoParcela
+} from '../../../servico/navegacao-despesa.service';
 import { FaturaModel } from '../../fatura/modelo/fatura.model';
 import { DespesaModel, PlanejamentoParcelas } from '../modelo/despesa.model';
 import { DespesaApiService } from '../servico/despesa-api.service';
@@ -69,7 +73,7 @@ export class DespesaFormularioComponent implements OnInit {
       subgrupoId: [novoFormulario?.subgrupoId],
       descricao:[novoFormulario?.descricao],
       dataLancamento: [dataAtual],
-      referenciaCobranca: [novoFormulario?.referenciaCobranca, Validators.required],
+      referenciaCobranca: [novoFormulario?.referenciaCobranca ?? this.getMesAnoAtual(), Validators.required],
       numeroParcelas: [
         novoFormulario?.numeroParcelas ?? 1,
         [Validators.required, Validators.min(1)]
@@ -78,22 +82,11 @@ export class DespesaFormularioComponent implements OnInit {
         novoFormulario?.valorTotal,
         [Validators.required, Validators.min(0), Validators.pattern(/^\d+(\.\d{1,2})?$/)]
       ],
-      planejamentoParcelas: [novoFormulario?.planejamentoParcelas || this.iniciaParcelas()],
+      planejamentoParcelas: [novoFormulario?.planejamentoParcelas],
       parcelas: [novoFormulario?.parcelas],
     });
 
     this.formulario.get('situacao')?.disable()
-  }
-
-  iniciaParcelas(): PlanejamentoParcelas[]{
-    return [
-      {
-        indTabela: 0,
-        porcentagemDivisao: 100,
-        responsavelId: "c721651f-a6ae-4491-a496-599750a6ff90",
-        responsavelNome: "Leonardo",
-      }
-    ]
   }
 
   carregarDespesa(id: string) {
@@ -157,7 +150,6 @@ export class DespesaFormularioComponent implements OnInit {
       });
     }
 
-    // 🔹 Se tem parcelas → resolve nomes → envia
     if (request.parcelas?.length) {
       forkJoin(
         request.parcelas.map((parcela: FaturaModel) =>
@@ -171,7 +163,7 @@ export class DespesaFormularioComponent implements OnInit {
       ).subscribe({
         next: (parcelasAjustadas) => {
           request.parcelas = parcelasAjustadas;
-          this.enviarRequest(request); // ✅ ÚNICO DISPARO
+          this.enviarRequest(request);
         },
         error: () => {
           this.notificationService.error('Erro ao buscar responsáveis');
@@ -179,13 +171,16 @@ export class DespesaFormularioComponent implements OnInit {
       });
 
     } else {
-      // 🔹 Sem parcelas → envia direto
-      this.enviarRequest(request); // ✅ ÚNICO DISPARO
+      this.enviarRequest(request);
     }
   }
 
 
   cancelar() {
+    if(this.route.snapshot.paramMap.get('idParcela')){
+      this.router.navigate([navegacaoParcela.link]);
+      return
+    }
     this.router.navigate([navegacaoDespesa.link]);
   }
 
@@ -277,5 +272,13 @@ export class DespesaFormularioComponent implements OnInit {
       return item.value == fornecedor.value
     })
     this.formulario.get('subgrupoId')?.setValue(opcoeEncontrada?.subgrupoId)
+  }
+
+  getMesAnoAtual(): string {
+    const hoje = new Date();
+
+    const mes = String(hoje.getMonth() + 2).padStart(2, '0')
+    const ano = hoje.getFullYear();
+    return `${mes}/${ano}`;
   }
 }

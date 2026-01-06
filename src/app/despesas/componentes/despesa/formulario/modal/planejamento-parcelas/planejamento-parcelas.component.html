@@ -1,5 +1,4 @@
 <div class="form-container">
-  <!-- Botão de abrir/fechar -->
   <button
     pButton
     [icon]="planejamentoAberto ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
@@ -41,9 +40,7 @@
       </tbody>
     </table>
 
-    <!-- Rodapé do planejamento -->
     <div class="planejamento-footer">
-      <!-- Ação secundária -->
       <button
         pButton
         label="Incluir"
@@ -52,7 +49,6 @@
         (click)="abrirModal()"
       ></button>
 
-      <!-- Ação principal -->
       <button
         pButton
         label="Gerar Parcelas"
