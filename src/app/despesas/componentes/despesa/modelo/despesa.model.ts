@@ -13,7 +13,7 @@ export interface DespesaModel{
   numeroParcelas?: string;
   valorTotal?: string;
   planejamentoParcelas?: PlanejamentoParcelas[];
-  parcelas: FaturaModel[]
+  parcelas?: FaturaModel[]
 }
 
 export interface PlanejamentoParcelas{

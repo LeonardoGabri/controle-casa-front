@@ -119,6 +119,7 @@
 
 <app-planejamento-parcelas-component
   [planejamentoAberto]="planejamentoAberto"
+  [planejamentoParcelas]="formulario.get('planejamentoParcelas')?.value"
   [despesa]="this.formulario.getRawValue()"
   (parcelasChange)="atualizarPlanejamentoParcelas($event)"
   (emitirParcelasCalculadas)="atualizarParcelas($event)"

@@ -23,7 +23,7 @@
       <p-dropdown
         id="responsavelId"
         [options]="opcoesResponsavel"
-        formControlName="responsavel"
+        formControlName="responsavelId"
         placeholder="Selecione um Responsável"
         [filter]="true"
         filterBy="label"
@@ -43,11 +43,17 @@
 
   <div class="form-row">
     <div class="form-group">
-      <label for="despesaFornecedor">Fornecedor:</label>
-      <input
-          id="despesaFornecedor"
-          formControlName="fornecedor"
-        />
+      <label for="fornecedor">Fornecedor:</label>
+      <p-dropdown
+        id="fornecedor"
+        [options]="opcoesFornecedor"
+        formControlName="fornecedorId"
+        placeholder="Selecione um fornecedor"
+        [filter]="true"
+        filterBy="label"
+        [appendTo]="'body'"
+        (onChange)="alteraFornecedor($event)"
+      ></p-dropdown>
     </div>
 
     <div class="form-group">
@@ -70,14 +76,6 @@
       <input
           id="porcentagemDivisao"
           formControlName="porcentagemDivisao"
-        />
-    </div>
-
-    <div class="form-group">
-      <label for="situacao">Situação:</label>
-      <input
-          id="situacao"
-          formControlName="situacao"
         />
     </div>
 

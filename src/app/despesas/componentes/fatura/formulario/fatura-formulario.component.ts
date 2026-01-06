@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { SituacaoEnum } from "../../../../shared/enum/situacao.enum";
 import { validaCamposInvalidosFormulario } from "../../../../shared/servico/function/valida-formulario.service";
 import { NotificationService } from "../../../../shared/mensagem/notification.service";
+import {FornecedorApiService} from "../../../../cadastros/componentes/fornecedor/servico/fornecedor-api.service";
 
 @Component({
   selector: 'app-fatura-formulario',
@@ -22,6 +23,7 @@ export class FaturaFormularioComponent implements OnInit{
   editaDespesa: string | null = null;
   nomePagina = navegacaoParcelaNovoCadastro.label;
   opcoesResponsavel: any[] = [];
+  opcoesFornecedor: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,14 +31,15 @@ export class FaturaFormularioComponent implements OnInit{
     private responsavelApiService: ResponsavelApiService,
     private router: Router,
     private route: ActivatedRoute,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private fornecedorApiService: FornecedorApiService,
   ){}
 
   ngOnInit(): void {
     this.criarFormulario()
 
     this.carregarOpcoesResponsaveis()
-
+    this.carregarOpcoesFornecedores()
     this.id = this.route.snapshot.paramMap.get('id');
     this.editaDespesa = this.route.snapshot.paramMap.get('editaDespesa');
     if (this.id) {
@@ -48,8 +51,8 @@ export class FaturaFormularioComponent implements OnInit{
     this.formulario = this.formBuilder.group({
       id: [novoFormulario?.id],
       dataVencimento: [novoFormulario?.id, Validators.required],
-      fornecedor: [novoFormulario?.fornecedor],
-      responsavel: [novoFormulario?.responsavel, Validators.required],
+      fornecedorId: [novoFormulario?.fornecedorId],
+      responsavelId: [novoFormulario?.responsavelId, Validators.required],
       valor: [novoFormulario?.valor, Validators.required],
       porcentagemDivisao: [novoFormulario?.porcentagemDivisao],
       parcelaAtual: [novoFormulario?.parcelaAtual],
@@ -66,8 +69,10 @@ export class FaturaFormularioComponent implements OnInit{
       next: (despesa: any) => {
         this.formulario.patchValue(despesa);
         this.formulario.get('contaId')?.setValue(despesa.conta.id)
-        this.formulario.get('fornecedorId')?.setValue(despesa.fornecedor.id)
-        this.formulario.get('subgrupoId')?.setValue(despesa.subgrupo.id)
+        this.formulario.get('fornecedorId')?.setValue(despesa.fornecedorId)
+        this.formulario.get('responsavelId')?.setValue(despesa.responsavelId)
+        this.formulario.get('subgrupoId')?.setValue(despesa?.subgrupo.id)
+        this.formulario.get('despesaId')?.setValue(despesa?.despesaId)
         if(!despesa.situacao){
           this.formulario.get('situacao')?.setValue(SituacaoEnum.ABERTA.toString())
         }
@@ -80,11 +85,7 @@ export class FaturaFormularioComponent implements OnInit{
 
   salvar() {
     if(this.formulario.valid){
-      let request = {
-        ...this.formulario.getRawValue(),
-        responsavelId: this.formulario.getRawValue().responsavel.id
-      };
-      delete request.responsavel
+      let request = this.formulario.getRawValue()
       delete request.id
 
       let metodo = this.id
@@ -94,7 +95,7 @@ export class FaturaFormularioComponent implements OnInit{
       metodo.subscribe({
         next: (retorno: any) => {
           if (retorno) {
-            this.notificationService.error(MensagemNotificacao().salvarRegistro.summary)
+            this.notificationService.success(MensagemNotificacao().salvarRegistro.summary)
             this.cancelar();
           }
         },
@@ -128,5 +129,25 @@ export class FaturaFormularioComponent implements OnInit{
       },
       error: (err) => console.error('Erro ao carregar opções de responsáveis', err)
     });
+  }
+
+  carregarOpcoesFornecedores() {
+    this.fornecedorApiService.buscarFornecedores().subscribe({
+      next: (dados: any) => {
+        this.opcoesFornecedor = dados.map((item: any) => ({
+          label: item.nome,
+          value: item.id,
+          subgrupoId: item?.subgrupo?.id
+        }));
+      },
+      error: (err) => console.error('Erro ao carregar opções de fornecedores', err)
+    });
+  }
+
+  alteraFornecedor(fornecedor: any){
+    let opcoeEncontrada = this.opcoesFornecedor.find((item: any) => {
+      return item.value == fornecedor.value
+    })
+    this.formulario.get('subgrupoId')?.setValue(opcoeEncontrada?.subgrupoId)
   }
 }

@@ -13,7 +13,7 @@
     <tbody>
       <tr *ngFor="let parcela of parcelas">
         <td>{{ parcela.dataVencimento | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ parcela.responsavel?.nome }}</td>
+        <td>{{ parcela.responsavelNome }}</td>
         <td>{{ parcela.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
         <td class="actions-column">
           <p-overlayPanel #op>

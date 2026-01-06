@@ -13,6 +13,7 @@ import {
 import { FiltroParametrosFatura, ItemListaFatura } from '../modelo/fatura.model';
 import { FaturaApiService } from '../servico/fatura.service';
 import { NotificationService } from '../../../../shared/mensagem/notification.service';
+import {ContaApiService} from "../../../../cadastros/componentes/conta/servico/conta-api.service";
 
 @Component({
   selector: 'app-fatura-lista',
@@ -27,6 +28,7 @@ export class FaturaListaComponent implements OnInit{
   mostrarBuscaAvancada = false;
   opcoesSituacao: any[] = opcoesSituacao;
   opcoesResponsavel: any[] = [];
+  opcoesConta: any[] = [];
 
   nomePagina = navegacaoParcela.label
   paginacao = {
@@ -38,11 +40,13 @@ export class FaturaListaComponent implements OnInit{
     private router: Router,
     private faturaApiService: FaturaApiService,
     private responsavelApiService: ResponsavelApiService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private contaApiService: ContaApiService,
   ){}
 
   ngOnInit(): void {
     this.carregarOpcoesResponsavel()
+    this.carregarOpcoesConta();
 
     this.buscarDadosDespesa()
   }
@@ -103,6 +107,7 @@ export class FaturaListaComponent implements OnInit{
     return {
       responsavel: filtroBuscaAvancada?.responsavel,
       referenciaCobranca: filtroBuscaAvancada?.referenciaCobranca,
+      contaId: filtroBuscaAvancada?.contaId
     }
   }
 
@@ -115,6 +120,18 @@ export class FaturaListaComponent implements OnInit{
         }));
       },
       error: (err) => console.error('Erro ao carregar opções de responsavel', err)
+    });
+  }
+
+  carregarOpcoesConta() {
+    this.contaApiService.buscarContas().subscribe({
+      next: (dados: any) => {
+        this.opcoesConta = dados.map((item: any) => ({
+          label: `${item.responsavel} - ${item.nome}`,
+          value: item.id
+        }));
+      },
+      error: (err) => console.error('Erro ao carregar opções de contas', err)
     });
   }
 }

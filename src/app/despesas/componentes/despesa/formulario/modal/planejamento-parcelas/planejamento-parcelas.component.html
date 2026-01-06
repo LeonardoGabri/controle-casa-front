@@ -21,7 +21,7 @@
 
       <tbody>
       <tr *ngFor="let planejamento of planejamentoParcelas">
-        <td>{{ planejamento.porcentagemDivisao }}%</td>
+        <td>{{ planejamento.porcentagemDivisao }}</td>
         <td>{{ planejamento.responsavelNome }}</td>
         <td>
           <button
@@ -59,7 +59,7 @@
         icon="pi pi-refresh"
         class="p-button-success"
         (click)="gerarParcelas()"
-        [disabled]="planejamentoParcelas.length === 0"
+        [disabled]="!planejamentoParcelas || planejamentoParcelas.length === 0"
       ></button>
     </div>
   </div>

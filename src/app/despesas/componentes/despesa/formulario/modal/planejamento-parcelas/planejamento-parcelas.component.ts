@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {DespesaModel, PlanejamentoParcelas} from '../../../modelo/despesa.model';
 import { ResponsavelApiService } from '../../../../../../cadastros/componentes/responsavel/servico/responsavel-api.service';
@@ -7,6 +7,7 @@ import { MensagemNotificacao } from '../../../../../../shared/mensagem/notificac
 import { validaCamposInvalidosFormulario } from '../../../../../../shared/servico/function/valida-formulario.service';
 import {FaturaApiService} from "../../../../fatura/servico/fatura.service";
 import {FaturaModel} from "../../../../fatura/modelo/fatura.model";
+import {NotificationService} from "../../../../../../shared/mensagem/notification.service";
 
 @Component({
   selector: 'app-planejamento-parcelas-component',
@@ -30,14 +31,21 @@ export class PlanejamentoParcelasComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private responsavelApiService: ResponsavelApiService,
-    private faturaApiService: FaturaApiService
+    private faturaApiService: FaturaApiService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
     this.criarFormulario();
     this.carregarOpcoesResponsavel();
 
-    this.atualizarIndTabela();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['planejamentoParcelas']) {
+      this.planejamentoParcelas = this.planejamentoParcelas ?? [];
+      this.atualizarIndTabela();
+    }
   }
 
   criarFormulario(novoFormulario?: PlanejamentoParcelas) {
@@ -77,41 +85,38 @@ export class PlanejamentoParcelasComponent implements OnInit {
   }
 
   adicionarParcela() {
-    if (this.formulario.valid) {
-      const index = this.formulario.get('indTabela')?.value;
+    if (!this.formulario.valid) {
+      const camposErros = validaCamposInvalidosFormulario(this.formulario).join(' - ');
+      this.notificacao = [MensagemNotificacao(camposErros).formularioInvalido];
+      return;
+    }
 
-      if (index === null || index === undefined) {
-        this.planejamentoParcelas.push({ ...this.formulario.getRawValue() });
-      } else {
-        this.planejamentoParcelas[index] = { ...this.formulario.getRawValue() };
-      }
+    const valorFormulario = this.formulario.getRawValue();
+    const listaAtual = this.planejamentoParcelas ?? [];
 
-      this.atualizarIndTabela();
-      this.parcelasChange.emit(this.planejamentoParcelas);
-      this.fecharModal();
+    let novaLista: PlanejamentoParcelas[];
+
+    if (valorFormulario.indTabela === null || valorFormulario.indTabela === undefined) {
+      novaLista = [...listaAtual, valorFormulario];
     } else {
-      let camposErros = validaCamposInvalidosFormulario(this.formulario).join(
-        ' - '
-      );
-      this.notificacao = new Array(
-        MensagemNotificacao(camposErros).formularioInvalido
+      novaLista = listaAtual.map((item, index) =>
+        index === valorFormulario.indTabela ? valorFormulario : item
       );
     }
+
+    this.parcelasChange.emit(novaLista);
+    this.fecharModal();
   }
+
 
   editarParcela(item: PlanejamentoParcelas) {
     this.modalVisivel = true;
     this.formulario.patchValue(item);
   }
 
-  removerParcela(item: any) {
-    if (item) {
-      const index = this.planejamentoParcelas.indexOf(item);
-      if (index > -1) {
-        this.planejamentoParcelas.splice(index, 1);
-      }
-      item = null;
-    }
+  removerParcela(item: PlanejamentoParcelas) {
+    const novaLista = this.planejamentoParcelas.filter(p => p !== item);
+    this.parcelasChange.emit(novaLista);
   }
 
   carregarOpcoesResponsavel() {
@@ -128,9 +133,16 @@ export class PlanejamentoParcelasComponent implements OnInit {
   }
 
   atualizarIndTabela() {
-    this.planejamentoParcelas.forEach((item: PlanejamentoParcelas, index: number) => {
-      item.indTabela = index;
-    });
+    if (!this.planejamentoParcelas?.length) {
+      return;
+    }
+
+    const novaLista = this.planejamentoParcelas.map((item, index) => ({
+      ...item,
+      indTabela: index
+    }));
+
+    this.parcelasChange.emit(novaLista);
   }
 
   atualizaNomeResponsavel(item: any) {
@@ -156,7 +168,7 @@ export class PlanejamentoParcelasComponent implements OnInit {
     somaPorcentagem === 100;
 
     if (somaPorcentagem !== 100) {
-      this.notificacao.push(MensagemNotificacao().erroSomaPorcentagem);
+      this.notificationService.error(MensagemNotificacao().erroSomaPorcentagem.detail)
     }
   }
 
@@ -165,10 +177,14 @@ export class PlanejamentoParcelasComponent implements OnInit {
   }
 
   gerarParcelas(){
-    this.faturaApiService.calcularParcelas(this.despesa).subscribe({
-      next: (parcelasCalculadas: any) => {
-        this.emitirParcelasCalculadas.emit(parcelasCalculadas);
-      }
-    })
+    if(this.despesa.planejamentoParcelas){
+      this.calcularTotalPorcentagemDivisao(this.despesa.planejamentoParcelas);
+      this.faturaApiService.calcularParcelas(this.despesa).subscribe({
+        next: (parcelasCalculadas: any) => {
+          this.emitirParcelasCalculadas.emit(parcelasCalculadas);
+        },
+      })
+    }
+
   }
 }
