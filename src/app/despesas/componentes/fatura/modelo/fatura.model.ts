@@ -26,6 +26,8 @@ export interface ItemListaFatura{
 export interface FiltroParametrosFatura{
   responsavel?: string
   referenciaCobranca?: string;
+  dataIni?: string
+  dataFim?: string
   contaId?: string;
 }
 

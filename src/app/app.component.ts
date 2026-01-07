@@ -19,7 +19,7 @@ import {
 } from './cadastros/servico/navegacao-cadastro.service';
 import {
   navegacaoDespesa,
-  navegacaoParcela,
+  navegacaoParcela, navegacaoResumoMensal,
 } from './despesas/servico/navegacao-despesa.service';
 import { NotificationService } from './shared/mensagem/notification.service';
 
@@ -100,6 +100,12 @@ export class AppComponent implements OnInit {
                 icon: 'pi pi-barcode',
                 subtext: 'Subtext of item',
                 routerLink: navegacaoParcela.link,
+              },
+              {
+                label: 'Resumo Mensal',
+                icon: 'pi pi-envelope',
+                subtext: 'Subtext of item',
+                routerLink: navegacaoResumoMensal.link,
               },
             ],
           },

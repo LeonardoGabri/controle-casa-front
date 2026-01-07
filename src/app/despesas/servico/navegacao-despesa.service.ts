@@ -34,11 +34,17 @@ const navegacaoParcelaEditarCadastro = (id: string, editaDespesa?: boolean) => {
   };
 };
 
+const navegacaoResumoMensal = {
+  label: 'Resumo Mensal',
+  link: `${navegacaoDespesas.link}/resumo-mensal`
+}
+
 export {
   navegacaoDespesa,
   navegacaoDespesaNovoCadastro,
   navegacaoDespesaEditarCadastro,
   navegacaoParcela,
   navegacaoParcelaNovoCadastro,
-  navegacaoParcelaEditarCadastro
+  navegacaoParcelaEditarCadastro,
+  navegacaoResumoMensal
 }

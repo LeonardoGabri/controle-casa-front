@@ -10,6 +10,10 @@ const routes: Routes = [
     path: 'fatura',
     loadChildren: () => import("../componentes/fatura/modulo/fatura.module").then((m) => m.FaturaModule)
   },
+  {
+    path: 'resumo-mensal',
+    loadChildren: () => import("../componentes/resumo-mensal/modulo/resumo-mensal.module").then((m) => m.ResumoMensalModule)
+  },
 ]
 
 @NgModule({
