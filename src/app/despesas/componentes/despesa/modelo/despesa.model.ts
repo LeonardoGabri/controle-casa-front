@@ -40,3 +40,8 @@ export interface FiltroParametrosDespesa{
   conta?: string
   subgrupo?:string;
 }
+
+export interface ResumoTotaisPorContaModel{
+  contaNome: string;
+  valorTotal: number;
+}

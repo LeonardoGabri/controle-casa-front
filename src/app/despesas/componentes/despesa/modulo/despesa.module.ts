@@ -18,6 +18,8 @@ import { ParcelaComponent } from '../formulario/modal/parcelas/parcela.component
 import { PlanejamentoParcelasComponent } from '../formulario/modal/planejamento-parcelas/planejamento-parcelas.component';
 import { DespesaListaComponent } from '../lista/despesa-lista.component';
 import { DespesaRoutingModule } from './despesa-routing.module';
+import {AccordionModule} from "primeng/accordion";
+import {CardModule} from "primeng/card";
 
 @NgModule({
   declarations: [DespesaListaComponent, DespesaFormularioComponent, PlanejamentoParcelasComponent, ParcelaComponent],
@@ -36,7 +38,9 @@ import { DespesaRoutingModule } from './despesa-routing.module';
     HttpClientModule,
     DropdownModule,
     MessagesModule,
-    InputNumberModule
+    InputNumberModule,
+    AccordionModule,
+    CardModule
   ],
 })
 export class DespesaModule{}

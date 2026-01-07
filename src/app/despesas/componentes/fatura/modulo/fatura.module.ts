@@ -15,6 +15,8 @@ import { FaturaFormularioComponent } from "../formulario/fatura-formulario.compo
 import { FaturaListaComponent } from "../lista/fatura-lista.component";
 import { InputMaskModule } from "primeng/inputmask";
 import { InputNumberModule } from "primeng/inputnumber";
+import {AccordionModule} from "primeng/accordion";
+import {CardModule} from "primeng/card";
 
 @NgModule({
   declarations: [FaturaListaComponent, FaturaFormularioComponent],
@@ -33,7 +35,9 @@ import { InputNumberModule } from "primeng/inputnumber";
     HttpClientModule,
     DropdownModule,
     MessagesModule,
-    InputNumberModule
+    InputNumberModule,
+    AccordionModule,
+    CardModule
   ]
 })
 export class FaturaModule{}

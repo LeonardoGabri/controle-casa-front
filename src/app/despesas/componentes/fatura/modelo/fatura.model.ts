@@ -28,3 +28,8 @@ export interface FiltroParametrosFatura{
   referenciaCobranca?: string;
   contaId?: string;
 }
+
+export interface ResumoParcelaPorResponsavel{
+  responsavelNome: string;
+  valorTotal: number;
+}

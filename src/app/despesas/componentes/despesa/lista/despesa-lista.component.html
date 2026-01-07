@@ -28,6 +28,32 @@
     </div>
   </div>
 
+  <p-accordion>
+    <p-accordionTab header="Resumo por Conta">
+
+      <div class="resumo-grid">
+        <p-card
+          *ngFor="let resumo of resumoPorConta"
+          class="card-resumo-conta"
+        >
+          <ng-template pTemplate="title">
+            {{ resumo.contaNome }}
+          </ng-template>
+
+          <ng-template pTemplate="content">
+            <div class="valor-total">
+              {{ resumo.valorTotal | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+            </div>
+          </ng-template>
+        </p-card>
+      </div>
+
+    </p-accordionTab>
+  </p-accordion>
+
+
+  <br>
+
   <p-dialog [(visible)]="mostrarBuscaAvancada" header="Busca Avançada" [modal]="true" [closable]="true">
     <div class="advanced-search-content">
       <div class="form-group">

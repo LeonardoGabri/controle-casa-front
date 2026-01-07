@@ -194,3 +194,42 @@
   z-index: 1051;
 }
 
+
+.resumo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 240px);
+  justify-content: center;
+  gap: 20px;
+  padding: 16px 0;
+}
+
+.card-resumo-conta {
+  background: #1f1f1f;
+  border-radius: 10px;
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-resumo-conta:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+}
+
+.card-resumo-conta ::ng-deep .p-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #e5e5e5;
+  margin-bottom: 8px;
+}
+
+.valor-total {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #4ade80;
+}
+

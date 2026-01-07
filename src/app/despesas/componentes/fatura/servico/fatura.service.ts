@@ -46,4 +46,14 @@ export class FaturaApiService{
     return this.http.post(`${this.pathApiDespesa}/calcular-parcelas`, despesa).pipe(take(1))
 
   }
+
+  buscarResumoParcelaPorResponsavel(
+    param?: FiltroParametrosFatura,
+    page?: number,
+    size?: number
+  ){
+    return this.http.get(`${this.pathApiDespesa}/resumo-responsavel`,
+      {params: filtroService.criarParametro(param,page, size)}
+    ).pipe(take(1))
+  }
 }

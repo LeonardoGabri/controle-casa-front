@@ -1,19 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Message } from 'primeng/api';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { ResponsavelApiService } from '../../../../cadastros/componentes/responsavel/servico/responsavel-api.service';
-import { opcoesSituacao } from '../../../../shared/enum/situacao.enum';
-import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg.service';
+import {ResponsavelApiService} from '../../../../cadastros/componentes/responsavel/servico/responsavel-api.service';
+import {MensagemNotificacao} from '../../../../shared/mensagem/notificacao-msg.service';
 import {
   navegacaoDespesaEditarCadastro,
   navegacaoParcela,
-  navegacaoParcelaEditarCadastro,
   navegacaoParcelaNovoCadastro,
 } from '../../../servico/navegacao-despesa.service';
-import { FiltroParametrosFatura, ItemListaFatura } from '../modelo/fatura.model';
-import { FaturaApiService } from '../servico/fatura.service';
-import { NotificationService } from '../../../../shared/mensagem/notification.service';
+import {FiltroParametrosFatura, ItemListaFatura, ResumoParcelaPorResponsavel} from '../modelo/fatura.model';
+import {FaturaApiService} from '../servico/fatura.service';
+import {NotificationService} from '../../../../shared/mensagem/notification.service';
 import {ContaApiService} from "../../../../cadastros/componentes/conta/servico/conta-api.service";
 
 @Component({
@@ -27,9 +24,9 @@ export class FaturaListaComponent implements OnInit{
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosFatura = {};
   mostrarBuscaAvancada = false;
-  opcoesSituacao: any[] = opcoesSituacao;
   opcoesResponsavel: any[] = [];
   opcoesConta: any[] = [];
+  resumoPorResponsavel: ResumoParcelaPorResponsavel[] = [];
 
   nomePagina = navegacaoParcela.label
   paginacao = {
@@ -50,6 +47,7 @@ export class FaturaListaComponent implements OnInit{
     this.carregarOpcoesConta();
 
     this.buscarDadosDespesa()
+    this.buscarResumoParcelaPorResponsavel()
   }
 
   navegarNovoFormulario() {
@@ -80,6 +78,7 @@ export class FaturaListaComponent implements OnInit{
   aplicarBuscaAvancada() {
     console.log("Filtros avançados aplicados:", this.filtroBuscaAvancada);
     this.buscarDadosDespesa()
+    this.buscarResumoParcelaPorResponsavel();
     this.fecharBuscaAvancada();
   }
 
@@ -134,5 +133,14 @@ export class FaturaListaComponent implements OnInit{
       },
       error: (err) => console.error('Erro ao carregar opções de contas', err)
     });
+  }
+
+  buscarResumoParcelaPorResponsavel(){
+    let params = this.criarParamentrosBusca(this.pesquisar, this.filtroBuscaAvancada)
+    this.faturaApiService.buscarResumoParcelaPorResponsavel(params).subscribe({
+      next: (response: any) => {
+        this.resumoPorResponsavel = response
+      }
+    })
   }
 }

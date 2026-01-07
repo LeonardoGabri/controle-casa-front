@@ -1,19 +1,20 @@
-FROM node:18 AS builder
+# Node LTS
+FROM node:20
 
+# Diretório de trabalho
 WORKDIR /app
 
+# Copia package.json primeiro (cache)
 COPY package*.json ./
+
+# Instala dependências
 RUN npm install
 
+# Copia o resto do projeto
 COPY . .
-RUN npm run build -- --configuration=production
 
-FROM nginx:stable-alpine
+# Porta que você pediu
+EXPOSE 4700
 
-RUN rm -rf /usr/share/nginx/html/*
-
-COPY --from=builder /app/dist/controle-front /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Sobe Angular na porta 4700 acessível fora do container
+CMD ["npm", "start", "--", "--host", "0.0.0.0", "--port", "4700"]

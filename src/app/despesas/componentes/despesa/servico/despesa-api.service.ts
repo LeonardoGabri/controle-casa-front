@@ -40,4 +40,12 @@ export class DespesaApiService{
   deletarDespesa(id: string){
     return this.http.delete(`${this.pathApiDespesa}/${id}`).pipe(take(1))
   }
+
+  buscarResumoDespesaPorConta(
+    param?: FiltroParametrosDespesa
+  ){
+    return this.http.get(`${this.pathApiDespesa}/resumo-conta`,
+      {params: filtroService.criarParametro(param)}
+    ).pipe(take(1))
+  }
 }

@@ -1,20 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Message } from 'primeng/api';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { ContaApiService } from '../../../../cadastros/componentes/conta/servico/conta-api.service';
-import { SubgrupoApiService } from '../../../../cadastros/componentes/subgrupo/servico/subgrupo-api.service';
-import { opcoesSituacao } from '../../../../shared/enum/situacao.enum';
-import { MensagemNotificacao } from '../../../../shared/mensagem/notificacao-msg.service';
+import {ContaApiService} from '../../../../cadastros/componentes/conta/servico/conta-api.service';
+import {SubgrupoApiService} from '../../../../cadastros/componentes/subgrupo/servico/subgrupo-api.service';
+import {opcoesSituacao} from '../../../../shared/enum/situacao.enum';
+import {MensagemNotificacao} from '../../../../shared/mensagem/notificacao-msg.service';
 import {
   navegacaoDespesa,
   navegacaoDespesaEditarCadastro,
   navegacaoDespesaNovoCadastro,
 } from '../../../servico/navegacao-despesa.service';
-import { FiltroParametrosDespesa, ItemListaDespesa } from '../modelo/despesa.model';
-import { DespesaApiService } from '../servico/despesa-api.service';
-import { FornecedorApiService } from './../../../../cadastros/componentes/fornecedor/servico/fornecedor-api.service';
-import { NotificationService } from '../../../../shared/mensagem/notification.service';
+import {FiltroParametrosDespesa, ItemListaDespesa, ResumoTotaisPorContaModel} from '../modelo/despesa.model';
+import {DespesaApiService} from '../servico/despesa-api.service';
+import {FornecedorApiService} from './../../../../cadastros/componentes/fornecedor/servico/fornecedor-api.service';
+import {NotificationService} from '../../../../shared/mensagem/notification.service';
 
 @Component({
   selector: 'app-despesa-lista',
@@ -30,6 +29,8 @@ export class DespesaListaComponent implements OnInit{
   opcoesFornecedor: any[] = [];
   opcoesSubgrupo: any[] = [];
   opcoesSituacao: any[] = opcoesSituacao;
+
+  resumoPorConta: ResumoTotaisPorContaModel[] = [];
 
   nomePagina = navegacaoDespesa.label
   paginacao = {
@@ -50,8 +51,9 @@ export class DespesaListaComponent implements OnInit{
     this.carregarOpcoesConta()
     this.carregarOpcoesFornecedor()
     this.carregarOpcoesSubgrupo()
-
+    this.buscarResumoDespesaPorConta()
     this.buscarDadosDespesa()
+
   }
 
   navegarNovoFormulario() {
@@ -147,5 +149,16 @@ export class DespesaListaComponent implements OnInit{
       },
       error: (err) => console.error('Erro ao carregar opções de contas', err)
     });
+  }
+
+  buscarResumoDespesaPorConta(){
+    this.despesaApiService.buscarResumoDespesaPorConta().subscribe({
+      next: (response: any) => {
+        this.resumoPorConta = response
+      },error: (err => {
+        console.error(err)
+        this.notificationService.error('Erro ao buscar Resumo por Conta')
+      })
+    })
   }
 }
