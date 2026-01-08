@@ -18,7 +18,10 @@ import {
 import { FaturaModel } from '../../fatura/modelo/fatura.model';
 import { DespesaModel, PlanejamentoParcelas } from '../modelo/despesa.model';
 import { DespesaApiService } from '../servico/despesa-api.service';
-import { validaCamposInvalidosFormulario } from '../../../../shared/servico/function/valida-formulario.service';
+import {
+  getMesAnoAtual,
+  validaCamposInvalidosFormulario
+} from '../../../../shared/servico/function/valida-formulario.service';
 import { NotificationService } from '../../../../shared/mensagem/notification.service';
 import {ResponsavelApiService} from "../../../../cadastros/componentes/responsavel/servico/responsavel-api.service";
 import {forkJoin, map} from "rxjs";
@@ -73,7 +76,7 @@ export class DespesaFormularioComponent implements OnInit {
       subgrupoId: [novoFormulario?.subgrupoId],
       descricao:[novoFormulario?.descricao],
       dataLancamento: [dataAtual],
-      referenciaCobranca: [novoFormulario?.referenciaCobranca ?? this.getMesAnoAtual(), Validators.required],
+      referenciaCobranca: [novoFormulario?.referenciaCobranca ?? getMesAnoAtual(), Validators.required],
       numeroParcelas: [
         novoFormulario?.numeroParcelas ?? 1,
         [Validators.required, Validators.min(1)]
@@ -272,13 +275,5 @@ export class DespesaFormularioComponent implements OnInit {
       return item.value == fornecedor.value
     })
     this.formulario.get('subgrupoId')?.setValue(opcoeEncontrada?.subgrupoId)
-  }
-
-  getMesAnoAtual(): string {
-    const hoje = new Date();
-
-    const mes = String(hoje.getMonth() + 2).padStart(2, '0')
-    const ano = hoje.getFullYear();
-    return `${mes}/${ano}`;
   }
 }

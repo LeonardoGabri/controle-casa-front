@@ -39,11 +39,12 @@
     <p-card
       *ngFor="let item of itensResumoMensal"
       class="fechamento-card"
+      (click)="toggleDetalhe(item)"
     >
       <div class="fechamento-content">
         <div class="pessoa devedor">
           <i class="pi pi-user"></i>
-          <strong>{{ item.devedor }}</strong>
+          <strong>{{ item.devedorNome }}</strong>
           <span>deve pagar</span>
         </div>
 
@@ -54,10 +55,48 @@
 
         <div class="pessoa credor">
           <i class="pi pi-user"></i>
-          <strong>{{ item.credor }}</strong>
+          <strong>{{ item.credorNome }}</strong>
           <span>vai receber</span>
         </div>
       </div>
+
+      <div
+        class="detalhe-parcelas"
+        *ngIf="uiState[getKey(item)]?.expandido"
+        (click)="$event.stopPropagation()"
+      >
+        <p-table
+          [value]="uiState[getKey(item)]?.parcelas || []"
+          [loading]="uiState[getKey(item)]?.carregando"
+          styleClass="p-datatable-sm"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Fornecedor</th>
+              <th style="text-align: right;">Valor</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-parcela>
+            <tr>
+              <td>{{ parcela.fornecedorNome || parcela.fornecedor }}</td>
+              <td style="text-align: right;">
+                {{ parcela.valor | currency:'BRL' }}
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="2" style="text-align: center;">
+                Nenhuma parcela encontrada
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
     </p-card>
   </div>
+
+
 </div>

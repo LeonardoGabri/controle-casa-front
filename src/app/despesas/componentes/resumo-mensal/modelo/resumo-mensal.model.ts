@@ -1,6 +1,10 @@
+import {ResponsavelModel} from "../../../../cadastros/componentes/responsavel/modelo/responsavel.model";
+
 export interface ResumoMensalModel{
-  devedor: string;
-  credor: string;
+  devedorId: string;
+  devedorNome: string;
+  credorId: string;
+  credorNome: string;
   valor: number
 }
 

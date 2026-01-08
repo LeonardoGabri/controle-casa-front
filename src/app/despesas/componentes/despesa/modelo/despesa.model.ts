@@ -18,7 +18,7 @@ export interface DespesaModel{
 
 export interface PlanejamentoParcelas{
   indTabela?: number;
-  porcentagemDivisao?: number;
+  porcentagemDivisao: number;
   responsavelId?: string;
   responsavelNome?: string
 }

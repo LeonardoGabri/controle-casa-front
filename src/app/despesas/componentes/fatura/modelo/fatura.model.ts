@@ -29,6 +29,7 @@ export interface FiltroParametrosFatura{
   dataIni?: string
   dataFim?: string
   contaId?: string;
+  responsavelConta?: string
 }
 
 export interface ResumoParcelaPorResponsavel{

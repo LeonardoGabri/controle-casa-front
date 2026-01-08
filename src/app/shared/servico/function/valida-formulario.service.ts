@@ -12,3 +12,11 @@ export function validaCamposInvalidosFormulario(formulario: FormGroup){
 
   return camposComErro;
 }
+
+export function getMesAnoAtual(): string {
+  const hoje = new Date();
+
+  const mes = String(hoje.getMonth() + 2).padStart(2, '0')
+  const ano = hoje.getFullYear();
+  return `${mes}/${ano}`;
+}

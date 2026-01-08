@@ -75,9 +75,23 @@ export class PlanejamentoParcelasComponent implements OnInit {
     ];
   }
 
+  getReducePorcentagemDivisao(): number{
+    return this.planejamentoParcelas.reduce((acc, n) => {
+      return acc - n.porcentagemDivisao;
+    }, 100);
+  }
+
   abrirModal() {
     this.formulario.reset();
     this.modalVisivel = true;
+    if(this.planejamentoParcelas.length != 0){
+      const resultado = this.getReducePorcentagemDivisao()
+      this.formulario.get('porcentagemDivisao')?.setValue(resultado)
+      return
+    }
+    this.formulario.get('porcentagemDivisao')?.setValue(100)
+
+    console.log('Planejamentos', this.planejamentoParcelas)
   }
 
   fecharModal() {

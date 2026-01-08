@@ -21,7 +21,7 @@ export class FaturaApiService{
     page?: number,
     size?: number
   ){
-    return this.http.get(`${this.pathApiDespesa}/filtros`,
+    return this.http.get<FaturaModel[]>(`${this.pathApiDespesa}/filtros`,
       {params: filtroService.criarParametro(param,page, size)}
     ).pipe(take(1))
   }
