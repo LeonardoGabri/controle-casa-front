@@ -39,7 +39,9 @@ import {TransacaoListaComponent} from "../lista/transacao-lista.component";
     AccordionModule,
     CardModule
   ],
-  exports: []
+  exports: [
+    TransacaoListaComponent
+  ]
 })
 export class TransacaoModule {
 }

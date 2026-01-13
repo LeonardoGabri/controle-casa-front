@@ -17,6 +17,7 @@ import {AccordionModule} from "primeng/accordion";
 import {CardModule} from "primeng/card";
 import {PatrimonioRoutingModule} from "./patrimonio-routing.module";
 import {PatrimonioListaComponent} from "../lista/patrimonio-lista.component";
+import {TransacaoModule} from "../../transacao/modulo/transacao-module";
 
 @NgModule({
   declarations: [PatrimonioFormularioComponent, PatrimonioListaComponent],
@@ -37,7 +38,8 @@ import {PatrimonioListaComponent} from "../lista/patrimonio-lista.component";
     MessagesModule,
     InputNumberModule,
     AccordionModule,
-    CardModule
+    CardModule,
+    TransacaoModule
   ],
 })
 export class PatrimonioModule { }

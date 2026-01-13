@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {FiltroParametrosPatrimonio, ItemListaPatrimonio} from "../../patrimonio/modelo/patrimonio.model";
 import {
   navegacaoTransacao,
@@ -120,4 +120,7 @@ export class TransacaoListaComponent implements OnInit{
       error: (err) => console.error('Erro ao carregar opções de contas', err)
     });
   }
+
+  @Input() patrimonioId?: string;
+
 }

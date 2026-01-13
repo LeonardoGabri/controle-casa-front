@@ -26,9 +26,13 @@ export class PatrimonioListaComponent implements OnInit {
   filtroBuscaAvancada: FiltroParametrosPatrimonio = {};
   mostrarBuscaAvancada = false;
   opcoesConta: any[] = [];
+  patrimonioSelecionado: any | null = null;
+
+  podeAtualizarCriptos = false;
+  tooltipAtualizarCriptos = '';
+  proximaAtualizacao?: Date;
 
   criptos : CriptomoedaModel[] = []
-
   nomePagina = navegacaoPatrimonio.label
   paginacao = {
     page: 0,
@@ -173,8 +177,59 @@ export class PatrimonioListaComponent implements OnInit {
     this.criptomoedaApiService.buscarCriptomoedas().subscribe({
       next: (dados: any) => {
         this.criptos = dados
+        this.verificarPodeAtualizar(dados);
       }
     })
+  }
+
+  selecionarPatrimonio(item: any) {
+    if (this.patrimonioSelecionado?.id === item.id) {
+      this.patrimonioSelecionado = null; // toggle
+    } else {
+      this.patrimonioSelecionado = item;
+    }
+  }
+
+  verificarPodeAtualizar(criptos: any[]) {
+    const criptosComData = criptos.filter(c => c.dataAtualizacao);
+
+    if (criptosComData.length === 0) {
+      this.podeAtualizarCriptos = true;
+      this.tooltipAtualizarCriptos =
+        'Nenhuma atualização registrada ainda';
+      return;
+    }
+
+    const ultimaAtualizacao = criptosComData
+      .map(c => new Date(c.dataAtualizacao))
+      .sort((a, b) => b.getTime() - a.getTime())[0];
+
+    const agora = new Date();
+
+    const proximaAtualizacao = new Date(ultimaAtualizacao);
+    proximaAtualizacao.setHours(proximaAtualizacao.getHours() + 24);
+
+    this.podeAtualizarCriptos = agora >= proximaAtualizacao;
+
+    this.tooltipAtualizarCriptos = this.podeAtualizarCriptos
+      ? 'Clique para atualizar os valores das criptomoedas'
+      : `Atualização disponível em ${this.formatarDataTooltip(proximaAtualizacao)}`;
+  }
+
+  formatarDataTooltip(data: Date): string {
+    return data.toLocaleString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  atualizarTooltip() {
+    this.tooltipAtualizarCriptos = this.podeAtualizarCriptos
+      ? 'Atualizar valores das criptomoedas'
+      : 'As criptomoedas só podem ser atualizadas uma vez ao dia';
   }
 }
 

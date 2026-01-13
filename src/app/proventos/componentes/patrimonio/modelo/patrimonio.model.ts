@@ -13,9 +13,10 @@ export interface PatrimonioModel {
 
 export interface ItemListaPatrimonio{
   id:string;
-  conta: ContaModel;
+  conta: any;
   tipo: string;
   moeda: string;
+  descricao?: string;
   valor: number;
   dataInicio?: string;
   dataFim?: string;

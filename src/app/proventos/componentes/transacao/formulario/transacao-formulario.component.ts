@@ -96,7 +96,7 @@ export class TransacaoFormularioComponent implements OnInit{
   }
 
   cancelar() {
-    this.router.navigate([navegacaoTransacao.link]);
+    this.router.navigate([navegacaoPatrimonio.link]);
   }
 
 

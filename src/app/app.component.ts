@@ -116,11 +116,6 @@ export class AppComponent implements OnInit {
                 icon: 'pi pi-money-bill',
                 routerLink: navegacaoPatrimonio.link,
               },
-              {
-                label: 'Transação',
-                icon: 'pi pi-cart-plus',
-                routerLink: navegacaoTransacao.link,
-              },
             ],
           },
         ],
