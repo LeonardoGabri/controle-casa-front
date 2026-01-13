@@ -49,12 +49,9 @@ export class FaturaFormularioComponent implements OnInit{
 
   criarFormulario(novoFormulario?: FaturaModel){
     this.formulario = this.formBuilder.group({
-      id: [novoFormulario?.id],
-      dataVencimento: [novoFormulario?.id, Validators.required],
       fornecedorId: [novoFormulario?.fornecedorId],
       responsavelId: [novoFormulario?.responsavelId, Validators.required],
       valor: [novoFormulario?.valor, Validators.required],
-      porcentagemDivisao: [novoFormulario?.porcentagemDivisao],
       parcelaAtual: [novoFormulario?.parcelaAtual],
       despesaId: [novoFormulario?.despesaId],
     })

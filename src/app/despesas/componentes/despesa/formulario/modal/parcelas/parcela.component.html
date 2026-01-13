@@ -7,32 +7,135 @@
         <th>Data de Vencimento</th>
         <th>Responsável</th>
         <th>Valor</th>
+        <th>Parcela</th>
         <th>Ações</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let parcela of parcelas">
+      <tr *ngFor="let parcela of despesa.parcelas">
         <td>{{ parcela.dataVencimento | date: 'dd/MM/yyyy' }}</td>
         <td>{{ parcela.responsavelNome }}</td>
         <td>{{ parcela.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
-        <td class="actions-column">
-          <p-overlayPanel #op>
-            <div class="action-option" (click)="editarParcela(parcela)">
-              <i class="pi pi-pencil"></i> Editar
-            </div>
-            <div class="action-option" (click)="removerParcela(parcela)">
-              <i class="pi pi-trash"></i> Remover
-            </div>
-          </p-overlayPanel>
+        <td>{{ parcela.parcelaAtual }}</td>
+        <td>
           <button
             pButton
-            icon="pi pi-ellipsis-h"
-            class="action-button"
-            (click)="op.toggle($event)"
-            type="button"
+            icon="pi pi-pencil"
+            class="p-button-text"
+            (click)="editarParcela(parcela)"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-text p-button-danger"
+            (click)="removerParcela(parcela)"
           ></button>
         </td>
       </tr>
     </tbody>
   </table>
+  <div class="planejamento-footer">
+    <button
+      pButton
+      label="Incluir"
+      icon="pi pi-plus"
+      class="p-button-text"
+      (click)="abrirModal()"
+    ></button>
+
+    <button
+      pButton
+      label="Gerar Planejamento"
+      icon="pi pi-refresh"
+      class="p-button-success"
+      (click)="gerarPlanejamento()"
+      [disabled]="!despesa.parcelas || despesa.parcelas.length === 0"
+    ></button>
+  </div>
 </div>
+
+<p-dialog
+  header="Adicionar Nova Parcela"
+  [(visible)]="modalVisivel"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '720px' }"
+  (onHide)="fecharModal()"
+>
+  <form [formGroup]="formulario" class="form-grid">
+
+    <div class="form-field">
+      <label>Responsável</label>
+      <p-dropdown
+        [options]="opcoesResponsavel"
+        formControlName="responsavelId"
+        placeholder="Selecione um Responsável"
+        [filter]="true"
+        filterBy="label"
+        appendTo="body"
+        (onChange)="atualizaResponsavel($event)"
+      ></p-dropdown>
+    </div>
+
+    <div class="form-field">
+      <label>Fornecedor</label>
+      <p-dropdown
+        [options]="opcoesFornecedor"
+        formControlName="fornecedorId"
+        placeholder="Selecione um fornecedor"
+        [disabled]="true"
+        [filter]="true"
+        filterBy="label"
+        appendTo="body"
+      ></p-dropdown>
+    </div>
+
+    <!-- Linha 2 -->
+    <div class="form-field">
+      <label>Data de Vencimento</label>
+      <input
+        type="date"
+        pInputText
+        formControlName="dataVencimento"
+      />
+    </div>
+
+    <div class="form-field">
+      <label>Valor</label>
+      <p-inputNumber
+        formControlName="valor"
+        mode="currency"
+        currency="BRL"
+        locale="pt-BR"
+        placeholder="Digite o valor"
+      ></p-inputNumber>
+    </div>
+
+    <div class="form-field">
+      <label>Parcela</label>
+      <input
+        pInputText
+        formControlName="parcelaAtual"
+      />
+    </div>
+
+  </form>
+
+  <p-footer class="dialog-footer">
+    <button
+      pButton
+      label="Salvar"
+      icon="pi pi-check"
+      (click)="adicionarParcela()"
+    ></button>
+    <button
+      pButton
+      label="Cancelar"
+      icon="pi pi-times"
+      class="p-button-secondary"
+      (click)="fecharModal()"
+    ></button>
+  </p-footer>
+</p-dialog>
+
+<p-messages [(value)]="notificacao" [enableService]="false"></p-messages>

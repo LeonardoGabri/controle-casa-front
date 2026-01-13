@@ -66,8 +66,8 @@
         (click)="$event.stopPropagation()"
       >
         <p-table
-          [value]="uiState[getKey(item)]?.parcelas || []"
-          [loading]="uiState[getKey(item)]?.carregando"
+          [value]="uiState[getKey(item)].parcelas || []"
+          [loading]="uiState[getKey(item)].carregando"
           styleClass="p-datatable-sm"
         >
           <ng-template pTemplate="header">

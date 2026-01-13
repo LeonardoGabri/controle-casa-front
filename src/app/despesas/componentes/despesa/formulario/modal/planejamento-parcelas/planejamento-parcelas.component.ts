@@ -23,7 +23,7 @@ export class PlanejamentoParcelasComponent implements OnInit {
 
   @Input() despesa!: DespesaModel
 
-  @Output() parcelasChange = new EventEmitter<PlanejamentoParcelas[]>();
+  @Output() planejamentoChange = new EventEmitter<PlanejamentoParcelas[]>();
   menuAcoes: MenuItem[] = [];
   modalVisivel = false;
   @Input() planejamentoAberto = true;
@@ -65,12 +65,12 @@ export class PlanejamentoParcelasComponent implements OnInit {
       {
         label: 'Editar',
         icon: 'pi pi-pencil',
-        command: () => this.editarParcela.bind(this),
+        command: () => this.editarPlanejamento.bind(this),
       },
       {
         label: 'Remover',
         icon: 'pi pi-trash',
-        command: () => this.removerParcela.bind(this),
+        command: () => this.removerPlanejamento.bind(this),
       },
     ];
   }
@@ -90,15 +90,13 @@ export class PlanejamentoParcelasComponent implements OnInit {
       return
     }
     this.formulario.get('porcentagemDivisao')?.setValue(100)
-
-    console.log('Planejamentos', this.planejamentoParcelas)
   }
 
   fecharModal() {
     this.modalVisivel = false;
   }
 
-  adicionarParcela() {
+  adicionarPlanejamentoParcelas() {
     if (!this.formulario.valid) {
       const camposErros = validaCamposInvalidosFormulario(this.formulario).join(' - ');
       this.notificacao = [MensagemNotificacao(camposErros).formularioInvalido];
@@ -118,19 +116,19 @@ export class PlanejamentoParcelasComponent implements OnInit {
       );
     }
 
-    this.parcelasChange.emit(novaLista);
+    this.planejamentoChange.emit(novaLista);
     this.fecharModal();
   }
 
 
-  editarParcela(item: PlanejamentoParcelas) {
+  editarPlanejamento(item: PlanejamentoParcelas) {
     this.modalVisivel = true;
     this.formulario.patchValue(item);
   }
 
-  removerParcela(item: PlanejamentoParcelas) {
+  removerPlanejamento(item: PlanejamentoParcelas) {
     const novaLista = this.planejamentoParcelas.filter(p => p !== item);
-    this.parcelasChange.emit(novaLista);
+    this.planejamentoChange.emit(novaLista);
   }
 
   carregarOpcoesResponsavel() {
@@ -156,7 +154,7 @@ export class PlanejamentoParcelasComponent implements OnInit {
       indTabela: index
     }));
 
-    this.parcelasChange.emit(novaLista);
+    this.planejamentoChange.emit(novaLista);
   }
 
   atualizaNomeResponsavel(item: any) {

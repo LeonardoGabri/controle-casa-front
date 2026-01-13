@@ -1,10 +1,9 @@
 export interface FaturaModel{
-  id?: string
+  indTabela?: number;
   dataVencimento?: Date;
   fornecedorId?: string;
   responsavelId: string;
   responsavelNome?: string;
-  porcentagemDivisao?: number;
   parcelaAtual: string
   valor?: number;
   despesaId?: string

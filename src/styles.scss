@@ -66,6 +66,13 @@
   font-weight: bold;
 }
 
+.refresh-button {
+  margin-right: 1rem;
+  background-color: #5f73e5;
+  color: white;
+  font-weight: bold;
+}
+
 .header-row {
   background-color: #333333;
   color: #ffffff7e;
@@ -90,9 +97,11 @@
 .form-group {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   width: 100%;
   max-width: 400px;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  gap: 1rem;
 }
 
 .form-group label {
@@ -152,12 +161,7 @@
 }
 
 .form-group {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-bottom: 1rem;
-  gap: 1rem;
-  width: 100%;
+
 }
 
 .form-group label {
@@ -232,4 +236,3 @@
   font-weight: bold;
   color: #4ade80;
 }
-

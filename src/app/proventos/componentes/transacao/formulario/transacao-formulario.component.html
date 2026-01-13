@@ -1,0 +1,81 @@
+<div class="form-container" [formGroup]="formulario">
+  <div class="header">
+    <h2 class="form-title">{{ nomePagina }}</h2>
+    <div class="button-group">
+      <button
+        pButton
+        label="Salvar"
+        icon="pi pi-check"
+        (click)="salvar()"
+        class="p-button-primary"
+      ></button>
+      <button
+        pButton
+        label="Cancelar"
+        icon="pi pi-times"
+        (click)="cancelar()"
+        class="p-button-secondary"
+      ></button>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="dataTransacao">Data de Transação:</label>
+      <input
+        id="dataTransacao"
+        type="date"
+        pInputText
+        formControlName="dataTransacao"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="conta">Patrimônio</label>
+      <p-dropdown
+        id="moeda"
+        [options]="opcoesPatrimonio"
+        formControlName="patrimonio"
+        placeholder="Selecione um patrimônio"
+        [filter]="true"
+        filterBy="label"
+        appendTo="body"
+      ></p-dropdown>
+    </div>
+
+    <div class="form-group">
+      <label for="conta">Tipo</label>
+      <p-dropdown
+        id="tipo"
+        [options]="opcoesTipoTransacao"
+        formControlName="tipo"
+        placeholder="Selecione um tipo"
+        [filter]="true"
+        filterBy="label"
+        appendTo="body"
+      ></p-dropdown>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="valor">Valor</label>
+      <p-inputNumber
+        formControlName="valor"
+        mode="decimal"
+        [min]="0"
+        [minFractionDigits]="minFractionDigits"
+        [maxFractionDigits]="maxFractionDigits"
+        placeholder="Digite o valor"
+      ></p-inputNumber>
+    </div>
+
+    <div class="form-group">
+      <div class="form-group">
+        <label for="fornecedor">Descrição:</label>
+        <input id="descricao" type="text" pInputText placeholder="Descrição" formControlName="descricao" />
+      </div>
+    </div>
+  </div>
+
+</div>

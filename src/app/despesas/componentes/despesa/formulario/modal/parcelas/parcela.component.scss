@@ -39,17 +39,49 @@
 
 button[pButton] {
   margin-top: 10px;
-  background-color: #444; /* Fundo do botão em cor escura */
-  color: #ffffff; /* Texto branco no botão */
+  background-color: #444;
+  color: #ffffff;
   border: none;
 }
 
 button[pButton]:hover {
-  background-color: #555; /* Alteração de cor ao passar o mouse */
+  background-color: #555;
 }
 
 .form-container {
   width: 100%;
-  max-height: 100%; /* Permite que o contêiner cresça com o conteúdo */
-  overflow-y: auto; /* Adiciona rolagem vertical se o conteúdo ultrapassar a altura da tela */
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field label {
+  font-size: 0.8rem;
+  margin-bottom: 0.35rem;
+  color: #cfcfcf;
+}
+
+.form-field input,
+.form-field p-dropdown,
+.form-field p-inputNumber,
+.form-field ::ng-deep .p-dropdown,
+.form-field ::ng-deep .p-inputnumber,
+.form-field ::ng-deep .p-inputtext {
+  width: 100%;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }

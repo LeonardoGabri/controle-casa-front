@@ -27,13 +27,13 @@
             pButton
             icon="pi pi-pencil"
             class="p-button-text"
-            (click)="editarParcela(planejamento)"
+            (click)="editarPlanejamento(planejamento)"
           ></button>
           <button
             pButton
             icon="pi pi-trash"
             class="p-button-text p-button-danger"
-            (click)="removerParcela(planejamento)"
+            (click)="removerPlanejamento(planejamento)"
           ></button>
         </td>
       </tr>
@@ -63,7 +63,7 @@
 
 
   <p-dialog
-    header="Adicionar Nova Parcela"
+    header="Adicionar Novo Planejamento"
     [(visible)]="modalVisivel"
     [modal]="true"
     [closable]="true"
@@ -102,7 +102,7 @@
         pButton
         label="Salvar"
         icon="pi pi-check"
-        (click)="adicionarParcela()"
+        (click)="adicionarPlanejamentoParcelas()"
       ></button>
       <button
         pButton

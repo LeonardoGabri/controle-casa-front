@@ -55,7 +55,6 @@ export class DespesaFormularioComponent implements OnInit {
 
   ngOnInit(): void {
     this.criarFormulario();
-
     this.carregarOpcoesConta();
     this.carregarOpcoesFornecedores();
     this.carregarOpcoesGrupo();
@@ -96,9 +95,7 @@ export class DespesaFormularioComponent implements OnInit {
     this.despesaApiService.buscarDespesaPorId(id).subscribe({
       next: (despesa: any) => {
         this.formulario.patchValue(despesa);
-        this.formulario.get('contaId')?.setValue(despesa.conta.id)
-        this.formulario.get('fornecedorId')?.setValue(despesa.fornecedorId)
-        this.formulario.get('subgrupoId')?.setValue(despesa.subgrupoId)
+        this.formulario.get('contaId')?.setValue(despesa.conta.id);
         if(!despesa.situacao){
           this.formulario.get('situacao')?.setValue(SituacaoEnum.ABERTA.toString())
         }
@@ -245,13 +242,14 @@ export class DespesaFormularioComponent implements OnInit {
     });
   }
 
-  atualizarPlanejamentoParcelas(parcelasAtualizadas: PlanejamentoParcelas[]) {
-    this.formulario.get('planejamentoParcelas')?.setValue(parcelasAtualizadas);
+  atualizarPlanejamentoParcelas(planejamentosAtualizados: PlanejamentoParcelas[]) {
+    this.formulario.get('planejamentoParcelas')?.setValue(planejamentosAtualizados);
     this.formulario.get('planejamentoParcelas')?.markAsDirty();
   }
 
   atualizarParcelas(parcelas: FaturaModel[]) {
     this.formulario.get('parcelas')?.setValue(parcelas)
+    this.formulario.get('parcelas')?.markAsDirty();
   }
 
   calcularTotalPorcentagemDivisao(planejamentoParcelas: PlanejamentoParcelas[]) {

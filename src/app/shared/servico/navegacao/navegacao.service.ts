@@ -10,7 +10,7 @@ const navegacaoDespesas = {
 
 const navegacaoProventos = {
   label: 'Proventos',
-  link: '/provento'
+  link: '/proventos'
 }
 
 export {

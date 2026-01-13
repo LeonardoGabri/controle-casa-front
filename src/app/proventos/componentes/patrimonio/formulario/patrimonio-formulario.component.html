@@ -1,0 +1,107 @@
+<div class="form-container" [formGroup]="formulario">
+  <div class="header">
+    <h2 class="form-title">{{ nomePagina }}</h2>
+    <div class="button-group">
+      <button
+        pButton
+        label="Salvar"
+        icon="pi pi-check"
+        (click)="salvar()"
+        class="p-button-primary"
+      ></button>
+      <button
+        pButton
+        label="Cancelar"
+        icon="pi pi-times"
+        (click)="cancelar()"
+        class="p-button-secondary"
+      ></button>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="conta">Tipo</label>
+      <p-dropdown
+        id="tipo"
+        [options]="opcoesTipoPatrimonio"
+        formControlName="tipo"
+        placeholder="Selecione um tipo"
+        [filter]="true"
+        filterBy="label"
+        appendTo="body"
+        (onChange)="alteraTipoPatrimonio($event)"
+      ></p-dropdown>
+    </div>
+
+    <div *ngIf="formulario.get('tipo')?.value === 'CRIPTO'">
+      <div class="form-group">
+        <label for="conta">Cripto</label>
+        <p-dropdown
+          id="moeda"
+          [options]="opcoesCriptomoedas"
+          formControlName="moeda"
+          placeholder="Selecione uma cripto"
+          [filter]="true"
+          filterBy="label"
+          appendTo="body"
+        ></p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="conta">Conta</label>
+      <p-dropdown
+        id="conta"
+        [options]="opcoesConta"
+        formControlName="conta"
+        placeholder="Selecione uma conta"
+        [filter]="true"
+        filterBy="label"
+        appendTo="body"
+      ></p-dropdown>
+    </div>
+    <div class="form-group">
+      <label for="valor">Valor</label>
+      <p-inputNumber
+        formControlName="valor"
+        mode="decimal"
+        [min]="0"
+        [minFractionDigits]="minFractionDigits"
+        [maxFractionDigits]="maxFractionDigits"
+        placeholder="Digite o valor"
+      ></p-inputNumber>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="dataInicio">Data de Início:</label>
+      <input
+        id="dataInicio"
+        type="date"
+        pInputText
+        formControlName="dataInicio"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="dataFim">Data de Fim:</label>
+      <input
+        id="dataFim"
+        type="date"
+        pInputText
+        formControlName="dataFim"
+      />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="fornecedor">Descrição:</label>
+    <input id="descricao" type="text" pInputText placeholder="Descrição" formControlName="descricao"/>
+  </div>
+
+
+</div>

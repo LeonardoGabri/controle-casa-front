@@ -22,6 +22,7 @@ import {
   navegacaoParcela, navegacaoResumoMensal,
 } from './despesas/servico/navegacao-despesa.service';
 import { NotificationService } from './shared/mensagem/notification.service';
+import {navegacaoPatrimonio, navegacaoTransacao} from "./proventos/servico/navegacao-proventos.service";
 
 @Component({
   selector: 'app-root',
@@ -51,31 +52,26 @@ export class AppComponent implements OnInit {
               {
                 label: 'Responsável',
                 icon: 'pi pi-users',
-                subtext: 'Subtext of item',
                 routerLink: navegacaoResponsavel.link,
               },
               {
                 label: 'Conta',
                 icon: 'pi pi-shopping-cart',
-                subtext: 'Subtext of item',
                 routerLink: navegacaoConta.link,
               },
               {
                 label: 'Grupo',
                 icon: 'pi pi-sitemap',
-                subtext: 'Subtext of item',
                 routerLink: navegacaoGrupo.link,
               },
               {
                 label: 'Subgrupo',
                 icon: 'pi pi-stop',
-                subtext: 'Subtext of item',
                 routerLink: navegacaoSubgrupo.link,
               },
               {
                 label: 'Fornecedor',
                 icon: 'pi pi-shop',
-                subtext: 'Subtext of item',
                 routerLink: navegacaoFornecedor.link,
               }
             ],
@@ -92,19 +88,16 @@ export class AppComponent implements OnInit {
               {
                 label: 'Compra',
                 icon: 'pi pi-shopping-cart',
-                subtext: 'Subtext of item',
                 routerLink: navegacaoDespesa.link,
               },
               {
                 label: 'Fatura',
                 icon: 'pi pi-barcode',
-                subtext: 'Subtext of item',
                 routerLink: navegacaoParcela.link,
               },
               {
                 label: 'Resumo Mensal',
                 icon: 'pi pi-envelope',
-                subtext: 'Subtext of item',
                 routerLink: navegacaoResumoMensal.link,
               },
             ],
@@ -114,6 +107,24 @@ export class AppComponent implements OnInit {
     },
     {
       label: 'Proventos',
+      items: [
+        [
+          {
+            items: [
+              {
+                label: 'Patrimônio',
+                icon: 'pi pi-money-bill',
+                routerLink: navegacaoPatrimonio.link,
+              },
+              {
+                label: 'Transação',
+                icon: 'pi pi-cart-plus',
+                routerLink: navegacaoTransacao.link,
+              },
+            ],
+          },
+        ],
+      ],
     },
   ];
 

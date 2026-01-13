@@ -121,14 +121,13 @@
   [planejamentoAberto]="planejamentoAberto"
   [planejamentoParcelas]="formulario.get('planejamentoParcelas')?.value"
   [despesa]="this.formulario.getRawValue()"
-  (parcelasChange)="atualizarPlanejamentoParcelas($event)"
+  (planejamentoChange)="atualizarPlanejamentoParcelas($event)"
   (emitirParcelasCalculadas)="atualizarParcelas($event)"
   >
 </app-planejamento-parcelas-component>
 
 <app-parcela-component
-  [parcelas]="formulario.get('parcelas')?.value"
-  (editar)="onEditarParcela($event)"
-  (remover)="onRemoverParcela($event)"
+  [despesa]="formulario.getRawValue()"
+  (parcelasChange)="atualizarParcelas($event)"
 >
 </app-parcela-component>

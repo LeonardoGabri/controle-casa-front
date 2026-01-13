@@ -32,7 +32,7 @@ export interface ItemListaDespesa {
   valorTotal: string
   valorTotalAtivo: string
   referenciaCobranca: string
-  parcelas: any
+  parcelas?: FaturaModel[]
 }
 
 export interface FiltroParametrosDespesa{
