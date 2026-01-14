@@ -20,6 +20,9 @@ export interface ItemListaPatrimonio{
   valor: number;
   dataInicio?: string;
   dataFim?: string;
+
+  valorMoeda?: number;
+  quantidadeMoeda?: number;
 }
 
 export interface FiltroParametrosPatrimonio{

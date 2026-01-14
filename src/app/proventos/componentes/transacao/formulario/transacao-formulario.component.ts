@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from "@angular/core";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {TransacaoModel} from "../modelo/transacao.model";
 import {

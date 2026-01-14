@@ -34,7 +34,10 @@
 }
 
 .page-header {
-  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
 .actions {
@@ -44,4 +47,72 @@
 
 span[ptooltip] {
   display: inline-block;
+}
+
+.total-patrimonio {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  .label {
+    font-size: 0.9rem;
+    color: #b5b5b5;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .valor {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #4ade80;
+  }
+}
+
+.patrimonio-card {
+  background: #1f1f1f;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background: #262626;
+  }
+
+  &.cripto {
+    background: linear-gradient(
+        135deg,
+        #1f1f1f 0%,
+        #1f2937 100%
+    );
+  }
+
+  &.cripto:hover {
+    background: linear-gradient(
+        135deg,
+        #262626 0%,
+        #273449 100%
+    );
+  }
+}
+
+.total-resumo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  margin-bottom: 16px;
+  background: #1f1f1f;
+  border-radius: 10px;
+  border-left: 4px solid #4ade80;
+
+  .total-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #a1a1aa;
+  }
+
+  .total-valor {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #4ade80;
+  }
 }

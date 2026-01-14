@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from "@angular/core";
 import {FiltroParametrosPatrimonio, ItemListaPatrimonio} from "../../patrimonio/modelo/patrimonio.model";
 import {
   navegacaoTransacao,
@@ -18,7 +18,8 @@ import {FiltroParametrosTransacao, ItemListaTransacao} from "../modelo/transacao
   templateUrl: './transacao-lista.component.html',
   styleUrls: ['./transacao-lista.component.scss']
   })
-export class TransacaoListaComponent implements OnInit{
+export class TransacaoListaComponent implements OnInit, OnChanges{
+  @Input() patrimonioId?: string;
   itensTransacoes: ItemListaTransacao[] = [];
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosTransacao = {};
@@ -51,6 +52,13 @@ export class TransacaoListaComponent implements OnInit{
     this.buscarDadosTransacoes()
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes['patrimonioId'] && changes['patrimonioId'].currentValue !== changes['patrimonioId'].previousValue){
+      this.filtroBuscaAvancada.patrimonio = changes['patrimonioId'].currentValue;
+      this.aplicarBuscaAvancada()
+    }
+  }
+
   navegarNovoFormulario() {
     this.router.navigate([navegacaoTransacaoNovoCadastro.link]);
   }
@@ -81,14 +89,14 @@ export class TransacaoListaComponent implements OnInit{
     this.fecharBuscaAvancada();
   }
 
-  criarParamentrosBusca(filtroSimples: string, filtroBuscaAvancada?: FiltroParametrosPatrimonio){
+  criarParamentrosBusca(filtroSimples: string, filtroBuscaAvancada?: FiltroParametrosTransacao){
     if(!filtroSimples && !filtroBuscaAvancada){
       return
     }
 
     return {
+      patrimonio: filtroBuscaAvancada?.patrimonio,
       tipo: filtroBuscaAvancada?.tipo,
-      conta: filtroBuscaAvancada?.conta,
     }
   }
 
@@ -120,7 +128,4 @@ export class TransacaoListaComponent implements OnInit{
       error: (err) => console.error('Erro ao carregar opções de contas', err)
     });
   }
-
-  @Input() patrimonioId?: string;
-
 }

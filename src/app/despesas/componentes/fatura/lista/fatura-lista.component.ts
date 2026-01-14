@@ -45,16 +45,18 @@ export class FaturaListaComponent implements OnInit{
   ngOnInit(): void {
     this.carregarOpcoesResponsavel()
     this.carregarOpcoesConta();
+    this.filtroBuscaAvancada.referenciaCobranca = this.getReferenciaAtual()
 
-    this.buscarDadosDespesa()
+    this.buscarDadosFatura()
     this.buscarResumoParcelaPorResponsavel()
+
   }
 
   navegarNovoFormulario() {
     this.router.navigate([navegacaoParcelaNovoCadastro.link]);
   }
 
-  buscarDadosDespesa(){
+  buscarDadosFatura(){
     let params = this.criarParamentrosBusca(this.pesquisar, this.filtroBuscaAvancada)
     this.faturaApiService.buscarParcelas(params, this.paginacao.page, this.paginacao.size).subscribe({
       next: (response: any) => {
@@ -77,7 +79,7 @@ export class FaturaListaComponent implements OnInit{
 
   aplicarBuscaAvancada() {
     console.log("Filtros avançados aplicados:", this.filtroBuscaAvancada);
-    this.buscarDadosDespesa()
+    this.buscarDadosFatura()
     this.buscarResumoParcelaPorResponsavel();
     this.fecharBuscaAvancada();
   }
@@ -90,7 +92,7 @@ export class FaturaListaComponent implements OnInit{
   removeItem(item: ItemListaFatura) {
     this.faturaApiService.deletarParcela(item.id).subscribe({
       next: (response: any) => {
-          this.buscarDadosDespesa()
+          this.buscarDadosFatura()
           this.notificationService.success(MensagemNotificacao().deletarRegistro.summary)
         },
       error: ({ error }) => {
@@ -144,5 +146,13 @@ export class FaturaListaComponent implements OnInit{
         this.resumoPorResponsavel = response
       }
     })
+  }
+
+  getReferenciaAtual(): string {
+    const hoje = new Date();
+    const mes = String(hoje.getMonth() + 2).padStart(2, '0');
+    const ano = hoje.getFullYear();
+
+    return `${mes}/${ano}`;
   }
 }

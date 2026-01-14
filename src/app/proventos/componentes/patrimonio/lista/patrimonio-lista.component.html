@@ -19,9 +19,16 @@
     </div>
   </div>
 
+  <div class="total-resumo">
+    <div class="total-label">Total de Ativos</div>
+    <div class="total-valor">
+      {{ totalPatrimonio | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+    </div>
+  </div>
+
   <div class="patrimonio-cards">
     <div
-      class="patrimonio-card"
+      class="patrimonio-card" [class.cripto]="item.tipo.includes('CRIPTO')"
       *ngFor="let item of itensPatrimonio"
       [class.selected]="item.id === patrimonioSelecionado?.id"
       (click)="selecionarPatrimonio(item)"
@@ -35,14 +42,27 @@
         {{ item.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
       </div>
 
-      <div class="card-actions">
-        <button pButton icon="pi pi-plus" class="p-button-text"></button>
+      <div
+        class="cripto-info"
+        *ngIf="item.tipo.includes('CRIPTO')"
+      >
+        <div class="cripto-quantidade">
+          {{ item.quantidadeMoeda | number:'1.0-8':'pt-BR' }}
+        </div>
+
+        <div class="cripto-unitario">
+          {{ item.valorMoeda | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        </div>
       </div>
+
+<!--      <div class="card-actions">-->
+<!--        <button pButton icon="pi pi-plus" class="p-button-text" (click)="transacaoLista.navegarNovoFormulario()"></button>-->
+<!--      </div>-->
     </div>
   </div>
 
-  <!-- Lista de Transações -->
   <app-transacao-lista
+    #transacaoLista
     [patrimonioId]="patrimonioSelecionado?.id"
   ></app-transacao-lista>
 

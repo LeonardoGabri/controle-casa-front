@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {FiltroParametrosPatrimonio, ItemListaPatrimonio} from "../modelo/patrimonio.model";
 import {
   navegacaoPatrimonio,
@@ -14,6 +14,7 @@ import {BinanceApiService} from "../../../../shared/servico/binance-api/binance-
 import {CriptomoedaApiService} from "../../../../shared/servico/criptomoeda-api/criptomoeda-api.service";
 import {EMPTY, forkJoin, switchMap} from "rxjs";
 import {CriptomoedaModel} from "../../../../shared/servico/modelo/criptomoeda.model";
+import {TransacaoListaComponent} from "../../transacao/lista/transacao-lista.component";
 
 @Component({
   selector: 'app-patrimonio-lista',
@@ -21,19 +22,17 @@ import {CriptomoedaModel} from "../../../../shared/servico/modelo/criptomoeda.mo
   styleUrls: ['./patrimonio-lista.component.scss'],
 })
 export class PatrimonioListaComponent implements OnInit {
-  itensPatrimonio: ItemListaPatrimonio[] = [];
   pesquisar = '';
-  filtroBuscaAvancada: FiltroParametrosPatrimonio = {};
   mostrarBuscaAvancada = false;
-  opcoesConta: any[] = [];
   patrimonioSelecionado: any | null = null;
-
   podeAtualizarCriptos = false;
   tooltipAtualizarCriptos = '';
-  proximaAtualizacao?: Date;
-
-  criptos : CriptomoedaModel[] = []
   nomePagina = navegacaoPatrimonio.label
+  totalPatrimonio = 0;
+  filtroBuscaAvancada: FiltroParametrosPatrimonio = {};
+  criptos : CriptomoedaModel[] = []
+  opcoesConta: any[] = [];
+  itensPatrimonio: ItemListaPatrimonio[] = [];
   paginacao = {
     page: 0,
     size: 20
@@ -69,9 +68,14 @@ export class PatrimonioListaComponent implements OnInit {
             if(item.moeda){
               this.criptomoedaApiService.buscarCriptomoedaPorCodigo(item.moeda).subscribe({
                 next: (criptomoeda: CriptomoedaModel) => {
+                  item.valorMoeda = criptomoeda.valor
+                  item.quantidadeMoeda = item.valor
                   item.valor = criptomoeda.valor * item.valor
                 },
-                error: (err) => console.error('Erro ao buscar criptomoeda', err)
+                error: (err) => console.error('Erro ao buscar criptomoeda', err),
+                complete: () => {
+                  this.calcularTotalPatrimonio();
+                }
               })
             }
           })
@@ -184,7 +188,7 @@ export class PatrimonioListaComponent implements OnInit {
 
   selecionarPatrimonio(item: any) {
     if (this.patrimonioSelecionado?.id === item.id) {
-      this.patrimonioSelecionado = null; // toggle
+      this.patrimonioSelecionado = null;
     } else {
       this.patrimonioSelecionado = item;
     }
@@ -226,10 +230,10 @@ export class PatrimonioListaComponent implements OnInit {
     });
   }
 
-  atualizarTooltip() {
-    this.tooltipAtualizarCriptos = this.podeAtualizarCriptos
-      ? 'Atualizar valores das criptomoedas'
-      : 'As criptomoedas só podem ser atualizadas uma vez ao dia';
+  calcularTotalPatrimonio() {
+    this.totalPatrimonio = this.itensPatrimonio
+      .map(item => item.valor || 0)
+      .reduce((acc, valor) => acc + valor, 0);
   }
 }
 
