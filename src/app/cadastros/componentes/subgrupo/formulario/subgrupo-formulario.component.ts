@@ -73,7 +73,7 @@ export class SubgrupoFormularioComponent implements OnInit{
       metodo.subscribe({
         next: (retorno: any) => {
           if (retorno) {
-            this.notificationService.error(MensagemNotificacao().salvarRegistro.summary)
+            this.notificationService.success(MensagemNotificacao().salvarRegistro.summary)
             this.cancelar()
           }
         },

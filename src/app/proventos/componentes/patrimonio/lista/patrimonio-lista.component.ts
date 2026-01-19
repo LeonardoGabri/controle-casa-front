@@ -12,7 +12,6 @@ import {NotificationService} from "../../../../shared/mensagem/notification.serv
 import {PatrimonioApiService} from "../servico/patrimonio-api.service";
 import {BinanceApiService} from "../../../../shared/servico/binance-api/binance-api.service";
 import {CriptomoedaApiService} from "../../../../shared/servico/criptomoeda-api/criptomoeda-api.service";
-import {EMPTY, forkJoin, switchMap} from "rxjs";
 import {CriptomoedaModel} from "../../../../shared/servico/modelo/criptomoeda.model";
 import {TransacaoListaComponent} from "../../transacao/lista/transacao-lista.component";
 
@@ -167,11 +166,15 @@ export class PatrimonioListaComponent implements OnInit {
                 error: ({error}) => {
                   this.notificationService.error(
                     MensagemNotificacao(error).erroSalvarRegistro.detail
-                  );        }
+                  );
+                }
               })
             }
           },
-          error: (err) => console.error('Erro ao buscar valor da moeda', err)
+          error: (err) => console.error('Erro ao buscar valor da moeda', err),
+          complete: () => {
+           this.buscarDadosPatrimonios()
+          }
         })
       }
     })
