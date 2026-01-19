@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
                 routerLink: navegacaoDespesa.link,
               },
               {
-                label: 'Fatura',
+                label: 'Parcelas',
                 icon: 'pi pi-barcode',
                 routerLink: navegacaoParcela.link,
               },

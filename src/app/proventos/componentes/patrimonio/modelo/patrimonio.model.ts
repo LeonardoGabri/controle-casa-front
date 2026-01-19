@@ -29,3 +29,11 @@ export interface FiltroParametrosPatrimonio{
   tipo?: string
   conta?: string
 }
+
+export interface BancoPatrimonioView {
+  bancoId: string;
+  bancoNome: string;
+  total: number;
+  expandido: boolean;
+  patrimonios: any[]; // seus itens atuais
+}

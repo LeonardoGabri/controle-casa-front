@@ -8,7 +8,12 @@ import {
   navegacaoParcela,
   navegacaoParcelaNovoCadastro,
 } from '../../../servico/navegacao-despesa.service';
-import {FiltroParametrosFatura, ItemListaFatura, ResumoParcelaPorResponsavel} from '../modelo/fatura.model';
+import {
+  FiltroParametrosFatura,
+  ItemListaFatura,
+  ResumoParcelaPorConta,
+  ResumoParcelaPorResponsavel
+} from '../modelo/fatura.model';
 import {FaturaApiService} from '../servico/fatura.service';
 import {NotificationService} from '../../../../shared/mensagem/notification.service';
 import {ContaApiService} from "../../../../cadastros/componentes/conta/servico/conta-api.service";
@@ -24,9 +29,12 @@ export class FaturaListaComponent implements OnInit{
   pesquisar = '';
   filtroBuscaAvancada: FiltroParametrosFatura = {};
   mostrarBuscaAvancada = false;
+  responsavelSelecionadaId: any | null = null;
+  contaSelecionadaId: any | null = null;
   opcoesResponsavel: any[] = [];
   opcoesConta: any[] = [];
   resumoPorResponsavel: ResumoParcelaPorResponsavel[] = [];
+  resumoPorConta: ResumoParcelaPorConta[] = [];
 
   nomePagina = navegacaoParcela.label
   paginacao = {
@@ -49,6 +57,7 @@ export class FaturaListaComponent implements OnInit{
 
     this.buscarDadosFatura()
     this.buscarResumoParcelaPorResponsavel()
+    this.buscarResumoParcelaPorConta()
 
   }
 
@@ -148,11 +157,44 @@ export class FaturaListaComponent implements OnInit{
     })
   }
 
+  buscarResumoParcelaPorConta(){
+    let params = this.criarParamentrosBusca(this.pesquisar, this.filtroBuscaAvancada)
+    this.faturaApiService.buscarResumoParcelaPorConta(params).subscribe({
+      next: (response: any) => {
+        this.resumoPorConta = response
+      }
+    })
+  }
+
   getReferenciaAtual(): string {
     const hoje = new Date();
     const mes = String(hoje.getMonth() + 2).padStart(2, '0');
     const ano = hoje.getFullYear();
 
     return `${mes}/${ano}`;
+  }
+
+  filtrarPorConta(resumo: any) {
+    if (this.contaSelecionadaId === resumo.contaId) {
+      this.contaSelecionadaId = null;
+      this.filtroBuscaAvancada.contaId = undefined;
+    } else {
+      this.contaSelecionadaId = resumo.contaId;
+      this.filtroBuscaAvancada.contaId = resumo.contaId;
+    }
+
+    this.buscarDadosFatura();
+  }
+
+  filtrarPorResponsavel(resumo: any) {
+    if (this.responsavelSelecionadaId === resumo.responsavelId) {
+      this.responsavelSelecionadaId = null;
+      this.filtroBuscaAvancada.responsavel = undefined;
+    } else {
+      this.responsavelSelecionadaId = resumo.responsavelId;
+      this.filtroBuscaAvancada.responsavel = resumo.responsavelId;
+    }
+
+    this.buscarDadosFatura();
   }
 }

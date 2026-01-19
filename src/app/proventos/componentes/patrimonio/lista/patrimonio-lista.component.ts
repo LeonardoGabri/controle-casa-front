@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
-import {FiltroParametrosPatrimonio, ItemListaPatrimonio} from "../modelo/patrimonio.model";
+import {BancoPatrimonioView, FiltroParametrosPatrimonio, ItemListaPatrimonio} from "../modelo/patrimonio.model";
 import {
   navegacaoPatrimonio,
   navegacaoPatrimonioEditarCadastro,
@@ -12,7 +12,6 @@ import {NotificationService} from "../../../../shared/mensagem/notification.serv
 import {PatrimonioApiService} from "../servico/patrimonio-api.service";
 import {BinanceApiService} from "../../../../shared/servico/binance-api/binance-api.service";
 import {CriptomoedaApiService} from "../../../../shared/servico/criptomoeda-api/criptomoeda-api.service";
-import {EMPTY, forkJoin, switchMap} from "rxjs";
 import {CriptomoedaModel} from "../../../../shared/servico/modelo/criptomoeda.model";
 import {TransacaoListaComponent} from "../../transacao/lista/transacao-lista.component";
 
@@ -31,6 +30,7 @@ export class PatrimonioListaComponent implements OnInit {
   totalPatrimonio = 0;
   filtroBuscaAvancada: FiltroParametrosPatrimonio = {};
   criptos : CriptomoedaModel[] = []
+  patrimoniosPorBanco: BancoPatrimonioView[] = []
   opcoesConta: any[] = [];
   itensPatrimonio: ItemListaPatrimonio[] = [];
   paginacao = {
@@ -75,6 +75,7 @@ export class PatrimonioListaComponent implements OnInit {
                 error: (err) => console.error('Erro ao buscar criptomoeda', err),
                 complete: () => {
                   this.calcularTotalPatrimonio();
+                  this.agruparPorBanco()
                 }
               })
             }
@@ -86,6 +87,7 @@ export class PatrimonioListaComponent implements OnInit {
         this.notificationService.error(MensagemNotificacao(error).erroAoListar.detail)
       },
     })
+
   }
 
   abrirBuscaAvancada() {
@@ -167,11 +169,15 @@ export class PatrimonioListaComponent implements OnInit {
                 error: ({error}) => {
                   this.notificationService.error(
                     MensagemNotificacao(error).erroSalvarRegistro.detail
-                  );        }
+                  );
+                }
               })
             }
           },
-          error: (err) => console.error('Erro ao buscar valor da moeda', err)
+          error: (err) => console.error('Erro ao buscar valor da moeda', err),
+          complete: () => {
+           this.buscarDadosPatrimonios()
+          }
         })
       }
     })
@@ -234,6 +240,30 @@ export class PatrimonioListaComponent implements OnInit {
     this.totalPatrimonio = this.itensPatrimonio
       .map(item => item.valor || 0)
       .reduce((acc, valor) => acc + valor, 0);
+  }
+
+  private agruparPorBanco() {
+    const mapa = new Map<string, BancoPatrimonioView>();
+
+    this.itensPatrimonio.forEach(item => {
+      const banco = item.conta.banco;
+
+      if (!mapa.has(banco.id)) {
+        mapa.set(banco.id, {
+          bancoId: banco.id,
+          bancoNome: banco.nome,
+          total: 0,
+          expandido: false,
+          patrimonios: []
+        });
+      }
+
+      const grupo = mapa.get(banco.id)!;
+      grupo.total += item.valor;
+      grupo.patrimonios.push(item);
+    });
+
+    this.patrimoniosPorBanco = Array.from(mapa.values());
   }
 }
 

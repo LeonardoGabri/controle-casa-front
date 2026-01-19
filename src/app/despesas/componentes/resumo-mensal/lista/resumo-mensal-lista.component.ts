@@ -1,11 +1,13 @@
 import {Component, OnInit} from "@angular/core";
 import {ItemListaDespesa} from "../../despesa/modelo/despesa.model";
-import {FiltroResumoMensal, ResumoMensalModel} from "../modelo/resumo-mensal.model";
+import {FiltroResumoMensal, AcertoResponsavelModel, ObrigacaoFinanceiraModel} from "../modelo/acerto-responsavel.model";
 import {navegacaoDespesa, navegacaoResumoMensal} from "../../../servico/navegacao-despesa.service";
 import {FaturaModel, FiltroParametrosFatura} from "../../fatura/modelo/fatura.model";
 import {ResumoMensalApiService} from "../servico/resumo-mensal-api.service";
 import {getMesAnoAtual} from "../../../../shared/servico/function/valida-formulario.service";
 import {FaturaApiService} from "../../fatura/servico/fatura.service";
+
+type DetalheContexto = 'ACERTO_RESPONSAVEL' | 'OBRIGACAO_FINANCEIRA';
 
 @Component({
   selector: 'app-resumo-mensal-lista',
@@ -16,8 +18,8 @@ export class ResumoMensalListaComponent implements OnInit {
   nomePagina = navegacaoResumoMensal.label
   filtroBuscaAvancada: FiltroResumoMensal = {};
 
-  itensResumoMensal: ResumoMensalModel[] = [];
-
+  itensAcertoResponsaveis: AcertoResponsavelModel[] = [];
+  itensObrigacoesFinanceiras: ObrigacaoFinanceiraModel[] = [];
   uiState: Record<string, {
     expandido: boolean;
     carregando: boolean;
@@ -40,34 +42,32 @@ export class ResumoMensalListaComponent implements OnInit {
   filtrarResumo() {
     this.uiState = {};
 
-    this.resumoMensalApiService.buscarResumoMensal(this.filtroBuscaAvancada).subscribe({
+    this.resumoMensalApiService.buscarAcertoResponsaveis(this.filtroBuscaAvancada).subscribe({
       next: (response: any) => {
-        this.itensResumoMensal = response
+        this.itensAcertoResponsaveis = response
+      }
+    })
+
+    this.resumoMensalApiService.buscarObrigacoesFinanceiras(this.filtroBuscaAvancada).subscribe({
+      next: (response: any) => {
+        this.itensObrigacoesFinanceiras = response
       }
     })
   }
 
-  // buscarDetalhesDoResumo(resumo: ResumoMensalModel[]) {
-  //   resumo.map((item: ResumoMensalModel) => {
-  //     let filtro = {
-  //       referenciaCobranca: this.filtroBuscaAvancada.referenciaCobranca,
-  //       responsavel: item.devedorId,
-  //       responsavelConta: item.credorId
-  //     } as FiltroParametrosFatura
-  //     this.faturaApiService.buscarParcelas(filtro).subscribe({
-  //       next: (response: FaturaModel[]) => {
-  //         console.log('RESPONSE', response)
-  //       }
-  //     })
-  //   })
-  // }
+  getKey(item: any, contexto: DetalheContexto): string {
+    if (contexto === 'ACERTO_RESPONSAVEL') {
+      return `ACERTO-${item.devedorId}-${item.credorId}`;
+    }
 
-  public getKey(item: ResumoMensalModel): string {
-    return `${item.devedorId}-${item.credorId}`;
+    return `OBRIGACAO-${item.contaId}`;
   }
 
-  toggleDetalhe(item: ResumoMensalModel) {
-    const key = this.getKey(item);
+  toggleDetalhe(
+    item: any,
+    contexto: DetalheContexto
+  ) {
+    const key = this.getKey(item, contexto);
 
     if (!this.uiState[key]) {
       this.uiState[key] = {
@@ -82,11 +82,7 @@ export class ResumoMensalListaComponent implements OnInit {
     if (state.expandido && !state.parcelas) {
       state.carregando = true;
 
-      const filtro = {
-        referenciaCobranca: this.filtroBuscaAvancada.referenciaCobranca,
-        responsavel: item.devedorId,
-        responsavelConta: item.credorId
-      } as FiltroParametrosFatura;
+      const filtro = this.montarFiltroParcelas(item, contexto);
 
       this.faturaApiService.buscarParcelas(filtro).subscribe({
         next: (response: any) => {
@@ -98,5 +94,32 @@ export class ResumoMensalListaComponent implements OnInit {
         }
       });
     }
+  }
+
+  private montarFiltroParcelas(
+    item: any,
+    contexto: DetalheContexto
+  ): FiltroParametrosFatura {
+
+    const base = {
+      referenciaCobranca: this.filtroBuscaAvancada.referenciaCobranca
+    } as FiltroParametrosFatura;
+
+    if (contexto === 'ACERTO_RESPONSAVEL') {
+      return {
+        ...base,
+        responsavel: item.devedorId,
+        responsavelConta: item.credorId
+      };
+    }
+
+    if (contexto === 'OBRIGACAO_FINANCEIRA') {
+      return {
+        ...base,
+        contaId: item.contaId
+      };
+    }
+
+    return base;
   }
 }

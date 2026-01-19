@@ -32,6 +32,13 @@ export interface FiltroParametrosFatura{
 }
 
 export interface ResumoParcelaPorResponsavel{
+  responsavelId: string;
   responsavelNome: string;
+  valorTotal: number;
+}
+
+export interface ResumoParcelaPorConta{
+  contaId: string;
+  contaNome: string;
   valorTotal: number;
 }

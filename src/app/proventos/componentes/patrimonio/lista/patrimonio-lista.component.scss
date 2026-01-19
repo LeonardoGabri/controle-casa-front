@@ -116,3 +116,153 @@ span[ptooltip] {
     color: #4ade80;
   }
 }
+
+.banco-card {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.banco-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.banco-nome {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.banco-total {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #7CFF9B;
+}
+
+.patrimonio-item {
+  background: #222;
+  border-radius: 10px;
+  padding: 12px;
+  margin-top: 8px;
+  transition: background 0.2s ease, transform 0.15s ease;
+  cursor: pointer;
+}
+
+.patrimonio-item:hover {
+  background: #2a2a2a;
+  transform: translateY(-1px);
+}
+
+.item-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.item-valor {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.patrimonio-item.cripto {
+  background: linear-gradient(
+      145deg,
+      #1e2a3a,
+      #1b2430
+  );
+  box-shadow: inset 0 0 0 1px rgba(79, 156, 255, 0.25);
+}
+
+.patrimonio-item.cripto:hover {
+  background: linear-gradient(
+      145deg,
+      #22334a,
+      #1e2a3a
+  );
+}
+
+.patrimonio-item.cripto .item-valor {
+  color: #8ab4ff;
+  font-weight: 700;
+}
+
+.cripto-badge {
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(79, 156, 255, 0.15);
+  color: #8ab4ff;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+.cripto-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+.cripto-quantidade {
+  color: #d0e3ff;
+}
+
+.cripto-unitario {
+  color: #9fbfff;
+}
+
+.patrimonio-item.selected {
+  animation: selectedPulse 0.3s ease-out;
+}
+
+@keyframes selectedPulse {
+  from {
+    transform: scale(0.98);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.patrimonio-item.cripto .filtro-ativo {
+  background: rgba(79, 156, 255, 0.15);
+  color: #8ab4ff;
+}
+
+.filtro-ativo {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 0.6rem;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(124, 255, 155, 0.15);
+  color: #7cff9b;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+.patrimonio-item.cripto.selected {
+  box-shadow:
+    inset 0 0 0 2px #4f9cff,
+    0 0 8px rgba(79, 156, 255, 0.35);
+}
+
+.patrimonio-item.selected:not(.cripto) {
+  box-shadow:
+    inset 0 0 0 2px #7cff9b,
+    0 0 6px rgba(124, 255, 155, 0.25);
+}
+
+.patrimonio-item.selected {
+  box-shadow:
+    inset 0 0 0 2px #7cff9b,
+    0 0 0 1px rgba(124, 255, 155, 0.25);
+}

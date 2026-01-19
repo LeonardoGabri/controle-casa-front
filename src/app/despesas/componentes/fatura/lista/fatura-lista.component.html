@@ -69,22 +69,58 @@
 
   <p-accordion>
     <p-accordionTab header="Resumo por Conta">
+      <div class="resumo-grid">
+        <p-card
+          *ngFor="let resumo of resumoPorConta"
+          class="card-resumo-conta"
+          (click)="filtrarPorConta(resumo)"
+          [class.selecionado]="resumo.contaId === contaSelecionadaId"
+        >
+          <ng-template pTemplate="content">
+            <div class="card-header">
+              <i class="pi pi-credit-card card-icon"></i>
+              <span class="card-title">{{ resumo.contaNome }}</span>
+            </div>
 
+            <div class="valor-total">
+              {{ resumo.valorTotal | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+            </div>
+
+            <div class="card-subtitle">
+              Total no mês
+            </div>
+          </ng-template>
+        </p-card>
+      </div>
+
+    </p-accordionTab>
+  </p-accordion>
+
+  <p-accordion>
+    <p-accordionTab header="Resumo por responsável">
       <div class="resumo-grid">
         <p-card
           *ngFor="let resumo of resumoPorResponsavel"
           class="card-resumo-conta"
+          (click)="filtrarPorResponsavel(resumo);  $event.stopPropagation()"
+          [class.selecionado]="resumo.responsavelId === responsavelSelecionadaId"
         >
-          <ng-template pTemplate="title">
-            {{ resumo.responsavelNome }}
-          </ng-template>
-
           <ng-template pTemplate="content">
+            <div class="card-header">
+              <i class="pi pi-user card-icon"></i>
+              <span class="card-title">{{ resumo.responsavelNome }}</span>
+            </div>
+
             <div class="valor-total">
               {{ resumo.valorTotal | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
             </div>
+
+            <div class="card-subtitle">
+              Total no mês
+            </div>
           </ng-template>
         </p-card>
+
       </div>
 
     </p-accordionTab>

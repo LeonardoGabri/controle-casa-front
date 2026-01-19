@@ -26,77 +26,154 @@
 
   <div
     class="empty-state"
-    *ngIf="itensResumoMensal?.length === 0"
+    *ngIf="itensAcertoResponsaveis?.length === 0"
   >
     <i class="pi pi-inbox"></i>
     <h3>Nenhum dado encontrado</h3>
     <p>
       Não há lançamentos para o mês selecionado.
     </p>
-  </div>
 
-  <div class="fechamento-container">
-    <p-card
-      *ngFor="let item of itensResumoMensal"
-      class="fechamento-card"
-      (click)="toggleDetalhe(item)"
-    >
-      <div class="fechamento-content">
-        <div class="pessoa devedor">
-          <i class="pi pi-user"></i>
-          <strong>{{ item.devedorNome }}</strong>
-          <span>deve pagar</span>
-        </div>
-
-        <div class="seta">
-          <i class="pi pi-arrow-right"></i>
-          <span>{{ item.valor | currency:'BRL' }}</span>
-        </div>
-
-        <div class="pessoa credor">
-          <i class="pi pi-user"></i>
-          <strong>{{ item.credorNome }}</strong>
-          <span>vai receber</span>
-        </div>
-      </div>
-
-      <div
-        class="detalhe-parcelas"
-        *ngIf="uiState[getKey(item)]?.expandido"
-        (click)="$event.stopPropagation()"
-      >
-        <p-table
-          [value]="uiState[getKey(item)].parcelas || []"
-          [loading]="uiState[getKey(item)].carregando"
-          styleClass="p-datatable-sm"
-        >
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Fornecedor</th>
-              <th style="text-align: right;">Valor</th>
-            </tr>
-          </ng-template>
-
-          <ng-template pTemplate="body" let-parcela>
-            <tr>
-              <td>{{ parcela.fornecedorNome || parcela.fornecedor }}</td>
-              <td style="text-align: right;">
-                {{ parcela.valor | currency:'BRL' }}
-              </td>
-            </tr>
-          </ng-template>
-
-          <ng-template pTemplate="emptymessage">
-            <tr>
-              <td colspan="2" style="text-align: center;">
-                Nenhuma parcela encontrada
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </div>
-    </p-card>
   </div>
 
 
-</div>
+  <div class="resumo-blocos">
+    <p-accordion>
+      <p-accordionTab header="Obrigações Financeiras">
+        <div class="resumo-bloco">
+          <div class="fechamento-container">
+            <p-card
+              *ngFor="let item of itensObrigacoesFinanceiras"
+              class="fechamento-card"
+              (click)="toggleDetalhe(item, 'OBRIGACAO_FINANCEIRA')"
+
+            >
+              <div class="fechamento-content">
+                <div class="pessoa devedor">
+                  <i class="pi pi-user"></i>
+                  <strong>{{ item.responsavelNome }}</strong>
+                  <span>deve pagar</span>
+                </div>
+
+                <div class="seta">
+                  <i class="pi pi-arrow-right"></i>
+                  <span>{{ item.valorTotal | currency:'BRL' }}</span>
+                </div>
+
+                <div class="pessoa credor">
+                  <i class="pi pi-user"></i>
+                  <strong>{{ item.bancoNome }}</strong>
+                  <span>vai receber</span>
+                </div>
+              </div>
+              <div
+                class="detalhe-parcelas"
+                *ngIf="uiState[getKey(item,'OBRIGACAO_FINANCEIRA')]?.expandido"
+                (click)="$event.stopPropagation()"
+              >
+                <p-table
+                  [value]="uiState[getKey(item, 'OBRIGACAO_FINANCEIRA')].parcelas || []"
+                  [loading]="uiState[getKey(item, 'OBRIGACAO_FINANCEIRA')].carregando"
+                  styleClass="p-datatable-sm"
+                >
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Fornecedor</th>
+                      <th style="text-align: right;">Valor</th>
+                    </tr>
+                  </ng-template>
+
+                  <ng-template pTemplate="body" let-parcela>
+                    <tr>
+                      <td>{{ parcela.fornecedorNome || parcela.fornecedor }}</td>
+                      <td style="text-align: right;">
+                        {{ parcela.valor | currency:'BRL' }}
+                      </td>
+                    </tr>
+                  </ng-template>
+
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="2" style="text-align: center;">
+                        Nenhuma parcela encontrada
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </p-card>
+          </div>
+        </div>
+      </p-accordionTab>
+    </p-accordion>
+
+    <p-accordion>
+      <p-accordionTab header="Acerto entre Responsáveis">
+        <div class="resumo-bloco">
+          <div class="fechamento-container">
+            <p-card
+              *ngFor="let item of itensAcertoResponsaveis"
+              class="fechamento-card"
+              (click)="toggleDetalhe(item, 'ACERTO_RESPONSAVEL')"
+            >
+              <div class="fechamento-content">
+                <div class="pessoa devedor">
+                  <i class="pi pi-user"></i>
+                  <strong>{{ item.devedorNome }}</strong>
+                  <span>deve pagar</span>
+                </div>
+
+                <div class="seta">
+                  <i class="pi pi-arrow-right"></i>
+                  <span>{{ item.valor | currency:'BRL' }}</span>
+                </div>
+
+                <div class="pessoa credor">
+                  <i class="pi pi-user"></i>
+                  <strong>{{ item.credorNome }}</strong>
+                  <span>vai receber</span>
+                </div>
+              </div>
+
+              <div
+                class="detalhe-parcelas"
+                *ngIf="uiState[getKey(item,'ACERTO_RESPONSAVEL')]?.expandido"
+                (click)="$event.stopPropagation()"
+              >
+                <p-table
+                  [value]="uiState[getKey(item, 'ACERTO_RESPONSAVEL')].parcelas || []"
+                  [loading]="uiState[getKey(item, 'ACERTO_RESPONSAVEL')].carregando"
+                  styleClass="p-datatable-sm"
+                >
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Fornecedor</th>
+                      <th style="text-align: right;">Valor</th>
+                    </tr>
+                  </ng-template>
+
+                  <ng-template pTemplate="body" let-parcela>
+                    <tr>
+                      <td>{{ parcela.fornecedorNome || parcela.fornecedor }}</td>
+                      <td style="text-align: right;">
+                        {{ parcela.valor | currency:'BRL' }}
+                      </td>
+                    </tr>
+                  </ng-template>
+
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="2" style="text-align: center;">
+                        Nenhuma parcela encontrada
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </p-card>
+          </div>
+        </div>
+      </p-accordionTab>
+    </p-accordion>
+
+  </div>

@@ -56,4 +56,14 @@ export class FaturaApiService{
       {params: filtroService.criarParametro(param,page, size)}
     ).pipe(take(1))
   }
+
+  buscarResumoParcelaPorConta(
+    param?: FiltroParametrosFatura,
+    page?: number,
+    size?: number
+  ){
+    return this.http.get(`${this.pathApiDespesa}/resumo-conta`,
+      {params: filtroService.criarParametro(param,page, size)}
+    ).pipe(take(1))
+  }
 }
