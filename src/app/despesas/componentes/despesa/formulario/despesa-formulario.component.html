@@ -4,10 +4,11 @@
     <div class="button-group">
       <button
         pButton
+        class="p-button-primary"
         label="Salvar"
         icon="pi pi-check"
+        [disabled]="!formulario.valid"
         (click)="salvar()"
-        class="p-button-primary"
       ></button>
       <button
         pButton
@@ -129,5 +130,6 @@
 <app-parcela-component
   [despesa]="formulario.getRawValue()"
   (parcelasChange)="atualizarParcelas($event)"
+  (emitirPlanejamentoCalculado)="atualizarPlanejamentoParcelas( $event)"
 >
 </app-parcela-component>

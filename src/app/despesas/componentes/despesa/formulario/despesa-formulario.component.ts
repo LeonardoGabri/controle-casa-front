@@ -84,8 +84,8 @@ export class DespesaFormularioComponent implements OnInit {
         novoFormulario?.valorTotal,
         [Validators.required, Validators.min(0), Validators.pattern(/^\d+(\.\d{1,2})?$/)]
       ],
-      planejamentoParcelas: [novoFormulario?.planejamentoParcelas],
-      parcelas: [novoFormulario?.parcelas],
+      planejamentoParcelas: [novoFormulario?.planejamentoParcelas, [Validators.required]],
+      parcelas: [novoFormulario?.parcelas, [Validators.required]],
     });
 
     this.formulario.get('situacao')?.disable()

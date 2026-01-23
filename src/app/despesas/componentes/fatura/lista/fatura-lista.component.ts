@@ -17,6 +17,7 @@ import {
 import {FaturaApiService} from '../servico/fatura.service';
 import {NotificationService} from '../../../../shared/mensagem/notification.service';
 import {ContaApiService} from "../../../../cadastros/componentes/conta/servico/conta-api.service";
+import {FornecedorApiService} from "../../../../cadastros/componentes/fornecedor/servico/fornecedor-api.service";
 
 @Component({
   selector: 'app-fatura-lista',
@@ -32,6 +33,7 @@ export class FaturaListaComponent implements OnInit{
   responsavelSelecionadaId: any | null = null;
   contaSelecionadaId: any | null = null;
   opcoesResponsavel: any[] = [];
+  opcoesFornecedor: any[] = [];
   opcoesConta: any[] = [];
   resumoPorResponsavel: ResumoParcelaPorResponsavel[] = [];
   resumoPorConta: ResumoParcelaPorConta[] = [];
@@ -46,6 +48,7 @@ export class FaturaListaComponent implements OnInit{
     private router: Router,
     private faturaApiService: FaturaApiService,
     private responsavelApiService: ResponsavelApiService,
+    private fornecedorApiService: FornecedorApiService,
     private notificationService: NotificationService,
     private contaApiService: ContaApiService,
   ){}
@@ -53,6 +56,7 @@ export class FaturaListaComponent implements OnInit{
   ngOnInit(): void {
     this.carregarOpcoesResponsavel()
     this.carregarOpcoesConta();
+    this.carregarOpcoesFornecedor();
     this.filtroBuscaAvancada.referenciaCobranca = this.getReferenciaAtual()
 
     this.buscarDadosFatura()
@@ -121,6 +125,7 @@ export class FaturaListaComponent implements OnInit{
       contaId: filtroBuscaAvancada?.contaId,
       dataIni: filtroBuscaAvancada?.dataIni,
       dataFim: filtroBuscaAvancada?.dataFim,
+      fornecedor:filtroBuscaAvancada?.fornecedor
     }
   }
 
@@ -145,6 +150,18 @@ export class FaturaListaComponent implements OnInit{
         }));
       },
       error: (err) => console.error('Erro ao carregar opções de contas', err)
+    });
+  }
+
+  carregarOpcoesFornecedor() {
+    this.fornecedorApiService.buscarFornecedores().subscribe({
+      next: (dados: any) => {
+        this.opcoesFornecedor = dados.map((item: any) => ({
+          label: item.nome,
+          value: item.id
+        }));
+      },
+      error: (err) => console.error('Erro ao carregar opções de fornecedores', err)
     });
   }
 

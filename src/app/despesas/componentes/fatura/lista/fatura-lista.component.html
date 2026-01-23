@@ -51,6 +51,19 @@
       </div>
 
       <div class="form-group">
+        <label for="subgrupo">Fornecedor:</label>
+        <p-dropdown
+          id="subgrupo"
+          [options]="opcoesFornecedor"
+          [(ngModel)]="filtroBuscaAvancada.fornecedor"
+          placeholder="Selecione um fornecedor"
+          [filter]="true"
+          filterBy="label"
+          [appendTo]="'body'"
+        ></p-dropdown>
+      </div>
+
+      <div class="form-group">
         <label for="referenciaCobranca">Referencia de Cobrança:</label>
       <p-inputMask
           id="referenciaCobranca"

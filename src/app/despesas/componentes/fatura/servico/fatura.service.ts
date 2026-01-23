@@ -44,7 +44,6 @@ export class FaturaApiService{
 
   calcularParcelas(despesa: DespesaModel){
     return this.http.post(`${this.pathApiDespesa}/calcular-parcelas`, despesa).pipe(take(1))
-
   }
 
   buscarResumoParcelaPorResponsavel(

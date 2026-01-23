@@ -1,12 +1,29 @@
 import { navegacaoCadastros } from "../../shared/servico/navegacao/navegacao.service"
 
+const navegacaoBanco = {
+  label: 'Banco',
+  link: `${navegacaoCadastros.link}/banco`
+}
+
+const navegacaoBancoNovoCadastro = {
+  label: 'Novo banco',
+  link: `${navegacaoBanco.link}/formulario`
+}
+
+const navegacaoBancoEditarCadastro = (id: string) => {
+  return{
+    label: 'Editar banco',
+    link: `${navegacaoBancoNovoCadastro.link}/${id}`
+  }
+}
+
 const navegacaoConta = {
   label: 'Conta',
   link: `${navegacaoCadastros.link}/conta`
 }
 
 const navegacaoContaNovoCadastro = {
-  label: 'Nova Conta',
+  label: 'Nova conta',
   link: `${navegacaoConta.link}/formulario`
 }
 
@@ -86,6 +103,9 @@ const navegacaoSubgrupoEditarCadastro = (id: string) => {
 }
 
 export {
+  navegacaoBanco,
+  navegacaoBancoNovoCadastro,
+  navegacaoBancoEditarCadastro,
   navegacaoConta,
   navegacaoContaNovoCadastro,
   navegacaoContaEditarCadastro,

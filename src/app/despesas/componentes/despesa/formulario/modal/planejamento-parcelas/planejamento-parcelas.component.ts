@@ -8,6 +8,7 @@ import { validaCamposInvalidosFormulario } from '../../../../../../shared/servic
 import {FaturaApiService} from "../../../../fatura/servico/fatura.service";
 import {FaturaModel} from "../../../../fatura/modelo/fatura.model";
 import {NotificationService} from "../../../../../../shared/mensagem/notification.service";
+import {PlanejamentoParcelasApiService} from "./service/planejamento-parcelas-api.service";
 
 @Component({
   selector: 'app-planejamento-parcelas-component',
@@ -197,6 +198,5 @@ export class PlanejamentoParcelasComponent implements OnInit {
         },
       })
     }
-
   }
 }

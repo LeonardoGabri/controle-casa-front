@@ -24,6 +24,7 @@ export interface ItemListaFatura{
 
 export interface FiltroParametrosFatura{
   responsavel?: string
+  fornecedor?: string
   referenciaCobranca?: string;
   dataIni?: string
   dataFim?: string

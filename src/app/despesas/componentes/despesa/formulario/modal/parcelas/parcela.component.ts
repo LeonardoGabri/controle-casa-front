@@ -12,6 +12,7 @@ import {MensagemNotificacao} from "../../../../../../shared/mensagem/notificacao
 import {DespesaModel, PlanejamentoParcelas} from "../../../modelo/despesa.model";
 import {ResponsavelModel} from "../../../../../../cadastros/componentes/responsavel/modelo/responsavel.model";
 import {DespesaFormularioComponent} from "../../despesa-formulario.component";
+import {PlanejamentoParcelasApiService} from "../planejamento-parcelas/service/planejamento-parcelas-api.service";
 
 @Component({
   selector: 'app-parcela-component',
@@ -25,6 +26,7 @@ export class ParcelaComponent implements OnInit{
   notificacao: Message[] = [];
   @Input() despesa: DespesaModel = {};
   @Output() parcelasChange = new EventEmitter<FaturaModel[]>();
+  @Output() emitirPlanejamentoCalculado = new EventEmitter<PlanejamentoParcelas[]>();
   opcoesFornecedor: any[] = [];
 
   constructor(
@@ -33,7 +35,7 @@ export class ParcelaComponent implements OnInit{
     private responsavelApiService: ResponsavelApiService,
     private fornecedorApiService: FornecedorApiService,
     private notificationService: NotificationService,
-
+    private planejamentoApiService: PlanejamentoParcelasApiService
   ){}
 
   ngOnInit() {
@@ -109,7 +111,13 @@ export class ParcelaComponent implements OnInit{
   }
 
   gerarPlanejamento(){
-
+    if(this.despesa.parcelas){
+      this.planejamentoApiService.calcularPlanejamentoParcelas(this.despesa.parcelas).subscribe({
+        next: (planejamentoParcelas: PlanejamentoParcelas[]) => {
+          this.emitirPlanejamentoCalculado.emit(planejamentoParcelas);
+        }
+      })
+    }
   }
 
   adicionarParcela(){
