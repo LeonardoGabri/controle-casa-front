@@ -165,3 +165,64 @@
 .obrigacao-card ::ng-deep .p-card {
   border-left: 3px solid #1976d2;
 }
+
+.resumo-fechamento {
+  margin-bottom: 32px;
+}
+
+.resumo-card.saida .valor-total {
+  color: #ff5252;
+}
+
+.resumo-card.entrada .valor-total {
+  color: #66bb6a;
+}
+
+.resumo-card.destaque .valor-total {
+  color: #ffd54f;
+}
+
+.resumo-card .card-icon {
+  opacity: 0.85;
+}
+
+.detalhe-saidas {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #1c1c1c;
+  border: 1px solid #2e2e2e;
+}
+
+.detalhe-grupo {
+  margin-bottom: 12px;
+}
+
+.detalhe-titulo {
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.85;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.linha-detalhe {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  padding: 4px 0;
+}
+
+.composicao-saida {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #2e2e2e;
+  font-size: 0.85rem;
+}
+
+.linha-composicao {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  opacity: 0.9;
+}

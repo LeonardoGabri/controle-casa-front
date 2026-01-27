@@ -2,10 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
+import {environment} from "../../../environments/environments";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly pathApi = 'http://localhost:9000/auth/login';
+  private readonly pathApi = `${environment.url.service}/auth/login`;
   private readonly TOKEN_KEY = 'auth-token';
 
   constructor(private http: HttpClient, private router: Router) {}

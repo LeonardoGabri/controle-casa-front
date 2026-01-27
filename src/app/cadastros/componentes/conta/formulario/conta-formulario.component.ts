@@ -25,6 +25,7 @@ export class ContaFormularioComponent implements OnInit{
     {label: 'Crédito', value: 'CREDITO'},
     {label: 'Conta Corrente', value: 'CONTA_CORRENTE'},
     {label: 'Investimento', value: 'INVESTIMENTO'},
+    {label: 'Benefício', value: 'BENEFICIO'},
   ];
 
   id: string | null = null;

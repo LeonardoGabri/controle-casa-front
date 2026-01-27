@@ -10,4 +10,5 @@ export interface ItemListaResponsavel {
 
 export interface FiltroParametrosResponsavel{
   nome?: string;
+  titular?: boolean;
 }

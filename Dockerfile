@@ -1,20 +1,37 @@
-# Node LTS
-FROM node:20
+# =========================
+# 1️⃣ Build da aplicação
+# =========================
+FROM node:18-alpine AS build
 
-# Diretório de trabalho
 WORKDIR /app
 
-# Copia package.json primeiro (cache)
+# Copia dependências primeiro (cache)
 COPY package*.json ./
 
-# Instala dependências
 RUN npm install
 
-# Copia o resto do projeto
+# Copia o restante do código
 COPY . .
 
-# Porta que você pediu
-EXPOSE 4700
+# Build de produção
+RUN npm run build -- --configuration production
 
-# Sobe Angular na porta 4700 acessível fora do container
-CMD ["npm", "start", "--", "--host", "0.0.0.0", "--port", "4700"]
+
+# =========================
+# 2️⃣ Servidor Nginx
+# =========================
+FROM nginx:alpine
+
+# Remove config padrão
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Copia config customizada
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# ⚠️ Atenção ao caminho do dist
+# normalmente: dist/controle-front
+COPY --from=build /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

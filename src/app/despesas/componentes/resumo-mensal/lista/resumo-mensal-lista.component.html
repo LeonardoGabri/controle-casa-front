@@ -20,6 +20,88 @@
     </div>
   </div>
 
+  <div class="resumo-grid resumo-fechamento">
+
+    <!-- SAÍDAS -->
+    <p-card
+      class="card-resumo-conta resumo-card saida"
+      (click)="saidaExpandida = !saidaExpandida"
+    >
+      <ng-template pTemplate="content">
+
+        <!-- HEADER -->
+        <div class="card-header">
+          <i class="pi pi-arrow-up card-icon"></i>
+          <span class="card-title">Saídas do mês</span>
+        </div>
+
+        <div class="valor-total">
+          {{ totalSaidas | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        </div>
+
+        <div class="card-subtitle">
+          Clique para ver a composição
+        </div>
+
+        <div
+          class="composicao-saida"
+          *ngIf="saidaExpandida"
+          (click)="$event.stopPropagation()"
+        >
+          <div class="linha-composicao">
+            <span>Obrigações financeiras</span>
+            <strong>
+              {{ subtotalObrigacoes | currency:'BRL' }}
+            </strong>
+          </div>
+
+          <div class="linha-composicao">
+            <span>Acertos a pagar</span>
+            <strong>
+              {{ subtotalAcertosPagar | currency:'BRL' }}
+            </strong>
+          </div>
+        </div>
+
+      </ng-template>
+    </p-card>
+
+    <p-card class="card-resumo-conta resumo-card entrada">
+      <ng-template pTemplate="content">
+        <div class="card-header">
+          <i class="pi pi-arrow-down card-icon"></i>
+          <span class="card-title">Você recebe em acertos</span>
+        </div>
+
+        <div class="valor-total">
+          {{ totalEntradas | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        </div>
+
+        <div class="card-subtitle">
+          Valores a receber de outros responsáveis
+        </div>
+      </ng-template>
+    </p-card>
+
+    <p-card class="card-resumo-conta resumo-card destaque">
+      <ng-template pTemplate="content">
+        <div class="card-header">
+          <i class="pi pi-balance-scale card-icon"></i>
+          <span class="card-title">Impacto no seu bolso</span>
+        </div>
+
+        <div class="valor-total">
+          {{ impactoFinal | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        </div>
+
+        <div class="card-subtitle">
+          Resultado final do mês
+        </div>
+      </ng-template>
+    </p-card>
+
+  </div>
+
   <div class="form-group">
 
   </div>
@@ -79,6 +161,7 @@
                   <ng-template pTemplate="header">
                     <tr>
                       <th>Fornecedor</th>
+                      <th>Parcela</th>
                       <th style="text-align: right;">Valor</th>
                     </tr>
                   </ng-template>
@@ -86,6 +169,7 @@
                   <ng-template pTemplate="body" let-parcela>
                     <tr>
                       <td>{{ parcela.fornecedorNome || parcela.fornecedor }}</td>
+                      <td>{{ parcela.parcelaAtual }}/{{ parcela.totalParcelas }}</td>
                       <td style="text-align: right;">
                         {{ parcela.valor | currency:'BRL' }}
                       </td>

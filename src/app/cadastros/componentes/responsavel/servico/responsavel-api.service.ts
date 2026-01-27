@@ -19,7 +19,7 @@ export class ResponsavelApiService{
     page?: number,
     size?: number
   ){
-    return this.http.get(`${this.pathApiResponsavel}/filtros`,
+    return this.http.get<ResponsavelModel[]>(`${this.pathApiResponsavel}/filtros`,
       {params: filtroService.criarParametro(param,page, size)}
     ).pipe(take(1))
   }

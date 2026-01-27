@@ -6,6 +6,8 @@ import {FaturaModel, FiltroParametrosFatura} from "../../fatura/modelo/fatura.mo
 import {ResumoMensalApiService} from "../servico/resumo-mensal-api.service";
 import {getMesAnoAtual} from "../../../../shared/servico/function/valida-formulario.service";
 import {FaturaApiService} from "../../fatura/servico/fatura.service";
+import {ResponsavelApiService} from "../../../../cadastros/componentes/responsavel/servico/responsavel-api.service";
+import {ResponsavelModel} from "../../../../cadastros/componentes/responsavel/modelo/responsavel.model";
 
 type DetalheContexto = 'ACERTO_RESPONSAVEL' | 'OBRIGACAO_FINANCEIRA';
 
@@ -16,7 +18,16 @@ type DetalheContexto = 'ACERTO_RESPONSAVEL' | 'OBRIGACAO_FINANCEIRA';
 })
 export class ResumoMensalListaComponent implements OnInit {
   nomePagina = navegacaoResumoMensal.label
+  idResponsavelTitular: string | undefined;
   filtroBuscaAvancada: FiltroResumoMensal = {};
+  totalEntradas: number = 0;
+  totalSaidas: number = 0;
+  subtotalObrigacoes = 0;
+  subtotalAcertosPagar = 0;
+
+  saidaExpandida: boolean = false;
+
+  impactoFinal: number = 0;
 
   itensAcertoResponsaveis: AcertoResponsavelModel[] = [];
   itensObrigacoesFinanceiras: ObrigacaoFinanceiraModel[] = [];
@@ -28,7 +39,8 @@ export class ResumoMensalListaComponent implements OnInit {
 
   constructor(
     private resumoMensalApiService: ResumoMensalApiService,
-    private faturaApiService: FaturaApiService
+    private faturaApiService: FaturaApiService,
+    private responsavelApiService: ResponsavelApiService,
   ) {
   }
 
@@ -45,14 +57,59 @@ export class ResumoMensalListaComponent implements OnInit {
     this.resumoMensalApiService.buscarAcertoResponsaveis(this.filtroBuscaAvancada).subscribe({
       next: (response: any) => {
         this.itensAcertoResponsaveis = response
+        this.responsavelApiService.buscarResponsaveis({titular: true}).subscribe({
+          next: (dados: ResponsavelModel[]) => {
+            if (dados) {
+              this.idResponsavelTitular = dados[0]?.id
+            }
+
+            this.atualizarTotalSaidas();
+          },
+          complete: () => {
+
+          }
+        })
+
       }
     })
+  }
 
+  atualizarTotalEntradas(){
+    this.resumoMensalApiService.buscarAcertoResponsaveis(this.filtroBuscaAvancada).subscribe({
+      next: (response: any) => {
+        this.itensAcertoResponsaveis = response
+        this.totalEntradas = this.itensAcertoResponsaveis
+          .filter(i => i.credorId === this.idResponsavelTitular)
+          .reduce((acc, i) => acc + Number(i.valor), 0);
+      },
+      complete: () => {
+        this.atualizarImpactoTotal(this.totalEntradas, this.totalSaidas);
+      }
+    })
+  }
+
+  atualizarTotalSaidas(){
     this.resumoMensalApiService.buscarObrigacoesFinanceiras(this.filtroBuscaAvancada).subscribe({
       next: (response: any) => {
         this.itensObrigacoesFinanceiras = response
+
+        this.subtotalAcertosPagar = this.itensAcertoResponsaveis
+          .filter(i => i.devedorId === this.idResponsavelTitular)
+          .reduce((acc, i) => acc + Number(i.valor), 0);
+
+        this.subtotalObrigacoes = this.itensObrigacoesFinanceiras
+          .reduce((acc, i) => acc + Number(i.valorTotal), 0);
+
+        this.totalSaidas = this.subtotalAcertosPagar + this.subtotalObrigacoes;
+      },
+      complete: () => {
+        this.atualizarTotalEntradas();
       }
     })
+  }
+
+  atualizarImpactoTotal(totalEntradas: number, totalSaidas: number) {
+    this.impactoFinal = totalEntradas - totalSaidas;
   }
 
   getKey(item: any, contexto: DetalheContexto): string {
